@@ -1,0 +1,363 @@
+/**
+ * PANELS.CSS - Estilos de Paneles
+ * ================================
+ */
+
+/* ============================================
+   BASE PANEL STYLES
+   ============================================ */
+
+.panel {
+  background: var(--color-surface);
+  backdrop-filter: blur(10px);
+  border: var(--border-width) solid rgba(0, 255, 255, 0.3);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-glow);
+  color: var(--color-text);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.panel-title {
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  margin: 0;
+}
+
+.panel-body {
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.panel-footer {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+/* ============================================
+   INFO PANEL ESPECÍFICO
+   ============================================ */
+
+#info-panel {
+    padding: 1px;
+  /* Estilos adicionales específicos */
+}
+
+#info-panel .subject-info {
+  margin-bottom: var(--spacing-md);
+}
+
+#info-panel .subject-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+#info-panel .subject-icon {
+  font-size: 2rem;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 255, 255, 0.1);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+#info-panel .subject-details {
+  flex: 1;
+}
+
+#info-panel .subject-meta {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin: var(--spacing-sm) 0;
+  flex-wrap: wrap;
+}
+
+#info-panel .info-section {
+  margin-bottom: var(--spacing-md);
+}
+
+#info-panel .info-section h3 {
+  color: var(--color-primary);
+  font-size: 1rem;
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+#info-panel .info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#info-panel .info-list li {
+  padding: var(--spacing-xs) 0;
+  color: var(--color-text-secondary);
+  position: relative;
+  padding-left: 20px;
+}
+
+#info-panel .info-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+}
+
+/* ============================================
+   CONTROL PANEL
+   ============================================ */
+
+
+
+.control-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.control-group-title {
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  margin-bottom: var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.control-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-xs);
+}
+
+.control-btn {
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: var(--color-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.control-btn:hover {
+  background: rgba(0, 255, 255, 0.2);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.control-btn:active {
+  transform: translateY(0);
+}
+
+.control-btn.active {
+  background: rgba(0, 255, 255, 0.3);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* ============================================
+   STATS PANEL
+   ============================================ */
+
+.stats-panel {
+  position: fixed;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  min-width: 200px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.stat-value {
+  color: var(--color-primary);
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+/* ============================================
+   BADGES Y TAGS
+   ============================================ */
+
+.badge {
+  display: inline-block;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+.badge.badge-primary {
+  background: rgba(0, 255, 255, 0.2);
+  border-color: var(--color-primary);
+}
+
+.badge.badge-success {
+  background: rgba(0, 255, 136, 0.2);
+  border-color: #00ff88;
+  color: #00ff88;
+}
+
+.badge.badge-warning {
+  background: rgba(255, 184, 0, 0.2);
+  border-color: #ffb800;
+  color: #ffb800;
+}
+
+.badge.badge-error {
+  background: rgba(255, 51, 102, 0.2);
+  border-color: #ff3366;
+  color: #ff3366;
+}
+
+/* ============================================
+   TOOLTIPS
+   ============================================ */
+
+.tooltip {
+  position: absolute;
+  background: rgba(10, 10, 30, 0.95);
+  border: 2px solid var(--color-primary);
+  border-radius: 5px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  color: white;
+  font-size: 0.8rem;
+  pointer-events: none;
+  z-index: 1000;
+  white-space: nowrap;
+  box-shadow: var(--shadow-glow);
+}
+
+.tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--color-primary);
+}
+
+/* ============================================
+   PROGRESS BARS
+   ============================================ */
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  border-radius: 10px;
+  transition: width 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+/* ============================================
+   MODALS
+   ============================================ */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: var(--color-surface);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .panel {
+    padding: var(--spacing-sm);
+  }
+  
+  .control-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+  }
+}

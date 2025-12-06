@@ -1,13 +1,90 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>knowledge-tree</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Título y meta tags -->
+  <title>Árbol del Conocimiento Informático - UMSA</title>
+  <meta name="description" content="Visualización 3D interactiva de la Carrera de Informática UMSA">
+  <meta name="author" content="Tu Nombre">
+  
+  <!-- Favicon (opcional, puedes agregar uno después) -->
+  <link rel="icon" type="image/svg+xml" href="/vite.svg">
+</head>
+
+<body>
+  <!-- Contenedor principal del canvas 3D -->
+  <div id="canvas-container"></div>
+  
+  <!-- UI Overlay (sobre el canvas) -->
+  <div id="ui-overlay">
+    
+    <!-- Header Superior -->
+    
+    <header id="header">
+      <div class="logo">
+        <span class="icon">🌳</span>
+        <div class="logo-text">
+          <h1>Árbol del Conocimiento Informático</h1>
+          <p>Carrera de Informática - UMSA</p>
+        </div>
+      </div>
+      
+      <div id="stats">
+        <span id="explored-count">0</span> materias exploradas
+      </div>
+    </header>
+
+    <!-- Panel de Información (lateral derecho) -->
+    
+    <aside id="info-panel" class="hidden">
+      <button id="close-panel" class="close-btn" aria-label="Cerrar panel">✕</button>
+      
+      <div id="panel-content">
+        <!-- Contenido dinámico generado por JavaScript -->
+         
+        <div class="panel-placeholder">
+          <p>👆 Haz click en un nodo para ver información</p>
+        </div>
+      </div>
+    </aside> 
+
+    <!-- Panel de Controles (inferior izquierdo) -->
+    <div id="controls-panel">
+      <h3>⌨️ Controles</h3>
+      <ul>
+        <li><kbd>Click + Drag</kbd> <span>Rotar</span></li>
+        <li><kbd>Scroll</kbd> <span>Zoom</span></li>
+        <li><kbd>Click Nodo</kbd> <span>Ver info</span></li>
+        <li><kbd>R</kbd> <span>Reset cámara</span></li>
+        <li><kbd>P</kbd> <span>Auto-rotación</span></li>
+        <li><kbd>H</kbd> <span>Ocultar UI</span></li>
+        <li><kbd>F</kbd> <span>Fullscreen</span></li>
+      </ul>
+    </div> 
+
+    <!-- Loading Screen (se oculta cuando carga) -->
+    
+    <div id="loading-screen">
+      <div class="loading-content">
+        <div class="spinner"></div>
+        <h2>Cargando Árbol del Conocimiento...</h2>
+        <p>Iniciando visualización 3D</p>
+      </div>
+    </div> 
+  
+
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="/src/main.js"></script>
+
+  <!-- 
+    Nota sobre scripts:
+    - type="module" permite usar ES6 imports
+    - Vite procesará este archivo automáticamente
+    - En producción se bundleará todo
+  -->
+</body>
 </html>

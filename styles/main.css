@@ -1,0 +1,501 @@
+/**
+ * MAIN.CSS - Estilos Principales
+ * ===============================
+ * 
+ * Estructura:
+ * 1. Reset y Base
+ * 2. Canvas Container
+ * 3. UI Overlay
+ * 4. Header
+ * 5. Info Panel
+ * 6. Controls Panel
+ * 7. Loading Screen
+ * 8. Animations
+ * 9. Responsive
+ */
+
+/* Importar archivos adicionales */
+@import './animations.css';
+@import './panels.css';
+
+/* ============================================
+   1. RESET Y BASE
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Colores principales */
+  --color-primary: #00ffff;
+  --color-secondary: #9d00ff;
+  --color-background: #0a0a15;
+  --color-surface: rgba(10, 10, 30, 0.9);
+  --color-text: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  
+  /* Espaciado */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  
+  /* Bordes */
+  --border-radius: 10px;
+  --border-width: 2px;
+  
+  /* Sombras */
+  --shadow-glow: 0 0 20px rgba(0, 255, 255, 0.3);
+  --shadow-strong: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+body {
+  font-family: 'Courier New', 'Consolas', monospace;
+  background: var(--color-background);
+  color: var(--color-text);
+  overflow: hidden;
+  line-height: 1.6;
+}
+
+/* ============================================
+   2. CANVAS CONTAINER
+   ============================================ */
+
+#canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+#canvas-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================
+   3. UI OVERLAY
+   ============================================ */
+
+#ui-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+#ui-overlay.hidden {
+  opacity: 0;
+}
+
+#ui-overlay > * {
+  pointer-events: auto;
+}
+
+/* ============================================
+   4. HEADER
+   ============================================ */
+
+#header {
+  position: absolute;
+  top: var(--spacing-md);
+  left: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  background: var(--color-surface);
+  backdrop-filter: blur(10px);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--border-radius);
+  border: var(--border-width) solid rgba(0, 255, 255, 0.3);
+  box-shadow: var(--shadow-glow);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.logo .icon {
+  font-size: 2rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.logo-text h1 {
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.logo-text p {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+#stats {
+  padding-left: var(--spacing-md);
+  border-left: var(--border-width) solid rgba(0, 255, 255, 0.3);
+  color: var(--color-primary);
+  font-size: 0.9rem;
+}
+
+#explored-count {
+  font-weight: bold;
+  font-size: 1.5rem;
+  display: inline-block;
+  min-width: 2ch;
+}
+
+/* ============================================
+   5. INFO PANEL
+   ============================================ */
+
+#info-panel {
+  position: absolute;
+  top: 50%;
+  right: var(--spacing-md);
+  transform: translateY(-50%);
+  width: 400px;
+  max-width: calc(100vw - 40px);
+  max-height: 80vh;
+  background: var(--color-surface);
+  backdrop-filter: blur(15px);
+  border: var(--border-width) solid rgba(0, 255, 255, 0.5);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-strong);
+  overflow-y: auto;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#info-panel.hidden {
+  opacity: 0;
+  transform: translateY(-50%) translateX(100px);
+  pointer-events: none;
+}
+
+.close-btn {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: 0.5rem;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  transform: scale(1.2) rotate(90deg);
+}
+
+#panel-content {
+  color: var(--color-text);
+}
+
+#panel-content h2 {
+  color: var(--color-primary);
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-md);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+#panel-content h3 {
+  color: var(--color-primary);
+  font-size: 1.1rem;
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+#panel-content p {
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+#panel-content ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+#panel-content ul li {
+  padding: var(--spacing-xs) 0;
+  color: var(--color-text-secondary);
+}
+
+#panel-content ul li::before {
+  content: "▸ ";
+  color: var(--color-primary);
+  margin-right: var(--spacing-xs);
+}
+
+.panel-placeholder {
+  text-align: center;
+  padding: var(--spacing-lg);
+  color: var(--color-text-secondary);
+}
+
+/* Scrollbar personalizado */
+#info-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+#info-panel::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+#info-panel::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+#info-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 255, 0.5);
+}
+
+/* ============================================
+   6. CONTROLS PANEL
+   ============================================ */
+
+#controls-panel {
+  position: absolute;
+  bottom: var(--spacing-md);
+  left: var(--spacing-md);
+  background: var(--color-surface);
+  backdrop-filter: blur(10px);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  border: var(--border-width) solid rgba(0, 255, 255, 0.3);
+  box-shadow: var(--shadow-glow);
+}
+
+#controls-panel h3 {
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  margin-bottom: var(--spacing-sm);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+#controls-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#controls-panel li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+kbd {
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  min-width: 80px;
+  display: inline-block;
+  text-align: center;
+  font-family: inherit;
+}
+
+/* ============================================
+   7. LOADING SCREEN
+   ============================================ */
+
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: opacity 0.5s ease;
+}
+
+#loading-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-content {
+  text-align: center;
+}
+
+.loading-content h2 {
+  color: var(--color-primary);
+  font-size: 1.5rem;
+  margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.loading-content p {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Spinner de carga */
+.spinner {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto var(--spacing-md) auto;
+  border: 4px solid rgba(0, 255, 255, 0.1);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ============================================
+   8. ANIMATIONS
+   ============================================ */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ============================================
+   9. RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  #header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    font-size: 0.9rem;
+  }
+  
+  #stats {
+    padding-left: 0;
+    padding-top: var(--spacing-sm);
+    border-left: none;
+    border-top: var(--border-width) solid rgba(0, 255, 255, 0.3);
+  }
+  
+  #info-panel {
+    width: calc(100vw - 40px);
+    right: var(--spacing-md);
+  }
+  
+  #controls-panel {
+    font-size: 0.75rem;
+  }
+  
+  kbd {
+    min-width: 60px;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --spacing-md: 0.75rem;
+  }
+  
+  .logo-text h1 {
+    font-size: 1rem;
+  }
+  
+  .logo-text p {
+    font-size: 0.7rem;
+  }
+}
+
+/* ============================================
+   10. UTILITIES
+   ============================================ */
+
+.hidden {
+  display: none !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-1 { margin-bottom: var(--spacing-xs); }
+.mb-2 { margin-bottom: var(--spacing-sm); }
+.mb-3 { margin-bottom: var(--spacing-md); }
+.mb-4 { margin-bottom: var(--spacing-lg); }
+
+/* Badges para el panel de información */
+.subject-meta {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin: var(--spacing-sm) 0;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+/* Notificaciones */
+.notification {
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
