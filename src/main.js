@@ -1,26 +1,9 @@
-/**
- * MAIN.JS - Punto de Entrada
- * ===========================
- * 
- * PROPÓSITO:
- * - Iniciar la aplicación cuando el DOM esté listo
- * - Configurar el contenedor del canvas
- * - Manejar errores de inicialización
- * 
- * Este es el primer archivo que se ejecuta.
- * Vite lo usa como entry point definido en index.html
- */
-
 import { App } from './core/App.js';
-import '../styles/main.css';  // Importar estilos
+import '../styles/main.css';  
 
-// Variable global para acceder a la app desde la consola
 // Útil para debugging: window.app.getTreeManager()
 let app = null;
 
-/**
- * Inicializar aplicación
- */
 async function init() {
   try {
     // Obtener contenedor del canvas
@@ -28,10 +11,7 @@ async function init() {
     
     if (!container) {
       throw new Error('No se encontró el contenedor #canvas-container');
-    }
-    
-    // Mostrar mensaje de carga
-    console.log('⏳ Cargando Árbol del Conocimiento UMSA...');
+    }      
     
     // Crear y inicializar aplicación
     app = new App(container);
@@ -40,8 +20,6 @@ async function init() {
     // Hacer accesible globalmente (para debugging)
     window.app = app;
     
-    console.log('✅ Aplicación lista');
-    console.log('💡 Tip: Presiona "R" para resetear cámara, "P" para auto-rotación');
     
   } catch (error) {
     console.error('❌ Error fatal:', error);
@@ -60,7 +38,7 @@ async function init() {
         text-align: center;
       ">
         <div>
-          <h1>❌ Error de Inicialización</h1>
+          <h1>Error de Inicialización</h1>
           <p>${error.message}</p>
           <p style="color: #888; margin-top: 20px;">
             Abre la consola (F12) para más detalles
@@ -74,6 +52,7 @@ async function init() {
 /**
  * Cleanup cuando se cierra la página
  */
+
 window.addEventListener('beforeunload', () => {
   if (app) {
     app.dispose();
@@ -86,7 +65,6 @@ window.addEventListener('beforeunload', () => {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {
-  // DOM ya está listo
   init();
 }
 
@@ -96,6 +74,6 @@ if (document.readyState === 'loading') {
  */
 if (import.meta.hot) {
   import.meta.hot.accept(() => {
-    console.log('🔥 HMR: Módulo recargado');
+    console.log('HMR: Módulo recargado');
   });
 }

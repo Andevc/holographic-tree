@@ -95,7 +95,6 @@ export class TreeManager {
     this.allRoots = rootNodes;
     this.allNodes.push(...rootNodes);
     
-    console.log(`  ├─ Raíces: ${rootNodes.length} construidas`);
   }
 
   /**

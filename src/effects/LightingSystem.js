@@ -19,7 +19,7 @@ export class LightingSystem {
     
     this.createSpotlight();
   }
-
+ 
   /**
    * Crear spotlight para resaltar nodos
    */

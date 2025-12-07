@@ -31,12 +31,12 @@ export class RootsBuilder {
         config.height,    // height
         config.segments,  // radialSegments
         1,                // heightSegments
-        false             // openEnded
+        true             // openEnded
       );
 
       const material = MaterialLibrary.createHologram(
         MaterialLibrary.getByArea(data.area, 'hologram').color,
-        { wireframe: true , opacity: 0.5 }
+        { wireframe: true, opacity: 1 }
       );
 
       const root = new THREE.Mesh(geometry, material);
@@ -75,44 +75,59 @@ export class RootsBuilder {
       this.nodes.push(root);
 
       // Conexión al centro
-      const radius = 2;                  // radio alrededor del centro
-const angles = [0, 2*Math.PI/3, 4*Math.PI/3]; // tres conexiones
-angles.forEach(a => {
-    this.createConnection(
-        new THREE.Vector3(x, 1.25, z), // inicio nodo
-        new THREE.Vector3(0, 2, 0),    // centro/base
-        material.color,                 // color
-        0.1,                            // grosor
-        1,                              // altura de curva
-        0.5,                            // desviación lateral
-        radius,                         // radio
-        a                               // ángulo
-    );
-});
+      // Conexión al centro (raíces hacia el tronco)
+      // más cerca del tronco para un efecto de convergencia
+      const angles = [
+        0,
+        2 * Math.PI / 5,
+        4 * Math.PI / 5,
+        6 * Math.PI / 5,
+        8 * Math.PI / 5
+      ];
+      const thicknesses = [0.05, 0.07, 0.1, 0.04, 0.08];
+      angles.forEach((a, i) => {
+
+        // Pequeñas variaciones para raíces más naturales
+        const h = 3.5 + Math.random() * 1.5;  // altura variable
+        const d = 0.5 + Math.random() * 0.4;  // desviación lateral
+        const r = 1;
+
+        this.createConnection(
+          new THREE.Vector3(x, 2, z),     // inicio nodo
+          new THREE.Vector3(0, 4, 0),   // tronco
+          material.color,
+          thicknesses[i],
+          h,
+          d,
+          r,
+          a
+        );
+      });
     });
 
     return this.nodes;
   }
 
-  createConnection(start, end, color, thickness = 0.05, curveHeight = 1, curveDepth = 0.5, radius = 0, angle = 0) {
+  createConnection(start, end, color, thickness, curveHeight, curveDepth, radius, angle) {
     // Ajustar el punto final si se define un radio
     const finalEnd = end.clone();
     if (radius > 0) {
-        finalEnd.x += radius * Math.cos(angle);
-        finalEnd.z += radius * Math.sin(angle);
+      finalEnd.x += radius * Math.cos(angle);
+      finalEnd.z += radius * Math.sin(angle);
     }
 
     // Puntos de control para la curva tipo "S" vertical
     const control1 = new THREE.Vector3(
-        start.x,
-        start.y + curveHeight,        // primera subida
-        start.z + curveDepth           // desviación adelante/atrás
+      (start.x + finalEnd.x) * 0.4,      // 30% hacia el tronco
+      start.y + curveHeight*0.8,             // subida
+      (start.z + finalEnd.z) * 0.4       // 30% hacia adentro
     );
 
+    // Segundo control: ya muy cerca del tronco
     const control2 = new THREE.Vector3(
-        finalEnd.x,
-        finalEnd.y - curveHeight * 0.5,    // bajada final
-        finalEnd.z - curveDepth             // desviación opuesta
+      (start.x + finalEnd.x) * 0.6,      // 70% hacia el tronco
+      finalEnd.y - curveHeight * 0.75,    // ligera bajada
+      (start.z + finalEnd.z) * 0.6
     );
 
     // Curva cúbica tipo "S" vertical
@@ -120,10 +135,10 @@ angles.forEach(a => {
 
     // Generar geometría tubular
     const tubularSegments = 60;
-    const geometry = new THREE.TubeGeometry(curveS, tubularSegments, thickness, 8, false);
+    const geometry = new THREE.TubeGeometry(curveS, tubularSegments, thickness, 64, false);
 
     // Material tipo neón
-    const material = MaterialLibrary.createLine(color, { opacity: 0.8, blending: THREE.AdditiveBlending });
+    const material = MaterialLibrary.createLine(color, { opacity: 0.4, blending: THREE.AdditiveBlending });
 
     const tube = new THREE.Mesh(geometry, material);
 
@@ -131,7 +146,7 @@ angles.forEach(a => {
     this.parent.add(tube);
 
     return tube;
-}
+  }
 
 
 }

@@ -7,17 +7,6 @@
  * - Inicializar Scene, TreeManager, etc.
  * - Manejar el loop de animación
  * - Actuar como "director de orquesta"
- * 
- * CICLO DE VIDA:
- * 1. Constructor → Inicializa variables
- * 2. init() → Crea todos los componentes
- * 3. animate() → Loop infinito de renderizado
- * 
- * PARA LA DEFENSA:
- * "App.js implementa el patrón Mediator, coordinando
- * la comunicación entre Scene, TreeManager y otros módulos.
- * Maneja el game loop usando requestAnimationFrame para
- * sincronizar animaciones con el refresh rate del monitor."
  */
 
 import * as THREE from 'three';
@@ -27,10 +16,12 @@ import { TreeManager } from '../tree/TreeManager.js';
 import { ParticleManager } from '../particles/ParticleManager.js';
 import { LightingSystem } from '../effects/LightingSystem.js';
 import { InputManager } from '../interaction/InputManager.js';
+import { CameraController } from '../interaction/CameraController.js';
 import { UIManager } from '../ui/UIManager.js';
+import { Performance } from '../utils/Performance.js';
+import { DebugTools } from '../utils/DebugTools.js';
 import { CAMERA_CONFIG } from '../config/constants.js';
 import EventBus, { EVENTS } from './EventBus.js';
-import { PostProcessing } from '../effects/PostProcessing.js';
 
 export class App {
   constructor(container) {
@@ -43,8 +34,13 @@ export class App {
     this.particleManager = null;
     this.lightingSystem = null;
     this.inputManager = null;
+    this.cameraController = null;
     this.uiManager = null;
     this.controls = null;
+    
+    // Utils
+    this.performance = null;
+    this.debugTools = null;
     
     // Clock para animaciones
     this.clock = new THREE.Clock();
@@ -67,31 +63,34 @@ export class App {
     console.log('🚀 Inicializando aplicación...');
     
     try {
-      // 1. Crear UI Manager (primero para manejar loading)
-      this.createUIManager();
-      
-      // 2. Crear escena base
+      // 1. Crear escena base
       this.createScene();
       
-      // 3. Crear controles de cámara
+      // 2. Crear controles de cámara
       this.createControls();
       
-      // 4. Crear árbol del conocimiento
+      // 3. Crear árbol del conocimiento
       this.createTree();
       
-      // 5. Crear sistema de partículas
+      // 4. Crear sistema de partículas
       this.createParticles();
       
-      // 6. Crear sistema de luces dinámico
+      // 5. Crear sistema de luces dinámico
       this.createLighting();
+      
+      // 6. Crear UI Manager
+      this.createUIManager();
       
       // 7. Crear sistema de input
       this.createInput();
       
-      // 8. Setup de eventos
+      // 8. Crear utils (Performance y Debug)
+      this.createUtils();
+      
+      // 9. Setup de eventos
       this.setupEvents();
       
-      // 9. Iniciar loop de animación
+      // 10. Iniciar loop de animación
       this.start();
       
       console.log('✅ Aplicación inicializada correctamente');
@@ -112,17 +111,9 @@ export class App {
    * PASO 1: Crear escena
    */
   createScene() {
-  this.sceneManager = new SceneManager(this.container);
-  console.log('  ✓ Escena creada');
-
-  // Inicializar PostProcessing
-  this.postProcessing = new PostProcessing(
-    this.sceneManager.getRenderer(),
-    this.sceneManager.getScene(),
-    this.sceneManager.getCamera()
-  );
-  console.log('  ✓ PostProcessing inicializado');
-}
+    this.sceneManager = new SceneManager(this.container);
+    console.log('  ✓ Escena creada');
+  }
 
   /**
    * PASO 2: Crear controles de cámara (OrbitControls)
@@ -161,6 +152,9 @@ export class App {
     );
     
     this.controls.update();
+    
+    // Crear controlador avanzado
+    this.cameraController = new CameraController(camera, this.controls);
     
     console.log('  ✓ Controles creados');
   }
@@ -209,12 +203,30 @@ export class App {
    * PASO 7: Crear UI Manager
    */
   createUIManager() {
-    this.uiManager = new UIManager();
+    const scene = this.sceneManager.getScene();
+    const camera = this.sceneManager.getCamera();
+    this.uiManager = new UIManager(scene, camera);
     console.log('  ✓ UI Manager creado');
   }
 
   /**
-   * PASO 4: Setup de eventos globales
+   * PASO 8: Crear utils (Performance y Debug)
+   */
+  createUtils() {
+    // Performance monitor
+    this.performance = new Performance();
+    
+    // Debug tools
+    const scene = this.sceneManager.getScene();
+    const camera = this.sceneManager.getCamera();
+    const renderer = this.sceneManager.getRenderer();
+    this.debugTools = new DebugTools(scene, camera, renderer);
+    
+    console.log('  ✓ Utils creados');
+  }
+
+  /**
+   * PASO 9: Setup de eventos globales
    */
   setupEvents() {
     // Eventos de teclado
@@ -255,7 +267,11 @@ export class App {
     switch (event.key.toLowerCase()) {
       case 'r':
         // Reset de cámara
-        this.resetCamera();
+        if (this.cameraController) {
+          this.cameraController.reset();
+        } else {
+          this.resetCamera();
+        }
         console.log('🔄 Cámara reseteada');
         break;
         
@@ -272,14 +288,50 @@ export class App {
         
       case 'd':
         // Toggle debug mode
-        EventBus.setDebug(!EventBus.debug);
-        console.log(`🐛 Debug: ${EventBus.debug ? 'ON' : 'OFF'}`);
+        if (this.debugTools) {
+          this.debugTools.toggle();
+        }
         break;
         
       case 'f':
         // Fullscreen
         this.toggleFullscreen();
         break;
+        
+      case 'm':
+        // Toggle minimap
+        EventBus.emit('minimap:toggle');
+        break;
+        
+      case '1':
+        // Vista frontal
+        if (this.cameraController) {
+          this.cameraController.setFrontView();
+        }
+        break;
+        
+      case '2':
+        // Vista lateral
+        if (this.cameraController) {
+          this.cameraController.setSideView();
+        }
+        break;
+        
+      case '3':
+        // Vista superior
+        if (this.cameraController) {
+          this.cameraController.setTopView();
+        }
+        break;
+        
+      case 's':
+        // Screenshot (con Shift)
+        if (event.shiftKey && this.debugTools) {
+          this.debugTools.takeScreenshot();
+        }
+        break;
+      
+      
     }
   }
 
@@ -318,7 +370,7 @@ export class App {
   }
 
   /**
-   * PASO 5: Iniciar loop de animación
+   * PASO 10: Iniciar loop de animación
    */
   start() {
     this.isRunning = true;
@@ -341,26 +393,47 @@ export class App {
    * de la pantalla para animaciones suaves
    */
   animate() {
-  if (!this.isRunning) return;
-  
-  requestAnimationFrame(() => this.animate());
-  
-  const time = this.clock.getElapsedTime();
-  const delta = this.clock.getDelta();
-  
-  this.controls.update();
-  
-  this.sceneManager.update(time);
-  
-  if (this.treeManager) this.treeManager.update(time);
-  if (this.particleManager) this.particleManager.update(time, delta);
-  if (this.lightingSystem) this.lightingSystem.update(time);
-  
-  // Render con efectos
-  this.postProcessing.render();
-  
-  this.updateStats();
-}
+    if (!this.isRunning) return;
+    
+    // Solicitar siguiente frame
+    requestAnimationFrame(() => this.animate());
+    
+    // Obtener tiempo transcurrido
+    const time = this.clock.getElapsedTime();
+    const delta = this.clock.getDelta();
+    
+    // Actualizar controles
+    this.controls.update();
+    
+    // Actualizar escena (luces, anillo base, etc)
+    this.sceneManager.update(time);
+    
+    // ⚡ Actualizar árbol (animaciones de nodos + efectos de energía)
+    if (this.treeManager) {
+      this.treeManager.update(time, delta); // Ahora pasa delta también
+    }
+    
+    // Actualizar partículas
+    if (this.particleManager) {
+      this.particleManager.update(time, delta);
+    }
+    
+    // Actualizar sistema de luces
+    if (this.lightingSystem) {
+      this.lightingSystem.update(time);
+    }
+    
+    // Actualizar performance monitor
+    if (this.performance) {
+      this.performance.update();
+    }
+    
+    // Renderizar escena
+    this.sceneManager.render();
+    
+    // Calcular FPS (opcional)
+    this.updateStats();
+  }
 
   /**
    * Actualizar estadísticas de rendimiento

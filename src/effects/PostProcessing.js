@@ -9,7 +9,7 @@
  * pnpm add postprocessing
  * 
  * Por simplicidad, esta versión es opcional
- */
+ */ 
 
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';

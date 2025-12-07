@@ -29,8 +29,8 @@ export class TrunkBuilder {
     );
 
     const material = MaterialLibrary.createHologram(COLORS.areas.fundamentos, {
-      wireframe: false,
-      opacity: 0.9
+      wireframe: true,
+      opacity: 0.01
     });
 
     const trunk = new THREE.Mesh(geometry, material);

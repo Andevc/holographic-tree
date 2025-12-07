@@ -24,27 +24,27 @@
  */
 
 import * as THREE from 'three';
-import { 
-  CAMERA_CONFIG, 
-  LIGHTS_CONFIG, 
+import {
+  CAMERA_CONFIG,
+  LIGHTS_CONFIG,
   COLORS,
-  EFFECTS_CONFIG 
+  EFFECTS_CONFIG
 } from '../config/constants.js';
 
 export class SceneManager {
   constructor(container) {
     this.container = container;
-    
+
     // Referencias principales
     this.scene = null;
     this.camera = null;
     this.renderer = null;
     this.lights = {};
-    
+
     // Elementos decorativos
     this.baseRing = null;
     this.gridHelper = null;
-    
+
     this.init();
   }
 
@@ -58,8 +58,7 @@ export class SceneManager {
     this.createLights();
     this.createHelpers();
     this.setupResize();
-    
-    console.log('✅ Escena inicializada');
+
   }
 
   /**
@@ -68,10 +67,13 @@ export class SceneManager {
    */
   createScene() {
     this.scene = new THREE.Scene();
-    
+
     // Color de fondo
+    //const loader = new THREE.TextureLoader();
+    //const bgTexture = loader.load("../../public/assets/images/background-texture.png");
+    //this.scene.background = bgTexture;
     this.scene.background = new THREE.Color(COLORS.background);
-    
+
     // Niebla para profundidad
     // near: distancia donde empieza la niebla
     // far: distancia donde es completamente opaca
@@ -99,14 +101,14 @@ export class SceneManager {
       CAMERA_CONFIG.near,
       CAMERA_CONFIG.far
     );
-    
+
     // Posición inicial de la cámara
     this.camera.position.set(
       CAMERA_CONFIG.position.x,
       CAMERA_CONFIG.position.y,
       CAMERA_CONFIG.position.z
     );
-    
+
     // Hacia dónde mira la cámara
     this.camera.lookAt(
       CAMERA_CONFIG.target.x,
@@ -122,19 +124,22 @@ export class SceneManager {
   createRenderer() {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,  // Suaviza los bordes
-      alpha: true       // Permite transparencias
+      alpha: true,       // Permite transparencias
+      precision: "highp",
+      preserveDrawingBuffer: true,
+      powerPreference: "high-performance"
     });
-    
+
     // Tamaño del canvas
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    
+
     // Mejorar calidad en pantallas retina
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    
+
     // Habilitar sombras
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    
+
     // Agregar el canvas al DOM
     this.container.appendChild(this.renderer.domElement);
   }
@@ -158,11 +163,11 @@ export class SceneManager {
       LIGHTS_CONFIG.directional.color,
       LIGHTS_CONFIG.directional.intensity
     );
-    
+
     const dirPos = LIGHTS_CONFIG.directional.position;
     this.lights.directional.position.set(dirPos.x, dirPos.y, dirPos.z);
     this.lights.directional.castShadow = LIGHTS_CONFIG.directional.castShadow;
-    
+
     // Configurar sombras
     const shadow = LIGHTS_CONFIG.directional.shadow;
     this.lights.directional.shadow.camera.near = shadow.camera.near;
@@ -173,7 +178,7 @@ export class SceneManager {
     this.lights.directional.shadow.camera.bottom = -shadow.camera.size;
     this.lights.directional.shadow.mapSize.width = shadow.mapSize;
     this.lights.directional.shadow.mapSize.height = shadow.mapSize;
-    
+
     this.scene.add(this.lights.directional);
 
     // 3. LUCES DE PUNTO
@@ -211,66 +216,67 @@ export class SceneManager {
   createHelpers() {
     // Grid del suelo (estilo holográfico)
     this.gridHelper = new THREE.GridHelper(
-      30,  // Tamaño
-      30,  // Divisiones
+      50,  // Tamaño
+      50,  // Divisiones
       COLORS.grid.primary,
       COLORS.grid.secondary
     );
     this.gridHelper.material.transparent = true;
-    this.gridHelper.material.opacity = 0.2;
-    this.gridHelper.position.y = -0.1;
+    this.gridHelper.material.opacity = 0.5;
+    this.gridHelper.position.y = 0;
     this.scene.add(this.gridHelper);
 
-    // Anillo grande en la base (como en la referencia)
-    const ringGeometry = new THREE.RingGeometry(4, 4.2, 64);
-    const ringMaterial = new THREE.MeshBasicMaterial({
-      color: COLORS.grid.primary,
-      transparent: true,
-      opacity: 0.5,
-      side: THREE.DoubleSide
-    });
-    this.baseRing = new THREE.Mesh(ringGeometry, ringMaterial);
-    this.baseRing.rotation.x = -Math.PI / 2;
-    this.baseRing.position.y = 0.05;
-    this.scene.add(this.baseRing);
+    // Círculo/base pequeño holográfico
+const baseRingGeometry = new THREE.RingGeometry(2.5, 3, 64);
+const baseRingMaterial = new THREE.MeshBasicMaterial({
+  color: 0x00ffff,
+  transparent: true,
+  opacity: 0.15,
+  side: THREE.DoubleSide
+});
+const baseRing = new THREE.Mesh(baseRingGeometry, baseRingMaterial);
+baseRing.rotation.x = -Math.PI / 2;
+baseRing.position.y = 0.05; // ligeramente elevado
+this.scene.add(baseRing);
 
-    // Círculo sólido en el centro (plataforma)
-    const circleGeometry = new THREE.CircleGeometry(4.5, 64);
-    const circleMaterial = new THREE.MeshBasicMaterial({
-      color: 0x001122,
-      transparent: true,
-      opacity: 0.3,
-      side: THREE.DoubleSide
-    });
-    const circle = new THREE.Mesh(circleGeometry, circleMaterial);
-    circle.rotation.x = -Math.PI / 2;
-    circle.position.y = 0.02;
-    this.scene.add(circle);
+const baseCircleGeometry = new THREE.CircleGeometry(2.5, 64);
+const baseCircleMaterial = new THREE.MeshBasicMaterial({
+  color: 0x00ffff,
+  transparent: true,
+  opacity: 0.2,
+  side: THREE.DoubleSide
+});
+const baseCircle = new THREE.Mesh(baseCircleGeometry, baseCircleMaterial);
+baseCircle.rotation.x = -Math.PI / 2;
+baseCircle.position.y = 0; 
+this.scene.add(baseCircle);
 
-    // Líneas radiales decorativas (opcional)
-    for (let i = 0; i < 8; i++) {
-      const angle = (i / 8) * Math.PI * 2;
-      const start = new THREE.Vector3(
-        Math.cos(angle) * 4,
-        0.03,
-        Math.sin(angle) * 4
-      );
-      const end = new THREE.Vector3(
-        Math.cos(angle) * 4.5,
-        0.03,
-        Math.sin(angle) * 4.5
-      );
-      
-      const points = [start, end];
-      const geometry = new THREE.BufferGeometry().setFromPoints(points);
-      const material = new THREE.LineBasicMaterial({
-        color: COLORS.grid.primary,
-        transparent: true,
-        opacity: 0.3
-      });
-      const line = new THREE.Line(geometry, material);
-      this.scene.add(line);
-    }
+// ---------------------------
+// Círculo/anillo principal (donde estará el árbol)
+const mainRingGeometry = new THREE.RingGeometry(5.5, 6, 64); // grosor = 0.5
+const mainRingMaterial = new THREE.MeshBasicMaterial({
+  color: 0x001122,
+  transparent: true,
+  opacity: 0.3,
+  side: THREE.DoubleSide
+});
+const mainRing = new THREE.Mesh(mainRingGeometry, mainRingMaterial);
+mainRing.rotation.x = -Math.PI / 2;
+mainRing.position.y = 0.8; // más elevado
+this.scene.add(mainRing);
+
+const mainCircleGeometry = new THREE.CircleGeometry(5.5, 64); // círculo interior
+const mainCircleMaterial = new THREE.MeshBasicMaterial({
+  color: 0x001122,
+  transparent: true,
+  opacity: 0.3,
+  side: THREE.DoubleSide
+});
+const mainCircle = new THREE.Mesh(mainCircleGeometry, mainCircleMaterial);
+mainCircle.rotation.x = -Math.PI / 2;
+mainCircle.position.y = 0.75; // un poco debajo del anillo
+this.scene.add(mainCircle);
+    
   }
 
   /**
@@ -323,7 +329,7 @@ export class SceneManager {
   dispose() {
     window.removeEventListener('resize', this.onWindowResize);
     this.renderer.dispose();
-    
+
     // Limpiar geometrías y materiales
     this.scene.traverse((object) => {
       if (object.geometry) object.geometry.dispose();

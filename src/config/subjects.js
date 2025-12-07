@@ -163,7 +163,7 @@ export const ROOTS = [
       "Inducción matemática"
     ],
     professor: "Dr. Roberto Paz"
-  }
+  },
 ];
 
 /**

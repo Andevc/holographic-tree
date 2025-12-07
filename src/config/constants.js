@@ -23,7 +23,7 @@ export const COLORS = {
   // Color del grid del suelo
   grid: {
     primary: 0x00ffff,   // Cian brillante
-    secondary: 0x004466  // Azul oscuro
+    secondary: 0x1b3848  // Azul oscuro
   },
   
   // Colores por área del conocimiento
@@ -52,14 +52,14 @@ export const COLORS = {
 export const TREE_CONFIG = {
   // RAÍCES - Base del árbol (fundamentos de la carrera)
   roots: {
-    count: 3,              // Número de raíces (3 materias base)
-    radius: 3,             // Distancia del centro (radio del círculo)
-    radiusTop: 0.6,
-    radiusBottom: 1.0,
+    count: 4,              // Número de raíces (3 materias base)
+    radius: 4,             // Distancia del centro (radio del círculo)
+    radiusTop: 0.2,
+    radiusBottom: 0.5,
     size: 1,             // Radio de la base del cono
-    height: 1,           // Altura del cono invertido
+    height: 0.75,           // Altura del cono invertido
     segments: 16,          // Número de segmentos (más = más suave)
-    yPosition: 1       // Posición vertical (enterradas)
+    yPosition: 2       // Posición vertical (enterradas)
   },
   
   // TRONCO - Núcleo central del árbol
@@ -69,14 +69,14 @@ export const TREE_CONFIG = {
     height: 7,             // Altura total del tronco
     segments: 10,          // Segmentos radiales (circunferencia)
     heightSegments: 5,     // Segmentos de altura (anillos)
-    yPosition: 5.5,        // Posición vertical del centro
+    yPosition: 7,        // Posición vertical del centro
     
     // Anillos decorativos (como en la referencia)
     rings: {
       count: 6,            // Número de anillos
       spacing: 1.5,          // Espacio entre anillos
       thickness: 0.05,     // Grosor del torus
-      startY: 5          // Altura inicial del primer anillo
+      startY: 7          // Altura inicial del primer anillo
     }
   },
   
@@ -88,7 +88,7 @@ export const TREE_CONFIG = {
     radialSegments: 12,    // Segmentos radiales del tubo (redondez)
     length: 5,             // Longitud base de la rama
     curvature: 1,          // Altura del punto medio de la curva
-    startY: 5,             // Altura donde empiezan las ramas
+    startY: 10,             // Altura donde empiezan las ramas
     spread: 0.9            // Variación de altura entre ramas
   },
   
@@ -204,7 +204,7 @@ export const LIGHTS_CONFIG = {
 export const PARTICLES_CONFIG = {
   // Partículas ambientales - distribuidas por toda la escena
   ambient: {
-    count: 500,            // Número de partículas
+    count: 5,            // Número de partículas
     size: 0.1,             // Tamaño de cada partícula
     opacity: 0.6,          // Transparencia
     spread: {              // Área de distribución
@@ -220,7 +220,7 @@ export const PARTICLES_CONFIG = {
   
   // Partículas que fluyen - suben desde las raíces
   flowing: {
-    count: 200,
+    count: 2,
     size: 0.15,
     opacity: 0.8,
     speed: 0.005,          // Velocidad de ascenso
@@ -291,9 +291,9 @@ export const EFFECTS_CONFIG = {
   
   // Niebla atmosférica
   fog: {
-    color: 0x0a0a15,       // Mismo color que el fondo
+    color: 0x131313,       // Mismo color que el fondo
     near: 15,              // Distancia donde empieza
-    far: 40                // Distancia donde es opaca
+    far: 150                // Distancia donde es opaca
   }
 };
 
