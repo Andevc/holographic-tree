@@ -154,7 +154,7 @@ export class RootsBuilder {
     const geometry = new THREE.TubeGeometry(curveS, tubularSegments, thickness, 64, false);
 
     // Material tipo neón
-    const material = MaterialLibrary.createLine(color, { opacity: 0.01, blending: THREE.AdditiveBlending });
+    const material = MaterialLibrary.createLine(color, { opacity: 0.5, blending: THREE.AdditiveBlending });
 
     const tube = new THREE.Mesh(geometry, material);
 

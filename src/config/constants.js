@@ -38,60 +38,78 @@ export const COLORS = {
 export const TREE_CONFIG = {
   // RAÍCES - Base del árbol (fundamentos de la carrera)
   roots: {
-    count: 4,              // Número de raíces (3 materias base)
-    radius: 5,             // Distancia del centro (radio del círculo)
+    count: 4,
+    radius: 5,
     radiusTop: 0.5,
     radiusBottom: 0,
-    size: 1,             // Radio de la base del cono
-    height: 1.5,           // Altura del cono invertido
-    segments: 16,          // Número de segmentos (más = más suave)
-    yPosition: 0       // Posición vertical (enterradas)
+    size: 1,
+    height: 1.5,
+    segments: 16,
+    yPosition: 0
   },
   
   // TRONCO - Núcleo central del árbol
   trunk: {
-    radiusTop: 0.2,        // Ya no se usa (ahora es TubeGeometry)
-    radiusBottom: 1.0,     // Ya no se usa
-    height: 7,             // Altura total del tronco (se mantiene)
+    height: 7,
     segments: 10,
     heightSegments: 5,
-    yPosition: 7,          // Altura donde empiezan las ramas
-    
-    // ✨ NUEVAS configuraciones para tronco curvo
-    tubeRadius: 1,       // Grosor del tubo (antes era radiusBottom)
-    startY: 2,             // Donde termina el tronco (donde están las raíces)
-    curveIntensity: 0.3,   // Qué tan curvado está (0 = recto, 1 = muy curvo)
-    
+    yPosition: 7,
+    tubeRadius: 1,
+    startY: 2,
+    curveIntensity: 0.3,
     rings: {
-      count: 12,           // Número de anillos (antes era 6)
+      count: 12,
       spacing: 1.5,
-      thickness: 0.025,    // Grosor del torus
+      thickness: 0.025,
       startY: 7
     }
   },
+  
   // RAMAS - Especialidades que salen del tronco
   branches: {
-    count: 5,              // Número de ramas principales
-    tubeRadius: 0.05,      // Grosor de la rama (tubo)
-    segments: 40,          // Segmentos del tubo (suavidad de la curva)
-    radialSegments: 12,    // Segmentos radiales del tubo (redondez)
-    length: 5,             // Longitud base de la rama
-    curvature: 1,          // Altura del punto medio de la curva
-    startY: 7,             // Altura donde empiezan las ramas
-    spread: 0.9            // Variación de altura entre ramas
+    count: 5,
+    
+    // ⭐ NUEVOS parámetros para ramas holográficas
+    startRadius: 0.15,      // Radio en la base (más grueso)
+    endRadius: 0.03,        // Radio en la punta (más delgado)
+    segments: 100,          // Más segmentos = curva más suave
+    radialSegments: 16,     // Segmentos radiales del tubo
+    
+    // Longitud y distribución
+    length: 5,              // Longitud base
+    startY: 7,              // Altura inicial
+    spread: 0.9,            // Variación de altura entre ramas
+    
+    // Curva y forma
+    tension: 0.5,           // Tensión de CatmullRom (0.5 = suave)
+    controlPoints: 5,       // Puntos de control para la curva
+    
+    // Decoraciones
+    rings: {
+      count: 15,            // Anillos por rama
+      spacing: 2,           // Cada cuántos mostrar
+      baseRadius: 0.25,     // Radio en la base
+      tipRadius: 0.1,       // Radio en la punta
+      thickness: 0.015,     // Grosor del torus
+      opacity: 0.3          // Opacidad base
+    },
+    
+    particles: {
+      count: 30,            // Partículas por rama
+      size: 0.025,          // Tamaño
+      opacity: 0.7          // Opacidad
+    }
   },
   
   // NODOS - Esferas que representan materias
   nodes: {
-    radius: 0.25,          // Radio de la esfera
-    segments: 24,          // Segmentos (más = más suave)
-    
-    // Anillos decorativos alrededor de los nodos
+    radius: 0.25,
+    segments: 24,
     rings: {
       inner: {
-        min: 0.4,          // Radio interno del anillo
-        max: 0.5,          // Radio externo del anillo
-        opacity: 0.4       // Transparencia
+        min: 0.4,
+        max: 0.5,
+        opacity: 0.4
       },
       outer: {
         min: 0.52,
@@ -103,11 +121,14 @@ export const TREE_CONFIG = {
   
   // DISTRIBUCIÓN de nodos en el tronco
   trunkNodes: {
-    radius: 1.2,           // Distancia del centro del tronco
-    startY: 1,             // Altura inicial
-    spacing: 1             // Espacio vertical entre nodos
+    radius: 1.2,
+    startY: 1,
+    spacing: 1
   }
 };
+
+// Exportar solo lo que cambiamos
+export const UPDATED_BRANCH_CONFIG = TREE_CONFIG.branches;
 
 // ============================================
 // CONFIGURACIÓN DE CÁMARA
