@@ -1,150 +1,171 @@
 /**
- * MATERIALLIBRARY.JS - Biblioteca de Materiales
- * ==============================================
+ * MATERIALLIBRARY.JS - Materiales Holográficos Mejorados
+ * =======================================================
  * 
- * PROPÓSITO:
- * - Centralizar la creación de todos los materiales
- * - Reutilizar materiales en lugar de crear duplicados
- * - Facilitar cambios de estilo globales
+ * Basado en el efecto holográfico de index2.html
  * 
- * TIPOS DE MATERIALES:
- * 1. Hologram - Wireframe con glow (raíces, tronco)
- * 2. Tube - Sólido brillante (ramas)
- * 3. Node - Muy brillante (nodos/esferas)
- * 4. Line - Para conexiones
- * 
- * PARA LA DEFENSA:
- * "MaterialLibrary implementa el patrón Factory para crear
- * materiales de manera consistente. Uso MeshStandardMaterial
- * porque responde bien a las luces y permite efectos metálicos
- * y emissive para el estilo holográfico."
+ * CLAVES DEL EFECTO:
+ * 1. MeshPhongMaterial (en lugar de MeshStandardMaterial)
+ * 2. Opacidad baja (0.4-0.7)
+ * 3. Emissive intensity alto
+ * 4. Shininess: 100
+ * 5. Wireframe exterior + EdgesGeometry
  */
 
 import * as THREE from 'three';
-import { COLORS, MATERIALS_CONFIG, getColorByArea } from '../config/constants.js';
+import { COLORS, getColorByArea } from '../config/constants.js';
 
 export class MaterialLibrary {
   /**
-   * Crear material holográfico (wireframe con glow)
-   * Usado en: Raíces, Tronco
-   * 
-   * @param {number} color - Color en hexadecimal
-   * @param {object} options - Opciones adicionales
-   * @returns {THREE.Material}
+   * Crear material holográfico principal
+   * NUEVO: Usa MeshPhongMaterial con shininess
    */
   static createHologram(color = COLORS.areas.fundamentos, options = {}) {
-    const config = MATERIALS_CONFIG.hologram;
-    
-    return new THREE.MeshStandardMaterial({
-      color: color,
-      emissive: color,  // Color que emite luz propia
-      emissiveIntensity: options.emissiveIntensity || config.emissiveIntensity,
-      wireframe: options.wireframe !== undefined ? options.wireframe : config.wireframe,
-      transparent: true,
-      opacity: options.opacity || config.opacity,
-      metalness: config.metalness,  // Qué tan metálico se ve
-      roughness: config.roughness,   // Qué tan rugoso/brillante
-      side: THREE.DoubleSide        // Visible desde ambos lados
-    });
-  }
-
-  /**
-   * Crear material para tubos (ramas)
-   * Más sólido y brillante que hologram
-   * 
-   * @param {number} color - Color en hexadecimal
-   * @returns {THREE.Material}
-   */
-  static createTube(color = COLORS.areas.fundamentos) {
-    const config = MATERIALS_CONFIG.tube;
-    
-    return new THREE.MeshStandardMaterial({
+    return new THREE.MeshPhongMaterial({
       color: color,
       emissive: color,
-      emissiveIntensity: config.emissiveIntensity,
+      emissiveIntensity: options.emissiveIntensity || 0.6,
       transparent: true,
-      opacity: config.opacity,
-      metalness: config.metalness,
-      roughness: config.roughness,
+      opacity: options.opacity || 0.5,  // MÁS TRANSPARENTE
+      shininess: options.shininess || 100,  // BRILLO ESPECULAR
+      wireframe: options.wireframe || false,
       side: THREE.DoubleSide
     });
   }
 
   /**
-   * Crear material para nodos (esferas brillantes)
-   * El más brillante de todos
-   * 
-   * @param {number} color - Color en hexadecimal
-   * @returns {THREE.Material}
+   * Material para tubos (ramas)
+   * NUEVO: Más transparente y brillante
    */
-  static createNode(color = COLORS.areas.fundamentos) {
-    const config = MATERIALS_CONFIG.node;
-    
-    return new THREE.MeshStandardMaterial({
+  static createTube(color = COLORS.areas.fundamentos) {
+    return new THREE.MeshPhongMaterial({
       color: color,
       emissive: color,
-      emissiveIntensity: config.emissiveIntensity,
+      emissiveIntensity: 0.5,
       transparent: true,
-      opacity: config.opacity,
-      metalness: config.metalness,
-      roughness: config.roughness
+      opacity: 0.4,  // MÁS TRANSPARENTE
+      shininess: 100,
+      side: THREE.DoubleSide
     });
   }
 
   /**
-   * Crear material para líneas (conexiones)
-   * 
-   * @param {number} color - Color en hexadecimal
-   * @param {object} options - Opciones
-   * @returns {THREE.LineBasicMaterial}
+   * Material para nodos (esferas)
+   * NUEVO: Opacidad 0.7 + shininess
+   */
+  static createNode(color = COLORS.areas.fundamentos) {
+    return new THREE.MeshPhongMaterial({
+      color: color,
+      emissive: color,
+      emissiveIntensity: 0.8,
+      transparent: true,
+      opacity: 0.7,  // MÁS TRANSPARENTE
+      shininess: 100
+    });
+  }
+
+  /**
+   * Material para nodo central del cluster
+   * MÁS GRANDE Y BRILLANTE
+   */
+  static createCentralNode(color = COLORS.areas.fundamentos) {
+    return new THREE.MeshPhongMaterial({
+      color: color,
+      emissive: color,
+      emissiveIntensity: 0.8,
+      transparent: true,
+      opacity: 0.7,
+      shininess: 100
+    });
+  }
+
+  /**
+   * Material para hojas (nodos pequeños)
+   * Un poco menos brillante que el central
+   */
+  static createLeafNode(color = COLORS.areas.fundamentos) {
+    return new THREE.MeshPhongMaterial({
+      color: color,
+      emissive: color,
+      emissiveIntensity: 0.7,
+      transparent: true,
+      opacity: 0.6,
+      shininess: 100
+    });
+  }
+
+  /**
+   * Material para líneas de conexión
+   * NUEVO: AdditiveBlending para efecto glow
    */
   static createLine(color = COLORS.areas.fundamentos, options = {}) {
     return new THREE.LineBasicMaterial({
       color: color,
       transparent: true,
-      opacity: options.opacity || 0.4,
-      linewidth: options.linewidth || 1  // Note: linewidth no funciona en WebGL
+      opacity: options.opacity || 0.6,
+      blending: THREE.AdditiveBlending,  // ← CLAVE DEL GLOW
+      linewidth: 1
     });
   }
 
   /**
-   * Crear material para anillos decorativos
-   * 
-   * @param {number} color - Color en hexadecimal
-   * @param {number} opacity - Transparencia
-   * @returns {THREE.Material}
+   * Material para anillos decorativos
+   * NUEVO: Wireframe + baja opacidad
    */
   static createRing(color = COLORS.areas.fundamentos, opacity = 0.3) {
     return new THREE.MeshBasicMaterial({
       color: color,
       transparent: true,
       opacity: opacity,
+      wireframe: true,  // ← WIREFRAME
       side: THREE.DoubleSide
     });
   }
 
   /**
-   * Crear material para edges (bordes de wireframe)
-   * 
-   * @param {number} color - Color en hexadecimal
-   * @param {number} opacity - Transparencia
-   * @returns {THREE.LineBasicMaterial}
+   * Material para bordes brillantes (EdgesGeometry)
+   * ESTE ES EL SECRETO DEL EFECTO
    */
   static createEdges(color = COLORS.areas.fundamentos, opacity = 0.9) {
     return new THREE.LineBasicMaterial({
       color: color,
+      transparent: true,
+      opacity: opacity,
+      linewidth: 2  // No funciona en WebGL pero lo dejamos
+    });
+  }
+
+  /**
+   * Material para wireframe exterior
+   * La capa exterior que hace el efecto holográfico
+   */
+  static createWireframe(color = COLORS.areas.fundamentos, opacity = 0.3) {
+    return new THREE.MeshBasicMaterial({
+      color: color,
+      wireframe: true,
       transparent: true,
       opacity: opacity
     });
   }
 
   /**
-   * Obtener material por área del conocimiento
-   * Factory method que selecciona el tipo correcto
-   * 
-   * @param {string} area - Nombre del área
-   * @param {string} type - Tipo de material ('hologram', 'tube', 'node')
-   * @returns {THREE.Material}
+   * Material para partículas
+   * NUEVO: AdditiveBlending
+   */
+  static createParticle(color = COLORS.areas.fundamentos, size = 0.05) {
+    return new THREE.PointsMaterial({
+      color: color,
+      size: size,
+      transparent: true,
+      opacity: 0.7,
+      blending: THREE.AdditiveBlending,  // ← GLOW
+      sizeAttenuation: true,
+      depthWrite: false
+    });
+  }
+
+  /**
+   * Obtener material por área (actualizado con Phong)
    */
   static getByArea(area, type = 'hologram') {
     const color = getColorByArea(area);
@@ -156,59 +177,94 @@ export class MaterialLibrary {
         return this.createTube(color);
       case 'node':
         return this.createNode(color);
+      case 'central-node':
+        return this.createCentralNode(color);
+      case 'leaf-node':
+        return this.createLeafNode(color);
       case 'line':
         return this.createLine(color);
+      case 'ring':
+        return this.createRing(color);
+      case 'wireframe':
+        return this.createWireframe(color);
+      case 'edges':
+        return this.createEdges(color);
+      case 'particle':
+        return this.createParticle(color);
       default:
         return this.createHologram(color);
     }
   }
 
   /**
-   * Crear variante "highlighted" (resaltado)
-   * Usado cuando el usuario hace hover o click
+   * NUEVO: Agregar capa wireframe a un objeto
+   * Esta es la función clave del efecto holográfico
    * 
-   * @param {THREE.Material} originalMaterial - Material original
-   * @returns {THREE.Material}
+   * @param {THREE.Mesh} mesh - Mesh al que agregar wireframe
+   * @param {number} scaleFactor - Factor de escala (ej: 1.1 = 10% más grande)
+   */
+  static addWireframeLayer(mesh, scaleFactor = 1.1) {
+    const geometry = mesh.geometry.clone();
+    const wireframeMat = this.createWireframe(
+      mesh.material.color,
+      0.3
+    );
+    
+    const wireframe = new THREE.Mesh(geometry, wireframeMat);
+    wireframe.scale.setScalar(scaleFactor);
+    mesh.add(wireframe);
+    
+    return wireframe;
+  }
+
+  /**
+   * NUEVO: Agregar bordes brillantes (EdgesGeometry)
+   * Los bordes hacen que se vea mucho más holográfico
+   * 
+   * @param {THREE.Mesh} mesh - Mesh al que agregar bordes
+   * @param {number} opacity - Opacidad de los bordes
+   */
+  static addBrightEdges(mesh, opacity = 0.9) {
+    const edgesGeometry = new THREE.EdgesGeometry(mesh.geometry);
+    const edgesMaterial = this.createEdges(
+      mesh.material.color,
+      opacity
+    );
+    
+    const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
+    mesh.add(edges);
+    
+    return edges;
+  }
+
+  /**
+   * NUEVO: Aplicar efecto holográfico completo a un mesh
+   * Combina: wireframe exterior + bordes brillantes
+   */
+  static applyHolographicEffect(mesh, options = {}) {
+    const wireframeScale = options.wireframeScale || 1.1;
+    const edgesOpacity = options.edgesOpacity || 0.9;
+    
+    // 1. Agregar wireframe exterior
+    const wireframe = this.addWireframeLayer(mesh, wireframeScale);
+    
+    // 2. Agregar bordes brillantes
+    const edges = this.addBrightEdges(mesh, edgesOpacity);
+    
+    return { wireframe, edges };
+  }
+
+  /**
+   * Crear material variante "highlighted"
    */
   static createHighlighted(originalMaterial) {
     const highlighted = originalMaterial.clone();
-    highlighted.emissiveIntensity = 1.5;
-    highlighted.opacity = 1.0;
-    return highlighted;
-  }
-
-  /**
-   * Animar material (para efectos especiales)
-   * Modifica el material in-place
-   * 
-   * @param {THREE.Material} material - Material a animar
-   * @param {number} time - Tiempo para la animación
-   */
-  static animate(material, time) {
-    if (material.emissive) {
-      // Pulso de intensidad
-      const baseIntensity = 0.8;
-      material.emissiveIntensity = baseIntensity + Math.sin(time * 2) * 0.2;
+    
+    if (highlighted.emissiveIntensity !== undefined) {
+      highlighted.emissiveIntensity = 1.5;
     }
-  }
-
-  /**
-   * Aplicar tema de color
-   * Cambia todos los colores base
-   * 
-   * @param {string} theme - 'cyan', 'green', 'purple'
-   */
-  static applyTheme(theme) {
-    const themes = {
-      cyan: 0x00ffff,
-      green: 0x00ff88,
-      purple: 0x9d00ff
-    };
+    highlighted.opacity = Math.min(highlighted.opacity + 0.2, 1.0);
     
-    const baseColor = themes[theme] || themes.cyan;
-    
-    // Aquí podrías actualizar COLORS globalmente
-    // O retornar nuevos materiales con el color del tema
-    return baseColor;
+    return highlighted;
   }
 }

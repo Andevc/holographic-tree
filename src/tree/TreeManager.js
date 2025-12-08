@@ -128,34 +128,38 @@ export class TreeManager {
    * Animar el árbol (llamar en el loop)
    * @param {number} time - Tiempo transcurrido
    */
-  update(time) {
-    if (!this.isBuilt) return;
-    
-    // Animar nodos individuales
-    this.allNodes.forEach((node, index) => {
-      // Pulso de escala
-      const scale = 1 + Math.sin(time * 2 + index * 0.5) * 0.1;
-      node.scale.setScalar(scale);
-      
-      // Float vertical sutil
-      if (node.userData.originalY === undefined) {
-        node.userData.originalY = node.position.y;
-      }
-      node.position.y = node.userData.originalY + Math.sin(time + index) * 0.05;
-      
-      // Rotar anillos decorativos si existen
-      if (node.children.length > 0) {
-        node.children.forEach(child => {
-          if (child.type === 'Mesh' && child.geometry.type === 'RingGeometry') {
-            child.rotation.z += 0.01;
-          }
-        });
-      }
-    });
-    
-    // Rotación suave de todo el árbol (opcional)
-    // this.treeGroup.rotation.y += 0.001;
+ update(time, delta) {
+  if (!this.isBuilt) return;
+  
+  // ✨ NUEVO: Animar tronco
+  if (this.trunkBuilder) {
+    this.trunkBuilder.update(time);
   }
+  
+  // Animar nodos individuales
+  this.allNodes.forEach((node, index) => {
+    // Pulso de escala
+    const scale = 1 + Math.sin(time * 2 + index * 0.5) * 0.1;
+    node.scale.setScalar(scale);
+    
+    // Float vertical sutil
+    if (node.userData.originalY === undefined) {
+      node.userData.originalY = node.position.y;
+    }
+    node.position.y = node.userData.originalY + Math.sin(time + index) * 0.05;
+    
+    // Rotar anillos decorativos si existen
+    if (node.children.length > 0) {
+      node.children.forEach(child => {
+        if (child.type === 'Mesh' && child.geometry.type === 'RingGeometry') {
+          child.rotation.z += 0.01;
+        }
+      });
+    }
+  });
+  
+ 
+}
 
   /**
    * Obtener todos los nodos interactivos

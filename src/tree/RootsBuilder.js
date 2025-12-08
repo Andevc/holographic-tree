@@ -31,12 +31,12 @@ export class RootsBuilder {
         config.height,    // height
         config.segments,  // radialSegments
         1,                // heightSegments
-        true             // openEnded
+        false             // openEnded
       );
 
       const material = MaterialLibrary.createHologram(
         MaterialLibrary.getByArea(data.area, 'hologram').color,
-        { wireframe: true, opacity: 1 }
+        { wireframe: false, opacity: 1 }
       );
 
       const root = new THREE.Mesh(geometry, material);
@@ -47,13 +47,28 @@ export class RootsBuilder {
         type: 'root',
         subjectData: data
       };
+      MaterialLibrary.applyHolographicEffect(root, {
+        wireframeScale: 1.05,
+        edgesOpacity: 0.7
+      });
 
+      // Agregar halo adicional (opcional)
+      const haloGeometry = new THREE.EdgesGeometry(geometry);
+      const haloMaterial = new THREE.LineBasicMaterial({
+        color: 0x00ffff,
+        transparent: true,
+        opacity: 0.3,
+        blending: THREE.AdditiveBlending  // ← CLAVE
+      });
+      const haloLine = new THREE.LineSegments(haloGeometry, haloMaterial);
+      haloLine.scale.multiplyScalar(1.1);
+      root.add(haloLine);
       // Edges brillantes
       const edges = new THREE.EdgesGeometry(geometry);
       const edgesMat = new THREE.LineBasicMaterial({
         color: 0x00ffff,       // color neón
-        transparent: true,
-        opacity: 0.7,
+        transparent: false,
+        opacity: 1,
         blending: THREE.AdditiveBlending
       });
 
@@ -62,14 +77,12 @@ export class RootsBuilder {
 
       const haloMat = new THREE.LineBasicMaterial({
         color: 0x00ffff,
-        transparent: true,
+        transparent: false,
         opacity: 0.3,
         blending: THREE.AdditiveBlending
       });
 
-      const haloLine = new THREE.LineSegments(edges.clone(), haloMat);
-      haloLine.scale.multiplyScalar(1.1); // un poco más grande
-      root.add(haloLine);
+
 
       this.parent.add(root);
       this.nodes.push(root);
@@ -79,22 +92,25 @@ export class RootsBuilder {
       // más cerca del tronco para un efecto de convergencia
       const angles = [
         0,
-        2 * Math.PI / 5,
-        4 * Math.PI / 5,
-        6 * Math.PI / 5,
-        8 * Math.PI / 5
+        2 * Math.PI / 8,
+        4 * Math.PI / 8,
+        6 * Math.PI / 8,
+        8 * Math.PI / 8,
+        10 * Math.PI / 8,
+        12 * Math.PI / 8,
+        14 * Math.PI / 8
       ];
-      const thicknesses = [0.05, 0.07, 0.1, 0.04, 0.08];
+      const thicknesses = [0.05, 0.07, 0.1, 0.04, 0.06, 0.01, 0.02, 0.03];
       angles.forEach((a, i) => {
 
         // Pequeñas variaciones para raíces más naturales
-        const h = 3.5 + Math.random() * 1.5;  // altura variable
-        const d = 0.5 + Math.random() * 0.4;  // desviación lateral
+        const h = 3.5 + Math.random() * 3.5;  // altura variable
+        const d = 0.5 + Math.random() * 0.5;  // desviación lateral
         const r = 1;
 
         this.createConnection(
-          new THREE.Vector3(x, 2, z),     // inicio nodo
-          new THREE.Vector3(0, 4, 0),   // tronco
+          new THREE.Vector3(x, 0.5, z),     // inicio nodo
+          new THREE.Vector3(0, 3.6, 0),   // tronco
           material.color,
           thicknesses[i],
           h,
@@ -118,15 +134,15 @@ export class RootsBuilder {
 
     // Puntos de control para la curva tipo "S" vertical
     const control1 = new THREE.Vector3(
-      (start.x + finalEnd.x) * 0.4,      // 30% hacia el tronco
-      start.y + curveHeight*0.8,             // subida
-      (start.z + finalEnd.z) * 0.4       // 30% hacia adentro
+      (start.x + finalEnd.x) * 0.9,      // 30% hacia el tronco
+      start.y + curveHeight * 0.5,             // subida
+      (start.z + finalEnd.z) * 0.7       // 30% hacia adentro
     );
 
     // Segundo control: ya muy cerca del tronco
     const control2 = new THREE.Vector3(
       (start.x + finalEnd.x) * 0.6,      // 70% hacia el tronco
-      finalEnd.y - curveHeight * 0.75,    // ligera bajada
+      finalEnd.y - curveHeight * 0.7,    // ligera bajada
       (start.z + finalEnd.z) * 0.6
     );
 
@@ -138,7 +154,7 @@ export class RootsBuilder {
     const geometry = new THREE.TubeGeometry(curveS, tubularSegments, thickness, 64, false);
 
     // Material tipo neón
-    const material = MaterialLibrary.createLine(color, { opacity: 0.4, blending: THREE.AdditiveBlending });
+    const material = MaterialLibrary.createLine(color, { opacity: 0.01, blending: THREE.AdditiveBlending });
 
     const tube = new THREE.Mesh(geometry, material);
 

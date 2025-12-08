@@ -129,6 +129,97 @@ export const ROOTS = [
     professor: "Ing. María López"
   },
   {
+    id: "INF-111",
+    name: "Matemática Discreta",
+    area: "fundamentos",
+    semester: 1,
+    credits: 4,
+    hours: 6,
+    prerequisites: [],
+    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos y combinatoria.",
+    topics: [
+      "Lógica proposicional y predicados",
+      "Teoría de conjuntos",
+      "Relaciones y funciones",
+      "Grafos y árboles",
+      "Combinatoria y probabilidad"
+    ],
+    professor: "Ing. María López"
+  },
+  {
+    id: "INF-111",
+    name: "Matemática Discreta",
+    area: "fundamentos",
+    semester: 1,
+    credits: 4,
+    hours: 6,
+    prerequisites: [],
+    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos y combinatoria.",
+    topics: [
+      "Lógica proposicional y predicados",
+      "Teoría de conjuntos",
+      "Relaciones y funciones",
+      "Grafos y árboles",
+      "Combinatoria y probabilidad"
+    ],
+    professor: "Ing. María López"
+  },
+  {
+    id: "INF-111",
+    name: "Matemática Discreta",
+    area: "fundamentos",
+    semester: 1,
+    credits: 4,
+    hours: 6,
+    prerequisites: [],
+    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos y combinatoria.",
+    topics: [
+      "Lógica proposicional y predicados",
+      "Teoría de conjuntos",
+      "Relaciones y funciones",
+      "Grafos y árboles",
+      "Combinatoria y probabilidad"
+    ],
+    professor: "Ing. María López"
+  },
+  {
+    id: "INF-111",
+    name: "Matemática Discreta",
+    area: "fundamentos",
+    semester: 1,
+    credits: 4,
+    hours: 6,
+    prerequisites: [],
+    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos y combinatoria.",
+    topics: [
+      "Lógica proposicional y predicados",
+      "Teoría de conjuntos",
+      "Relaciones y funciones",
+      "Grafos y árboles",
+      "Combinatoria y probabilidad"
+    ],
+    professor: "Ing. María López"
+  },
+  {
+    id: "INF-111",
+    name: "Matemática Discreta",
+    area: "fundamentos",
+    semester: 1,
+    credits: 4,
+    hours: 6,
+    prerequisites: [],
+    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos y combinatoria.",
+    topics: [
+      "Lógica proposicional y predicados",
+      "Teoría de conjuntos",
+      "Relaciones y funciones",
+      "Grafos y árboles",
+      "Combinatoria y probabilidad"
+    ],
+    professor: "Ing. María López"
+  },
+  
+  {
     id: "INF-110",
     name: "Programación I",
     area: "fundamentos",

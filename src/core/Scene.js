@@ -69,9 +69,9 @@ export class SceneManager {
     this.scene = new THREE.Scene();
 
     // Color de fondo
-    //const loader = new THREE.TextureLoader();
-    //const bgTexture = loader.load("../../public/assets/images/background-texture.png");
-    //this.scene.background = bgTexture;
+    /* const loader = new THREE.TextureLoader();
+    const bgTexture = loader.load("../../public/assets/images/background-texture.png");
+    this.scene.background = bgTexture; */
     this.scene.background = new THREE.Color(COLORS.background);
 
     // Niebla para profundidad
@@ -227,56 +227,46 @@ export class SceneManager {
     this.scene.add(this.gridHelper);
 
     // Círculo/base pequeño holográfico
-const baseRingGeometry = new THREE.RingGeometry(2.5, 3, 64);
-const baseRingMaterial = new THREE.MeshBasicMaterial({
-  color: 0x00ffff,
-  transparent: true,
-  opacity: 0.15,
-  side: THREE.DoubleSide
-});
-const baseRing = new THREE.Mesh(baseRingGeometry, baseRingMaterial);
-baseRing.rotation.x = -Math.PI / 2;
-baseRing.position.y = 0.05; // ligeramente elevado
-this.scene.add(baseRing);
+    const baseRingGeometry = new THREE.RingGeometry(2.5, 3, 64);
+    const baseRingMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00ffff,
+      transparent: true,
+      opacity: 1,
+      side: THREE.DoubleSide
+    });
+    const baseRing = new THREE.Mesh(baseRingGeometry, baseRingMaterial);
+    baseRing.rotation.x = -Math.PI / 2;
+    baseRing.position.y = 0.05; // ligeramente elevado
+    this.scene.add(baseRing);
 
-const baseCircleGeometry = new THREE.CircleGeometry(2.5, 64);
-const baseCircleMaterial = new THREE.MeshBasicMaterial({
-  color: 0x00ffff,
-  transparent: true,
-  opacity: 0.2,
-  side: THREE.DoubleSide
-});
-const baseCircle = new THREE.Mesh(baseCircleGeometry, baseCircleMaterial);
-baseCircle.rotation.x = -Math.PI / 2;
-baseCircle.position.y = 0; 
-this.scene.add(baseCircle);
+    const baseCircleGeometry = new THREE.CircleGeometry(2.5, 64);
+    const baseCircleMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00ffff,
+      transparent: true,
+      opacity: 0.2,
+      side: THREE.DoubleSide
+    });
+    const baseCircle = new THREE.Mesh(baseCircleGeometry, baseCircleMaterial);
+    baseCircle.rotation.x = -Math.PI / 2;
+    baseCircle.position.y = 0;
+    this.scene.add(baseCircle);
 
-// ---------------------------
-// Círculo/anillo principal (donde estará el árbol)
-const mainRingGeometry = new THREE.RingGeometry(5.5, 6, 64); // grosor = 0.5
-const mainRingMaterial = new THREE.MeshBasicMaterial({
-  color: 0x001122,
-  transparent: true,
-  opacity: 0.3,
-  side: THREE.DoubleSide
-});
-const mainRing = new THREE.Mesh(mainRingGeometry, mainRingMaterial);
-mainRing.rotation.x = -Math.PI / 2;
-mainRing.position.y = 0.8; // más elevado
-this.scene.add(mainRing);
-
-const mainCircleGeometry = new THREE.CircleGeometry(5.5, 64); // círculo interior
-const mainCircleMaterial = new THREE.MeshBasicMaterial({
-  color: 0x001122,
-  transparent: true,
-  opacity: 0.3,
-  side: THREE.DoubleSide
-});
-const mainCircle = new THREE.Mesh(mainCircleGeometry, mainCircleMaterial);
-mainCircle.rotation.x = -Math.PI / 2;
-mainCircle.position.y = 0.75; // un poco debajo del anillo
-this.scene.add(mainCircle);
+    // ---------------------------
+    // Círculo/anillo principal (donde estará el árbol)
     
+
+    const mainCircleGeometry = new THREE.CircleGeometry(7, 64); // círculo interior
+    const mainCircleMaterial = new THREE.MeshBasicMaterial({
+      color: 0x001122,
+      transparent: true,
+      opacity: 1,
+      side: THREE.DoubleSide
+    });
+    const mainCircle = new THREE.Mesh(mainCircleGeometry, mainCircleMaterial);
+    mainCircle.rotation.x = -Math.PI / 2;
+    mainCircle.position.y = 0.75; // un poco debajo del anillo
+    this.scene.add(mainCircle);
+
   }
 
   /**
@@ -303,6 +293,8 @@ this.scene.add(mainCircle);
    * @param {number} time - Tiempo transcurrido
    */
   update(time) {
+
+    
     // Animar luces (pulso sutil)
     this.lights.points.forEach((light, index) => {
       const baseIntensity = LIGHTS_CONFIG.point[index].intensity;
@@ -314,6 +306,8 @@ this.scene.add(mainCircle);
       this.baseRing.material.opacity = 0.4 + Math.sin(time * 2) * 0.2;
       this.baseRing.scale.setScalar(1 + Math.sin(time * 1.5) * 0.02);
     }
+
+ 
   }
 
   /**

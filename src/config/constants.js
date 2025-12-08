@@ -1,18 +1,3 @@
-/**
- * CONSTANTS.JS - Configuración Global del Proyecto
- * ================================================
- * 
- * PROPÓSITO:
- * - Centralizar todos los valores configurables
- * - Evitar "magic numbers" en el código
- * - Facilitar ajustes rápidos sin tocar lógica
- * 
- * PARA LA DEFENSA:
- * "Usamos un archivo de constantes centralizado para mantener
- * consistencia en todo el proyecto y facilitar ajustes de valores
- * sin modificar la lógica del código"
- */
-
 // ============================================
 // COLORES DEL PROYECTO
 // ============================================
@@ -26,6 +11,7 @@ export const COLORS = {
     secondary: 0x1b3848  // Azul oscuro
   },
   
+
   // Colores por área del conocimiento
   // Cada área tiene su color único para identificación visual
   areas: {
@@ -53,33 +39,36 @@ export const TREE_CONFIG = {
   // RAÍCES - Base del árbol (fundamentos de la carrera)
   roots: {
     count: 4,              // Número de raíces (3 materias base)
-    radius: 4,             // Distancia del centro (radio del círculo)
-    radiusTop: 0.2,
-    radiusBottom: 0.5,
+    radius: 5,             // Distancia del centro (radio del círculo)
+    radiusTop: 0.5,
+    radiusBottom: 0,
     size: 1,             // Radio de la base del cono
-    height: 0.75,           // Altura del cono invertido
+    height: 1.5,           // Altura del cono invertido
     segments: 16,          // Número de segmentos (más = más suave)
-    yPosition: 2       // Posición vertical (enterradas)
+    yPosition: 0       // Posición vertical (enterradas)
   },
   
   // TRONCO - Núcleo central del árbol
   trunk: {
-    radiusTop: 0.2,        // Radio superior (más delgado arriba)
-    radiusBottom: 1.0,     // Radio inferior (más ancho abajo)
-    height: 7,             // Altura total del tronco
-    segments: 10,          // Segmentos radiales (circunferencia)
-    heightSegments: 5,     // Segmentos de altura (anillos)
-    yPosition: 7,        // Posición vertical del centro
+    radiusTop: 0.2,        // Ya no se usa (ahora es TubeGeometry)
+    radiusBottom: 1.0,     // Ya no se usa
+    height: 7,             // Altura total del tronco (se mantiene)
+    segments: 10,
+    heightSegments: 5,
+    yPosition: 7,          // Altura donde empiezan las ramas
     
-    // Anillos decorativos (como en la referencia)
+    // ✨ NUEVAS configuraciones para tronco curvo
+    tubeRadius: 1,       // Grosor del tubo (antes era radiusBottom)
+    startY: 2,             // Donde termina el tronco (donde están las raíces)
+    curveIntensity: 0.3,   // Qué tan curvado está (0 = recto, 1 = muy curvo)
+    
     rings: {
-      count: 6,            // Número de anillos
-      spacing: 1.5,          // Espacio entre anillos
-      thickness: 0.05,     // Grosor del torus
-      startY: 7          // Altura inicial del primer anillo
+      count: 12,           // Número de anillos (antes era 6)
+      spacing: 1.5,
+      thickness: 0.025,    // Grosor del torus
+      startY: 7
     }
   },
-  
   // RAMAS - Especialidades que salen del tronco
   branches: {
     count: 5,              // Número de ramas principales
@@ -88,7 +77,7 @@ export const TREE_CONFIG = {
     radialSegments: 12,    // Segmentos radiales del tubo (redondez)
     length: 5,             // Longitud base de la rama
     curvature: 1,          // Altura del punto medio de la curva
-    startY: 10,             // Altura donde empiezan las ramas
+    startY: 7,             // Altura donde empiezan las ramas
     spread: 0.9            // Variación de altura entre ramas
   },
   
@@ -125,31 +114,31 @@ export const TREE_CONFIG = {
 // ============================================
 export const CAMERA_CONFIG = {
   // Parámetros de perspectiva
-  fov: 75,                 // Field of view (ángulo de visión)
+  fov: 90,                 // Field of view (ángulo de visión)
   near: 0.1,               // Plano cercano de recorte
-  far: 1000,               // Plano lejano de recorte
+  far: 3500,               // Plano lejano de recorte
   
   // Posición inicial de la cámara
   position: {
-    x: 0,
-    y: 5,
-    z: 12
+    x: 5,
+    y: 4,
+    z: 10
   },
   
   // Objetivo al que mira la cámara
   target: {
     x: 0,
-    y: 2,
+    y: 10,
     z: 0
   },
   
   // Límites de zoom (con OrbitControls)
-  minDistance: 5,          // No acercarse más de 5 unidades
+  minDistance: 3,          // No acercarse más de 5 unidades
   maxDistance: 25,         // No alejarse más de 25 unidades
   
   // Límites de rotación vertical
-  minPolarAngle: Math.PI * 0.1,  // No ver muy desde arriba
-  maxPolarAngle: Math.PI * 0.8   // No ver desde abajo
+  minPolarAngle: Math.PI*0.2 ,
+  maxPolarAngle: Math.PI*0.9 
 };
 
 // ============================================
@@ -204,11 +193,11 @@ export const LIGHTS_CONFIG = {
 export const PARTICLES_CONFIG = {
   // Partículas ambientales - distribuidas por toda la escena
   ambient: {
-    count: 5,            // Número de partículas
+    count: 500,            // Número de partículas
     size: 0.1,             // Tamaño de cada partícula
-    opacity: 0.6,          // Transparencia
+    opacity: 0.5,          // Transparencia
     spread: {              // Área de distribución
-      radius: { min: 3, max: 13 },
+      radius: { min: 3, max: 50 },
       height: { min: -3, max: 12 }
     },
     velocity: {            // Velocidad de movimiento
@@ -221,22 +210,22 @@ export const PARTICLES_CONFIG = {
   // Partículas que fluyen - suben desde las raíces
   flowing: {
     count: 2,
-    size: 0.15,
+    size: 0.05,
     opacity: 0.8,
-    speed: 0.005,          // Velocidad de ascenso
-    startY: -1,            // Altura inicial
-    endY: 8,               // Altura final
-    radius: 1.5            // Radio de distribución
+    speed: 0.0009,          // Velocidad de ascenso
+    startY: 3,            // Altura inicial
+    endY: 20,               // Altura final
+    radius: 1.2            // Radio de distribución
   },
   
   // Partículas flotantes - cerca del árbol
   floating: {
     count: 300,
     size: 0.08,
-    opacity: 0.7,
+    opacity: 1,
     spread: {
-      radius: { min: 1, max: 5 },
-      height: { min: 0, max: 8 }
+      radius: { min: 1, max: 1.3 },
+      height: { min: 0, max: 2 }
     },
     rotationSpeed: 0.0005  // Velocidad de rotación del grupo
   }
@@ -246,34 +235,28 @@ export const PARTICLES_CONFIG = {
 // CONFIGURACIÓN DE MATERIALES
 // ============================================
 export const MATERIALS_CONFIG = {
-  // Material holográfico base
   hologram: {
-    wireframe: true,
+    wireframe: false,  // Cambiado a false
     transparent: true,
-    opacity: 0.7,
-    metalness: 0.9,
-    roughness: 0.2,
-    emissiveIntensity: 0.8
+    opacity: 0.5,  // Antes: 0.7 → Ahora: 0.5
+    shininess: 100,  // NUEVO
+    emissiveIntensity: 0.6
   },
   
-  // Material para nodos (más brillante)
   node: {
     wireframe: false,
     transparent: true,
-    opacity: 0.9,
-    metalness: 0.8,
-    roughness: 0.2,
-    emissiveIntensity: 1.0
+    opacity: 0.7,  // Antes: 0.9 → Ahora: 0.7
+    shininess: 100,  // NUEVO
+    emissiveIntensity: 0.8
   },
   
-  // Material para tubos (ramas)
   tube: {
     wireframe: false,
     transparent: true,
-    opacity: 0.8,
-    metalness: 0.9,
-    roughness: 0.1,
-    emissiveIntensity: 1.0
+    opacity: 0.4,  // Antes: 0.8 → Ahora: 0.4
+    shininess: 100,  // NUEVO
+    emissiveIntensity: 0.5
   }
 };
 

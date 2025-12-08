@@ -134,15 +134,15 @@ export class App {
     this.controls.minDistance = CAMERA_CONFIG.minDistance;
     this.controls.maxDistance = CAMERA_CONFIG.maxDistance;
     
-    this.controls.enablePan = false;         // Desactivar paneo
+    this.controls.enablePan = true;         // Desactivar paneo
     
     // Límites verticales
     this.controls.maxPolarAngle = CAMERA_CONFIG.maxPolarAngle;
     this.controls.minPolarAngle = CAMERA_CONFIG.minPolarAngle;
     
     // Auto-rotación (opcional, desactivada por defecto)
-    this.controls.autoRotate = false;
-    this.controls.autoRotateSpeed = 0.5;
+    this.controls.autoRotate = true;
+    this.controls.autoRotateSpeed = 1;
     
     // Punto de enfoque
     this.controls.target.set(

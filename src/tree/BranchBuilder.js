@@ -59,32 +59,44 @@ export class BranchBuilder {
     return { nodes: this.nodes, branches: this.branches };
   }
 
-  createCurvedBranch(start, end, area) {
-    // Punto de control para la curva
-    const mid = new THREE.Vector3().lerpVectors(start, end, 0.5);
-    mid.y += TREE_CONFIG.branches.curvature;
+  createCurvedBranch(start, end, area, startRadius = 0.05, endRadius = 0.02) {
+  // Punto de control para la curva (curvatura tipo "S")
+  const mid = new THREE.Vector3().lerpVectors(start, end, 0.5);
+  mid.x += (Math.random() - 0.5) * 1; // pequeña variación horizontal
+  mid.y += TREE_CONFIG.branches.curvature; // altura de la curvatura
+  mid.z += (Math.random() - 0.5) * 1; // pequeña variación en Z
 
-    const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
+  const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
 
-    // Crear tubo
-    const tubeGeometry = new THREE.TubeGeometry(
-      curve,
-      TREE_CONFIG.branches.segments,
-      TREE_CONFIG.branches.tubeRadius,
-      TREE_CONFIG.branches.radialSegments,
-      false
+  // TubeGeometry con radio constante inicial y final (se puede variar con scale manual)
+  const tubeGeometry = new THREE.TubeGeometry(curve, TREE_CONFIG.branches.segments, 1, TREE_CONFIG.branches.radialSegments, false);
+
+  // Aplicar radio variable simple: escala lineal de inicio a fin
+  const totalVertices = tubeGeometry.attributes.position.count;
+  for (let i = 0; i < totalVertices; i++) {
+    const ratio = (i % (TREE_CONFIG.branches.segments + 1)) / TREE_CONFIG.branches.segments;
+    const scale = startRadius * (1 - ratio) + endRadius * ratio;
+    tubeGeometry.attributes.position.setXYZ(
+      i,
+      tubeGeometry.attributes.position.getX(i) * scale,
+      tubeGeometry.attributes.position.getY(i) * scale,
+      tubeGeometry.attributes.position.getZ(i) * scale
     );
-
-    const material = MaterialLibrary.getByArea(area, 'tube');
-    const tube = new THREE.Mesh(tubeGeometry, material);
-
-    // Agregar wireframe overlay
-    const wireframeGeo = new THREE.EdgesGeometry(tubeGeometry);
-    const wireframeMat = MaterialLibrary.createEdges(material.color, 0.4);
-    const wireframe = new THREE.LineSegments(wireframeGeo, wireframeMat);
-    tube.add(wireframe);
-
-    this.parent.add(tube);
-    this.branches.push(tube);
   }
+  tubeGeometry.attributes.position.needsUpdate = true;
+
+  const material = MaterialLibrary.getByArea(area, 'tube');
+  const tube = new THREE.Mesh(tubeGeometry, material);
+
+  // Wireframe opcional
+  const wireframeGeo = new THREE.EdgesGeometry(tubeGeometry);
+  const wireframeMat = MaterialLibrary.createEdges(material.color, 0.1);
+  const wireframe = new THREE.LineSegments(wireframeGeo, wireframeMat);
+  tube.add(wireframe);
+
+  this.parent.add(tube);
+  this.branches.push(tube);
+
+  return tube;
+}
 }
