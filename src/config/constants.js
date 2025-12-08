@@ -230,7 +230,7 @@ export const PARTICLES_CONFIG = {
   
   // Partículas que fluyen - suben desde las raíces
   flowing: {
-    count: 2,
+    count: 2500,
     size: 0.05,
     opacity: 0.8,
     speed: 0.0009,          // Velocidad de ascenso

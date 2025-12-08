@@ -27,7 +27,7 @@ export class BranchBuilder {
 
   build() {
     console.log('🌿 Construyendo ramas holográficas...');
-    
+
     const branchKeys = Object.keys(this.branchesData);
     const numBranches = branchKeys.length;
 
@@ -41,24 +41,24 @@ export class BranchBuilder {
 
       // Configuración de la rama
       const config = this.getBranchConfig(branchIndex, numBranches, numSubjects);
-      
+
       // Crear curva principal de la rama
       const curve = this.createBranchCurve(config);
-      
+
       // Crear tubo con radio variable
       const tube = this.createHolographicTube(curve, config.color, config.startRadius, config.endRadius);
       branchGroup.add(tube);
       this.branches.push(tube);
-      
+
       // Crear anillos holográficos
       this.createBranchRings(curve, config.color, branchGroup);
-      
+
       // Crear partículas flotantes
       this.createBranchParticles(curve, config.color, branchGroup);
-      
+
       // Crear nodos a lo largo de la rama
       this.createNodesAlongBranch(curve, branchData, branchGroup);
-      
+
       // Agregar grupo a la escena
       this.parent.add(branchGroup);
       this.branchGroups.push(branchGroup);
@@ -83,28 +83,28 @@ export class BranchBuilder {
     const points = [
       // Punto inicial (desde el tronco)
       new THREE.Vector3(0, startY, 0),
-      
+
       // Punto de control 1 (salida del tronco)
       new THREE.Vector3(
         Math.cos(baseAngle) * (branchLength * 0.25),
         startY + 1 + branchIndex * heightSpread * 0.3,
         Math.sin(baseAngle) * (branchLength * 0.25)
       ),
-      
+
       // Punto de control 2 (curva media más pronunciada)
       new THREE.Vector3(
         Math.cos(baseAngle) * (branchLength * 0.5) + (Math.random() - 0.5) * 0.8,
         startY + 2.5 + branchIndex * heightSpread * 0.6,
         Math.sin(baseAngle) * (branchLength * 0.5) + (Math.random() - 0.5) * 0.8
       ),
-      
+
       // Punto de control 3 (cerca del final)
       new THREE.Vector3(
         Math.cos(baseAngle) * (branchLength * 0.75) + (Math.random() - 0.5) * 0.5,
         startY + 3.5 + branchIndex * heightSpread * 0.8,
         Math.sin(baseAngle) * (branchLength * 0.75) + (Math.random() - 0.5) * 0.5
       ),
-      
+
       // Punto final
       new THREE.Vector3(
         Math.cos(baseAngle) * branchLength,
@@ -159,37 +159,36 @@ export class BranchBuilder {
 
     const normals = tubeGeometry.attributes.normal;
 
-for (let i = 0; i < vertexCount; i++) {
-  const segmentIndex = Math.floor(i / radialSegments);
-  const t = segmentIndex / segments;
+    for (let i = 0; i < vertexCount; i++) {
+      const segmentIndex = Math.floor(i / radialSegments);
+      const t = segmentIndex / segments;
 
-  // Radio interpolado
-  const radius = startRadius * (1 - t) + endRadius * t;
+      // Radio interpolado
+      const radius = startRadius * (1 - t) + endRadius * t;
 
-  // Vector normal
-  const nx = normals.getX(i);
-  const ny = normals.getY(i);
-  const nz = normals.getZ(i);
+      // Vector normal
+      const nx = normals.getX(i);
+      const ny = normals.getY(i);
+      const nz = normals.getZ(i);
 
-  // Centro de la curva en este punto
-  const baseX = curve.getPoint(t).x;
-  const baseY = curve.getPoint(t).y;
-  const baseZ = curve.getPoint(t).z;
+      // Centro de la curva en este punto
+      const baseX = curve.getPoint(t).x;
+      const baseY = curve.getPoint(t).y;
+      const baseZ = curve.getPoint(t).z;
 
-  // Nueva posición = centro + normal * radio
-  positions.setXYZ(
-    i,
-    baseX + nx * radius,
-    baseY + ny * radius,
-    baseZ + nz * radius
-  );
-}
-
-positions.needsUpdate = true;
-tubeGeometry.computeVertexNormals();
+      // Nueva posición = centro + normal * radio
+      positions.setXYZ(
+        i,
+        baseX + nx * radius,
+        baseY + ny * radius,
+        baseZ + nz * radius
+      );
+    }
 
     positions.needsUpdate = true;
     tubeGeometry.computeVertexNormals();
+
+
 
     // Material holográfico Phong
     const material = new THREE.MeshPhongMaterial({
@@ -295,48 +294,95 @@ tubeGeometry.computeVertexNormals();
   }
 
   /**
-   * Crear nodos a lo largo de la rama
+   * Crear nodos alrededor de la rama (estilo index2.html)
+   * Distribuye los nodos en órbita alrededor de puntos de la curva
    */
   createNodesAlongBranch(curve, branchData, parent) {
     const numNodes = branchData.length;
+    const orbitRadius = 2;  // Radio de la órbita alrededor de la rama
 
     branchData.forEach((data, i) => {
-      // Posición a lo largo de la curva
+      // Posición a lo largo de la curva (distribuir uniformemente)
       const t = (i + 1) / (numNodes + 1);
-      const pos = curve.getPoint(t);
+      const pointOnCurve = curve.getPoint(t);
 
-      // Pequeña variación radial
-      const angle = Math.random() * Math.PI * 2;
-      const offset = 0.3;
-      pos.x += Math.cos(angle) * offset;
-      pos.z += Math.sin(angle) * offset;
+      // Ángulo alrededor de la rama (distribuir en círculo)
+      const angleStep = (Math.PI * 2) / numNodes;
+      const angle = i * angleStep + Math.random() * 0.5; // Pequeña variación
+
+      // Calcular posición orbital alrededor del punto de la curva
+      // Necesitamos un sistema de coordenadas local perpendicular a la curva
+      const tangent = curve.getTangent(t).normalize();
+
+      // Crear vectores perpendiculares al tangente (basis ortonormal)
+      const up = Math.abs(tangent.y) < 0.9
+        ? new THREE.Vector3(0, 1, 0)
+        : new THREE.Vector3(1, 0, 0);
+      const right = new THREE.Vector3().crossVectors(tangent, up).normalize();
+      const forward = new THREE.Vector3().crossVectors(right, tangent).normalize();
+
+      // Posición orbital usando los vectores perpendiculares
+      const orbitalOffset = new THREE.Vector3()
+        .addScaledVector(right, Math.cos(angle) * orbitRadius)
+        .addScaledVector(forward, Math.sin(angle) * orbitRadius);
+
+      const nodePos = pointOnCurve.clone().add(orbitalOffset);
+
+      // Pequeña variación vertical aleatoria
+      nodePos.y += (Math.random() - 0.5) * 0.5;
 
       // Crear nodo
-      const node = this.nodeBuilder.createNode(pos, data);
+      const node = this.nodeBuilder.createNode(nodePos, data);
       this.nodes.push(node);
 
-      // Crear línea de conexión
-      this.createConnectionLine(pos, curve.getPoint(t), data.area, parent);
+      // Crear línea de conexión curva
+      this.createCurvedConnectionLine(nodePos, pointOnCurve, data.area, parent);
     });
   }
 
   /**
-   * Crear línea de conexión de nodo a rama
+   * Crear línea de conexión curva de nodo a rama (estilo index2.html)
+   * Usa QuadraticBezierCurve3 para una conexión suave
    */
-  createConnectionLine(nodePos, branchPos, area, parent) {
-    const points = [branchPos, nodePos];
+  createCurvedConnectionLine(nodePos, branchPos, area, parent) {
+    // Punto medio elevado para crear curva suave
+    const midPoint = new THREE.Vector3().lerpVectors(nodePos, branchPos, 0.5);
+    midPoint.y += 0.3; // Elevar el punto medio
+
+    // Crear curva cuadrática
+    const curve = new THREE.QuadraticBezierCurve3(
+      nodePos,
+      midPoint,
+      branchPos
+    );
+
+    // Generar puntos a lo largo de la curva
+    const points = curve.getPoints(50);
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    
+
     const color = MaterialLibrary.getByArea(area, 'line').color;
     const material = new THREE.LineBasicMaterial({
       color: color,
       transparent: true,
-      opacity: 0.4,
-      blending: THREE.AdditiveBlending
+      opacity: 0.6,
+      linewidth: 2
     });
 
     const line = new THREE.Line(geometry, material);
     parent.add(line);
+
+    // ⭐ NUEVO: Añadir puntos brillantes a lo largo de la línea
+    for (let j = 0; j < points.length; j += 5) {
+      const dotGeo = new THREE.SphereGeometry(0.02, 8, 8);
+      const dotMat = new THREE.MeshBasicMaterial({
+        color: color,
+        transparent: true,
+        opacity: 0.8
+      });
+      const dot = new THREE.Mesh(dotGeo, dotMat);
+      dot.position.copy(points[j]);
+      parent.add(dot);
+    }
   }
 
   /**
@@ -353,7 +399,7 @@ tubeGeometry.computeVertexNormals();
         // Animar partículas
         if (object.userData.progress !== undefined) {
           const offset = object.userData.offset;
-          object.position.y = object.userData.originalPos.y + 
+          object.position.y = object.userData.originalPos.y +
             Math.sin(time * 2 + offset) * 0.05;
         }
       });
