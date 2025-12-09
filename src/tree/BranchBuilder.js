@@ -132,7 +132,7 @@ export class BranchBuilder {
    */
   createBranchCurve(config) {
     const curve = new THREE.CatmullRomCurve3(config.points);
-    curve.tension = 0.5; // Tensión de la curva (0.5 = suave)
+    curve.tension = 0.3; // Tensión de la curva (0.5 = suave)
     return curve;
   }
 
@@ -140,7 +140,7 @@ export class BranchBuilder {
    * Crear tubo holográfico con radio variable
    */
   createHolographicTube(curve, color, startRadius, endRadius) {
-    const segments = 100;
+    const segments = 64;
     const radialSegments = 16;
 
     // Crear geometría base
@@ -221,28 +221,28 @@ export class BranchBuilder {
    * Crear anillos holográficos a lo largo de la rama
    */
   createBranchRings(curve, color, parent) {
-    const ringCount = 20;  // ⬆️ Más anillos
+    const ringCount = 20;  
     const points = curve.getPoints(ringCount);
 
     points.forEach((point, i) => {
       // Solo cada 3 anillos (no saturar)
-      if (i % 3 !== 0) return;
+      if (i % 2 !== 0) return;
 
       // Radio del anillo (más grande en la base, más pequeño en la punta)
       const t = i / ringCount;
-      const ringRadius = 0.35 * (1 - t) + 0.12 * t;  // ⬆️ Más grandes
+      const ringRadius = 0.35 * (1 - t) + 0.12 * t; 
 
       // Crear TorusGeometry
       const ringGeometry = new THREE.TorusGeometry(
         ringRadius,     // radio
         0.02,           // grosor
-        8,              // segmentos radiales
-        32              // segmentos tubulares
+        32,              // segmentos radiales
+        64              // segmentos tubulares
       );
 
       const ringMaterial = new THREE.MeshBasicMaterial({
         color: color,
-        transparent: true,
+        transparent: false,
         opacity: 0.4 - i * 0.015,
         wireframe: true
       });
@@ -269,11 +269,11 @@ export class BranchBuilder {
    * Crear partículas que fluyen por la rama
    */
   createBranchParticles(curve, color, parent) {
-    const particleCount = 40;  // ⬆️ Más partículas
+    const particleCount = 30;  
     const points = curve.getPoints(particleCount);
 
     points.forEach((point, i) => {
-      const particleGeo = new THREE.SphereGeometry(0.04, 8, 8);  // ⬆️ Más grandes
+      const particleGeo = new THREE.SphereGeometry(0.05, 32, 32);  
       const particleMat = new THREE.MeshBasicMaterial({
         color: color,
         transparent: true,

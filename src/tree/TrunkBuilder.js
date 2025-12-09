@@ -92,7 +92,7 @@ export class TrunkBuilder {
     const tubeMaterial = new THREE.MeshPhongMaterial({
       color: COLORS.areas.fundamentos,
       transparent: true,
-      opacity: 0.1,
+      opacity: 0.4,
       emissive: COLORS.areas.fundamentos,
       emissiveIntensity: 0.6,
       shininess: 150
@@ -108,7 +108,7 @@ export class TrunkBuilder {
     const edgesGeometry = new THREE.EdgesGeometry(tubeGeometry);
     const edgesMaterial = new THREE.LineBasicMaterial({
       color: COLORS.areas.fundamentos,
-      linewidth: 2
+      linewidth: 0.5,
     });
     const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
     this.trunkMesh.add(edges);
@@ -134,10 +134,13 @@ export class TrunkBuilder {
       const ring = new THREE.Mesh(ringGeometry, ringMaterial);
       ring.position.copy(point);
 
-      const t = i / (trunkPoints.length - 1);
-      const tangent = this.trunkCurve.getTangent(t).normalize();
-      ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), tangent);
-
+      if (i < point.length - 1) {
+              const tangent = new THREE.Vector3()
+                .subVectors(points[i + 1], point)
+                .normalize();
+              ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), tangent);
+            }
+      ring.rotation.x += Math.PI / 2;
       this.trunkGroup.add(ring);
       this.rings.push(ring);
     });
@@ -161,9 +164,9 @@ export class TrunkBuilder {
 
       const lineGeometry = new THREE.BufferGeometry().setFromPoints(linePoints);
       const lineMaterial = new THREE.LineBasicMaterial({
-        color: COLORS.grid.secondary,
+        color: COLORS.grid.primary,
         transparent: true,
-        opacity: 0.3
+        opacity: 0.5
       });
 
       const line = new THREE.Line(lineGeometry, lineMaterial);

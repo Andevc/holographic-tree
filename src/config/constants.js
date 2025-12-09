@@ -154,7 +154,7 @@ export const CAMERA_CONFIG = {
   },
   
   // Límites de zoom (con OrbitControls)
-  minDistance: 3,          // No acercarse más de 5 unidades
+  minDistance: 1,          // No acercarse más de 5 unidades
   maxDistance: 25,         // No alejarse más de 25 unidades
   
   // Límites de rotación vertical
@@ -230,7 +230,7 @@ export const PARTICLES_CONFIG = {
   
   // Partículas que fluyen - suben desde las raíces
   flowing: {
-    count: 2500,
+    count: 20,
     size: 0.05,
     opacity: 0.8,
     speed: 0.0009,          // Velocidad de ascenso
