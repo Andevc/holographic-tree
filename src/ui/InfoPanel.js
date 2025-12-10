@@ -1,6 +1,6 @@
 /**
- * INFOPANEL.JS - Panel de Información
- * ====================================
+ * INFOPANEL.JS - Panel de Información con Soporte para Clusters
+ * ==============================================================
  */
 
 import EventBus, { EVENTS } from '../core/EventBus.js';
@@ -17,21 +17,27 @@ export class InfoPanel {
   }
 
   setupEvents() {
-    // Botón cerrar
     if (this.closeBtn) {
       this.closeBtn.addEventListener('click', () => this.hide());
     }
 
-    // Cerrar con ESC
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !this.element.classList.contains('hidden')) {
         this.hide();
       }
     });
 
-    // Escuchar eventos
     EventBus.on(EVENTS.NODE_CLICKED, (data) => {
-      this.show(data.data);
+      // Detectar si es un nodo normal o un satélite de cluster
+      const nodeData = data.node.userData;
+      
+      if (nodeData.type === 'cluster-central') {
+        this.showClusterCentral(nodeData);
+      } else if (nodeData.type === 'cluster-satellite') {
+        this.showClusterSatellite(nodeData.satelliteData);
+      } else if (nodeData.subjectData) {
+        this.show(nodeData.subjectData);
+      }
     });
 
     EventBus.on(EVENTS.PANEL_CLOSED, () => {
@@ -40,7 +46,93 @@ export class InfoPanel {
   }
 
   /**
-   * Mostrar panel con datos
+   * Mostrar info del nodo central del cluster
+   */
+  showClusterCentral(nodeData) {
+    if (!this.element) return;
+    
+    const html = `
+      <div class="fade-in">
+        <div class="subject-header">
+          <div class="subject-icon">
+            ${this.getAreaIcon(nodeData.area)}
+          </div>
+          <div class="subject-details">
+            <h2>${nodeData.name}</h2>
+            <div class="subject-meta">
+              <span class="badge badge-primary">Área Central</span>
+              <span class="badge">${nodeData.area}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="info-section">
+          <h3>📚 Sobre esta área</h3>
+          <p>Este es el nodo central del cluster de <strong>${nodeData.name}</strong>.</p>
+          <p>Explora las tecnologías y conceptos específicos haciendo click en los nodos satélites alrededor.</p>
+        </div>
+        
+        <div class="info-section">
+          <h3>🎯 Tecnologías relacionadas</h3>
+          <p>Los nodos orbitales representan herramientas, frameworks y conceptos clave de esta área.</p>
+        </div>
+      </div>
+    `;
+    
+    this.content.innerHTML = html;
+    this.element.classList.remove('hidden');
+    
+    EventBus.emit(EVENTS.PANEL_OPENED, { cluster: nodeData });
+  }
+
+  /**
+   * Mostrar info de un satélite del cluster
+   */
+  showClusterSatellite(satelliteData) {
+    if (!this.element || !satelliteData) return;
+    
+    const html = `
+      <div class="fade-in">
+        <div class="subject-header">
+          <div class="subject-icon">
+            ${this.getAreaIcon(satelliteData.area)}
+          </div>
+          <div class="subject-details">
+            <h2>${satelliteData.name}</h2>
+            <div class="subject-meta">
+              <span class="badge badge-primary">${satelliteData.id}</span>
+              <span class="badge badge-success">Tecnología</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="info-section">
+          <p>${satelliteData.description}</p>
+        </div>
+        
+        <div class="info-section">
+          <h3>🎯 Información adicional</h3>
+          <p><strong>Área:</strong> ${this.getAreaName(satelliteData.area)}</p>
+          <p><strong>Tipo:</strong> Satélite de Cluster</p>
+        </div>
+        
+        <div class="panel-footer">
+          <button class="control-btn" onclick="console.log('Satélite:', '${satelliteData.id}')">
+            ⭐ Marcar como importante
+          </button>
+        </div>
+      </div>
+    `;
+    
+    this.content.innerHTML = html;
+    this.element.classList.remove('hidden');
+    this.currentSubject = satelliteData;
+    
+    EventBus.emit(EVENTS.PANEL_OPENED, { satellite: satelliteData });
+  }
+
+  /**
+   * Mostrar panel normal (para nodos del tronco/raíces)
    */
   show(subjectData) {
     if (!this.element || !subjectData) return;
@@ -52,9 +144,6 @@ export class InfoPanel {
     EventBus.emit(EVENTS.PANEL_OPENED, { subject: subjectData });
   }
 
-  /**
-   * Ocultar panel
-   */
   hide() {
     if (this.element) {
       this.element.classList.add('hidden');
@@ -62,9 +151,6 @@ export class InfoPanel {
     }
   }
 
-  /**
-   * Actualizar contenido del panel
-   */
   updateContent(subject) {
     if (!this.content) return;
     
@@ -120,9 +206,6 @@ export class InfoPanel {
     this.content.innerHTML = html;
   }
 
-  /**
-   * Obtener icono según área
-   */
   getAreaIcon(area) {
     const icons = {
       fundamentos: '📚',
@@ -136,9 +219,6 @@ export class InfoPanel {
     return icons[area] || '📘';
   }
 
-  /**
-   * Obtener nombre del área
-   */
   getAreaName(area) {
     const names = {
       fundamentos: 'Fundamentos',
@@ -152,9 +232,6 @@ export class InfoPanel {
     return names[area] || area;
   }
 
-  /**
-   * Renderizar botones de acción
-   */
   renderActionButtons(subject) {
     return `
       <div class="panel-footer">
@@ -165,16 +242,10 @@ export class InfoPanel {
     `;
   }
 
-  /**
-   * Verificar si está visible
-   */
   isVisible() {
     return this.element && !this.element.classList.contains('hidden');
   }
 
-  /**
-   * Toggle visibilidad
-   */
   toggle() {
     if (this.isVisible()) {
       this.hide();

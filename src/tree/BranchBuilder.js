@@ -1,13 +1,13 @@
 /**
- * BRANCHBUILDER.JS - Constructor de Ramas Holográficas
- * =====================================================
+ * BRANCHBUILDER.JS - Constructor de Clusters
+ * ==========================================
  * 
- * NUEVO: Inspirado en index2.html
- * - Curvas suaves CatmullRom con múltiples puntos de control
- * - Radio variable (grueso→delgado)
- * - Anillos holográficos a lo largo
- * - Partículas flotantes
- * - Bordes brillantes
+ * NUEVO: Sistema de clusters inspirado en index.html demo
+ * - Cada rama es ahora un CLUSTER
+ * - Nodo central grande
+ * - Satélites orbitando en círculo
+ * - Labels flotantes
+ * - Conexiones curvas
  */
 
 import * as THREE from 'three';
@@ -16,233 +16,222 @@ import { NodeBuilder } from './NodeBuilder.js';
 import { TREE_CONFIG } from '../config/constants.js';
 
 export class BranchBuilder {
-  constructor(parent, branchesData) {
+  constructor(parent, clustersData) {
     this.parent = parent;
-    this.branchesData = branchesData;
+    this.clustersData = clustersData; // BRANCHES de subjects.js
     this.nodes = [];
-    this.branches = [];
-    this.branchGroups = [];
+    this.clusters = [];
+    this.animatedObjects = [];
     this.nodeBuilder = new NodeBuilder(parent);
   }
 
   build() {
-    console.log('🌿 Construyendo ramas holográficas...');
+    console.log('🌿 Construyendo sistema de CLUSTERS...');
 
-    const branchKeys = Object.keys(this.branchesData);
-    const numBranches = branchKeys.length;
-
-    branchKeys.forEach((key, branchIndex) => {
-      const branchData = this.branchesData[key];
-      const numSubjects = branchData.length;
-
-      // Crear grupo para esta rama completa
-      const branchGroup = new THREE.Group();
-      branchGroup.name = `Branch_${key}`;
-
-      // Configuración de la rama
-      const config = this.getBranchConfig(branchIndex, numBranches, numSubjects);
-
-      // Crear curva principal de la rama
-      const curve = this.createBranchCurve(config);
-
-      // Crear tubo con radio variable
-      const tube = this.createHolographicTube(curve, config.color, config.startRadius, config.endRadius);
-      branchGroup.add(tube);
-      this.branches.push(tube);
-
-      // Crear anillos holográficos
-      this.createBranchRings(curve, config.color, branchGroup);
-
-      // Crear partículas flotantes
-      this.createBranchParticles(curve, config.color, branchGroup);
-
-      // Crear nodos a lo largo de la rama
-      this.createNodesAlongBranch(curve, branchData, branchGroup);
-
-      // Agregar grupo a la escena
-      this.parent.add(branchGroup);
-      this.branchGroups.push(branchGroup);
+    const clusterKeys = Object.keys(this.clustersData);
+    
+    clusterKeys.forEach((key, index) => {
+      const clusterData = this.clustersData[key];
+      
+      // Crear rama curva del tronco al cluster
+      this.createBranchToCluster(clusterData, index, clusterKeys.length);
+      
+      // Crear el cluster
+      this.createCluster(clusterData);
     });
 
-    console.log(`  ✓ ${this.branches.length} ramas creadas`);
-    console.log(`  ✓ ${this.nodes.length} nodos en ramas`);
+    console.log(`  ✓ ${this.clusters.length} clusters creados`);
+    console.log(`  ✓ ${this.nodes.length} nodos totales`);
 
-    return { nodes: this.nodes, branches: this.branches };
+    return { nodes: this.nodes, branches: this.clusters };
   }
 
   /**
-   * Obtener configuración para cada rama
+   * Crear rama curva del tronco al cluster
    */
-  getBranchConfig(branchIndex, totalBranches, numSubjects) {
-    const baseAngle = (branchIndex / totalBranches) * Math.PI * 2;
-    const branchLength = 6 + numSubjects * 0.4;  // ⬆️ Más largo según materias
-    const startY = TREE_CONFIG.branches.startY;
-    const heightSpread = TREE_CONFIG.branches.spread;
+/**
+ * Crear rama curva del tronco al cluster con variación orgánica
+ */
+/**
+ * Crear rama curva del tronco al cluster con variación orgánica
+ */
+createBranchToCluster(clusterData, branchIndex, totalBranches) {
+  const trunkTopY = 7;
+  
+  // FIX: Convertir el objeto position a Vector3
+  const endPos = new THREE.Vector3(
+    clusterData.position.x,
+    clusterData.position.y,
+    clusterData.position.z
+  );
+  
+  // Calcular punto de inicio distribuido alrededor del tronco
+  const angle = (branchIndex / totalBranches) * Math.PI * 2;
+  const trunkRadius = 0.6;
+  const heightVariation = (Math.sin(branchIndex * 0.7) * 0.5);
+  
+  const startPoint = new THREE.Vector3(
+    Math.cos(angle) * trunkRadius,
+    trunkTopY + heightVariation,
+    Math.sin(angle) * trunkRadius
+  );
 
-    // Puntos de control para la curva (5 puntos = curva suave tipo "S")
-    const points = [
-      // Punto inicial (desde el tronco)
-      new THREE.Vector3(0, startY, 0),
+  // Calcular dirección hacia el cluster
+  const direction = new THREE.Vector3()
+    .subVectors(endPos, startPoint)
+    .normalize();
 
-      // Punto de control 1 (salida del tronco)
-      new THREE.Vector3(
-        Math.cos(baseAngle) * (branchLength * 0.25),
-        startY + 1 + branchIndex * heightSpread * 0.3,
-        Math.sin(baseAngle) * (branchLength * 0.25)
-      ),
+  // Variables para crear curvas más orgánicas y variadas
+  const curveFactor = 0.3 + (branchIndex % 3) * 0.15;
+  const twistFactor = Math.sin(branchIndex * 1.3) * 2;
+  const archHeight = 1.5 + (branchIndex % 4) * 0.5;
 
-      // Punto de control 2 (curva media más pronunciada)
-      new THREE.Vector3(
-        Math.cos(baseAngle) * (branchLength * 0.5) + (Math.random() - 0.5) * 0.8,
-        startY + 2.5 + branchIndex * heightSpread * 0.6,
-        Math.sin(baseAngle) * (branchLength * 0.5) + (Math.random() - 0.5) * 0.8
-      ),
+  // Perpendicular para agregar torsión
+  const perpendicular = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
 
-      // Punto de control 3 (cerca del final)
-      new THREE.Vector3(
-        Math.cos(baseAngle) * (branchLength * 0.75) + (Math.random() - 0.5) * 0.5,
-        startY + 3.5 + branchIndex * heightSpread * 0.8,
-        Math.sin(baseAngle) * (branchLength * 0.75) + (Math.random() - 0.5) * 0.5
-      ),
+  // Puntos de control para curva suave y VARIADA
+  const points = [
+    // Inicio: desde un punto específico del tronco
+    startPoint.clone(),
+    
+    // Control 1: salida del tronco con dirección inicial + variación
+    new THREE.Vector3(
+      startPoint.x + direction.x * 1.5 + perpendicular.x * (twistFactor * 0.3),
+      startPoint.y + 1.2,
+      startPoint.z + direction.z * 1.5 + perpendicular.z * (twistFactor * 0.3)
+    ),
+    
+    // Control 2: punto medio - elevado y curvado con TORSIÓN
+    new THREE.Vector3(
+      startPoint.x + (endPos.x - startPoint.x) * (0.35 + curveFactor * 0.1) + perpendicular.x * twistFactor,
+      startPoint.y + (endPos.y - startPoint.y) * 0.5 + archHeight,
+      startPoint.z + (endPos.z - startPoint.z) * (0.35 + curveFactor * 0.1) + perpendicular.z * twistFactor
+    ),
+    
+    // Control 3: otro punto medio (para más suavidad) con desviación
+    new THREE.Vector3(
+      startPoint.x + (endPos.x - startPoint.x) * 0.7 + perpendicular.x * (twistFactor * 0.5),
+      startPoint.y + (endPos.y - startPoint.y) * 0.75 + archHeight * 0.5,
+      startPoint.z + (endPos.z - startPoint.z) * 0.7 + perpendicular.z * (twistFactor * 0.5)
+    ),
+    
+    // Control 4: acercándose al cluster
+    new THREE.Vector3(
+      endPos.x - direction.x * 1.2,
+      endPos.y - 0.5,
+      endPos.z - direction.z * 1.2
+    ),
+    
+    // Final: posición exacta del cluster
+    endPos.clone()
+  ];
 
-      // Punto final
-      new THREE.Vector3(
-        Math.cos(baseAngle) * branchLength,
-        startY + 4 + branchIndex * heightSpread,
-        Math.sin(baseAngle) * branchLength
-      )
-    ];
+  // Crear curva CatmullRom con tensión variable
+  const curve = new THREE.CatmullRomCurve3(points);
+  curve.tension = 0.3 + (branchIndex % 5) * 0.05;
 
-    // Obtener color según área
-    const area = Object.values(this.branchesData)[branchIndex][0]?.area || 'fundamentos';
-    const color = MaterialLibrary.getByArea(area, 'tube').color;
+  // Crear tubo con radio variable
+  const tubeGeometry = new THREE.TubeGeometry(
+    curve,
+    80,
+    1,
+    16,
+    false
+  );
 
-    return {
-      points,
-      color,
-      startRadius: 0.2,  // ⬆️ Más grueso en la base
-      endRadius: 0.04,   // ⬆️ Más grueso en la punta
-      branchIndex,
-      area
-    };
-  }
+  // Aplicar radio variable (más grueso → más delgado)
+  const positions = tubeGeometry.attributes.position;
+  const vertexCount = positions.count;
+  const segments = 80;
+  const startRadius = 0.25;
+  const endRadius = 0.05;
 
-  /**
-   * Crear curva suave CatmullRom
-   */
-  createBranchCurve(config) {
-    const curve = new THREE.CatmullRomCurve3(config.points);
-    curve.tension = 0.3; // Tensión de la curva (0.5 = suave)
-    return curve;
-  }
-
-  /**
-   * Crear tubo holográfico con radio variable
-   */
-  createHolographicTube(curve, color, startRadius, endRadius) {
-    const segments = 64;
-    const radialSegments = 16;
-
-    // Crear geometría base
-    const tubeGeometry = new THREE.TubeGeometry(
-      curve,
-      segments,
-      1, // Radio base (lo escalaremos después)
-      radialSegments,
-      false
-    );
-
-    // ⭐ CLAVE: Aplicar radio variable manualmente
-    const positions = tubeGeometry.attributes.position;
-    const vertexCount = positions.count;
-    const segmentCount = segments + 1;
-
-    const normals = tubeGeometry.attributes.normal;
-
-    for (let i = 0; i < vertexCount; i++) {
-      const segmentIndex = Math.floor(i / radialSegments);
-      const t = segmentIndex / segments;
-
-      // Radio interpolado
-      const radius = startRadius * (1 - t) + endRadius * t;
-
-      // Vector normal
-      const nx = normals.getX(i);
-      const ny = normals.getY(i);
-      const nz = normals.getZ(i);
-
-      // Centro de la curva en este punto
-      const baseX = curve.getPoint(t).x;
-      const baseY = curve.getPoint(t).y;
-      const baseZ = curve.getPoint(t).z;
-
-      // Nueva posición = centro + normal * radio
+  for (let i = 0; i < vertexCount; i++) {
+    const segmentIndex = Math.floor(i / 16);
+    const t = segmentIndex / segments;
+    
+    const radius = startRadius * Math.pow(1 - t, 1.5) + endRadius * t;
+    
+    const x = positions.getX(i);
+    const y = positions.getY(i);
+    const z = positions.getZ(i);
+    
+    const centerPoint = curve.getPoint(t);
+    
+    const dx = x - centerPoint.x;
+    const dy = y - centerPoint.y;
+    const dz = z - centerPoint.z;
+    const length = Math.sqrt(dx * dx + dy * dy + dz * dz);
+    
+    if (length > 0) {
       positions.setXYZ(
         i,
-        baseX + nx * radius,
-        baseY + ny * radius,
-        baseZ + nz * radius
+        centerPoint.x + (dx / length) * radius,
+        centerPoint.y + (dy / length) * radius,
+        centerPoint.z + (dz / length) * radius
       );
     }
-
-    positions.needsUpdate = true;
-    tubeGeometry.computeVertexNormals();
-
-
-
-    // Material holográfico Phong
-    const material = new THREE.MeshPhongMaterial({
-      color: color,
-      transparent: true,
-      opacity: 0.4,
-      emissive: color,
-      emissiveIntensity: 0.5,
-      shininess: 100,
-      side: THREE.DoubleSide
-    });
-
-    const tube = new THREE.Mesh(tubeGeometry, material);
-
-    // ✨ Agregar bordes brillantes
-    const edgesGeometry = new THREE.EdgesGeometry(tubeGeometry);
-    const edgesMaterial = new THREE.LineBasicMaterial({
-      color: color,
-      transparent: true,
-      opacity: 0.8,
-      linewidth: 2
-    });
-    const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
-    tube.add(edges);
-
-    return tube;
   }
 
+  positions.needsUpdate = true;
+  tubeGeometry.computeVertexNormals();
+
+  // Material holográfico
+  const color = MaterialLibrary.getByArea(clusterData.area, 'tube').color;
+  const material = new THREE.MeshPhongMaterial({
+    color: color,
+    transparent: true,
+    opacity: 0.5,
+    emissive: color,
+    emissiveIntensity: 0.6,
+    shininess: 100,
+    side: THREE.DoubleSide
+  });
+
+  const tube = new THREE.Mesh(tubeGeometry, material);
+
+  // Bordes brillantes
+  const edgesGeometry = new THREE.EdgesGeometry(tubeGeometry);
+  const edgesMaterial = new THREE.LineBasicMaterial({
+    color: color,
+    transparent: true,
+    opacity: 0.9,
+    linewidth: 2
+  });
+  const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
+  tube.add(edges);
+
+  // Anillos holográficos
+  this.createBranchRings(curve, color, tube);
+
+  // Partículas flotantes
+  this.createBranchParticles(curve, color, tube);
+
+  this.parent.add(tube);
+}
   /**
    * Crear anillos holográficos a lo largo de la rama
    */
   createBranchRings(curve, color, parent) {
-    const ringCount = 20;  
+    const ringCount = 15;
     const points = curve.getPoints(ringCount);
 
     points.forEach((point, i) => {
-      // Solo cada 3 anillos (no saturar)
-      if (i % 2 !== 0) return;
+      if (i % 2 !== 0) return; // Solo algunos anillos
 
-      // Radio del anillo (más grande en la base, más pequeño en la punta)
       const t = i / ringCount;
-      const ringRadius = 0.35 * (1 - t) + 0.12 * t; 
+      const ringRadius = 0.35 * (1 - t) + 0.12 * t;
 
-      // Crear TorusGeometry
       const ringGeometry = new THREE.TorusGeometry(
-        ringRadius,     // radio
-        0.02,           // grosor
-        32,              // segmentos radiales
-        64              // segmentos tubulares
+        ringRadius,
+        0.02,
+        8,
+        32
       );
 
       const ringMaterial = new THREE.MeshBasicMaterial({
         color: color,
-        transparent: false,
+        transparent: true,
         opacity: 0.4 - i * 0.015,
         wireframe: true
       });
@@ -258,7 +247,6 @@ export class BranchBuilder {
         ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), tangent);
       }
 
-      // Guardar para animación
       ring.userData.rotationSpeed = 0.01 * (i % 2 === 0 ? 1 : -1);
 
       parent.add(ring);
@@ -266,14 +254,14 @@ export class BranchBuilder {
   }
 
   /**
-   * Crear partículas que fluyen por la rama
+   * Crear partículas flotantes en la rama
    */
   createBranchParticles(curve, color, parent) {
-    const particleCount = 30;  
+    const particleCount = 25;
     const points = curve.getPoints(particleCount);
 
     points.forEach((point, i) => {
-      const particleGeo = new THREE.SphereGeometry(0.05, 32, 32);  
+      const particleGeo = new THREE.SphereGeometry(0.03, 8, 8);
       const particleMat = new THREE.MeshBasicMaterial({
         color: color,
         transparent: true,
@@ -284,7 +272,6 @@ export class BranchBuilder {
       const particle = new THREE.Mesh(particleGeo, particleMat);
       particle.position.copy(point);
 
-      // Guardar info para animación
       particle.userData.originalPos = point.clone();
       particle.userData.offset = Math.random() * Math.PI * 2;
       particle.userData.progress = i / particleCount;
@@ -294,115 +281,368 @@ export class BranchBuilder {
   }
 
   /**
-   * Crear nodos alrededor de la rama (estilo index2.html)
-   * Distribuye los nodos en órbita alrededor de puntos de la curva
+   * Crear un cluster completo
+   * @param {Object} data - Datos del cluster desde BRANCHES
    */
-  createNodesAlongBranch(curve, branchData, parent) {
-    const numNodes = branchData.length;
-    const orbitRadius = 2;  // Radio de la órbita alrededor de la rama
+/**
+ * Crear un cluster completo
+ */
+createCluster(data) {
+  const group = new THREE.Group();
+  group.name = `Cluster_${data.area}`;
+  group.position.set(data.position.x, data.position.y, data.position.z);
 
-    branchData.forEach((data, i) => {
-      // Posición a lo largo de la curva (distribuir uniformemente)
-      const t = (i + 1) / (numNodes + 1);
-      const pointOnCurve = curve.getPoint(t);
+  const config = TREE_CONFIG.clusters;
+  
+  // FIX: Obtener el color como número hexadecimal
+  const materialData = MaterialLibrary.getByArea(data.area, 'hologram');
+  const color = typeof materialData.color === 'number' 
+    ? materialData.color 
+    : (materialData.color.isColor ? materialData.color.getHex() : 0xffffff);
 
-      // Ángulo alrededor de la rama (distribuir en círculo)
-      const angleStep = (Math.PI * 2) / numNodes;
-      const angle = i * angleStep + Math.random() * 0.5; // Pequeña variación
+  // 1. Crear nodo central
+  const centralNode = this.createCentralNode(color, data.name, data.area);
+  group.add(centralNode);
+  this.animatedObjects.push(centralNode);
+  this.nodes.push(centralNode);
 
-      // Calcular posición orbital alrededor del punto de la curva
-      // Necesitamos un sistema de coordenadas local perpendicular a la curva
-      const tangent = curve.getTangent(t).normalize();
+  // 2. Label del nodo central
+  const centerLabel = this.createLabel(
+    data.name, 
+    new THREE.Vector3(0, config.central.radius + 0.8, 0), 
+    color, 
+    true
+  );
+  group.add(centerLabel);
 
-      // Crear vectores perpendiculares al tangente (basis ortonormal)
-      const up = Math.abs(tangent.y) < 0.9
-        ? new THREE.Vector3(0, 1, 0)
-        : new THREE.Vector3(1, 0, 0);
-      const right = new THREE.Vector3().crossVectors(tangent, up).normalize();
-      const forward = new THREE.Vector3().crossVectors(right, tangent).normalize();
+  // 3. Crear satélites CON LABELS
+  const orbitRadius = config.orbit.radius;
+  const satelliteCount = data.satellites.length;
+  const angleStep = (Math.PI * 2) / satelliteCount;
 
-      // Posición orbital usando los vectores perpendiculares
-      const orbitalOffset = new THREE.Vector3()
-        .addScaledVector(right, Math.cos(angle) * orbitRadius)
-        .addScaledVector(forward, Math.sin(angle) * orbitRadius);
+  data.satellites.forEach((sat, i) => {
+    const angle = i * angleStep;
+    const x = Math.cos(angle) * orbitRadius;
+    const z = Math.sin(angle) * orbitRadius;
+    const y = Math.sin(i * config.orbit.floatSpeed) * config.orbit.floatAmount;
 
-      const nodePos = pointOnCurve.clone().add(orbitalOffset);
+    // Crear satélite
+    const satNode = this.createSatelliteNode(
+      new THREE.Vector3(x, y, z), 
+      color,
+      sat
+    );
+    group.add(satNode);
+    this.animatedObjects.push(satNode);
+    this.nodes.push(satNode);
 
-      // Pequeña variación vertical aleatoria
-      nodePos.y += (Math.random() - 0.5) * 0.5;
+    // Conexión al centro
+    const connection = this.createConnection(
+      new THREE.Vector3(x, y, z), 
+      new THREE.Vector3(0, 0, 0), 
+      color
+    );
+    group.add(connection);
 
-      // Crear nodo
-      const node = this.nodeBuilder.createNode(nodePos, data);
-      this.nodes.push(node);
+    // Label para CADA satélite
+    const satLabel = this.createLabel(
+      sat.name, 
+      new THREE.Vector3(x, y + 0.4, z),
+      color, 
+      false
+    );
+    satLabel.userData.satelliteIndex = i;
+    group.add(satLabel);
+  });
 
-      // Crear línea de conexión curva
-      this.createCurvedConnectionLine(nodePos, pointOnCurve, data.area, parent);
+  this.parent.add(group);
+  this.clusters.push(group);
+}
+  /**
+   * Crear nodo central del cluster (grande y brillante)
+   */
+  createCentralNode(color, name, area) {
+    const config = TREE_CONFIG.clusters.central;
+    
+    // Esfera principal
+    const geometry = new THREE.SphereGeometry(
+      config.radius, 
+      config.segments, 
+      config.segments
+    );
+    
+    const material = new THREE.MeshPhongMaterial({
+      color: color,
+      transparent: true,
+      opacity: config.opacity,
+      emissive: color,
+      emissiveIntensity: config.emissiveIntensity,
+      shininess: 100
     });
+
+    const node = new THREE.Mesh(geometry, material);
+    node.userData = {
+      type: 'cluster-central',
+      name: name,
+      area: area
+    };
+
+    // Wireframe exterior
+    const wireGeo = new THREE.SphereGeometry(
+      config.radius * 1.15, 
+      16, 
+      16
+    );
+    const wireMat = new THREE.MeshBasicMaterial({
+      color: color,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.3
+    });
+    const wire = new THREE.Mesh(wireGeo, wireMat);
+    node.add(wire);
+
+    // Anillos orbitales
+    config.rings.forEach((ringConfig, i) => {
+      const ringGeo = new THREE.RingGeometry(
+        config.radius * ringConfig.radius * 0.95, 
+        config.radius * ringConfig.radius * 1.05, 
+        32
+      );
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: color,
+        transparent: true,
+        opacity: ringConfig.opacity,
+        wireframe: true,
+        side: THREE.DoubleSide
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.rotation.x = Math.PI / 2;
+      ring.userData.rotSpeed = 0.005 * (i % 2 === 0 ? 1 : -1);
+      node.add(ring);
+    });
+
+    return node;
   }
 
   /**
-   * Crear línea de conexión curva de nodo a rama (estilo index2.html)
-   * Usa QuadraticBezierCurve3 para una conexión suave
+   * Crear nodo satélite (pequeño, orbita alrededor del central)
    */
-  createCurvedConnectionLine(nodePos, branchPos, area, parent) {
-    // Punto medio elevado para crear curva suave
-    const midPoint = new THREE.Vector3().lerpVectors(nodePos, branchPos, 0.5);
-    midPoint.y += 0.3; // Elevar el punto medio
-
-    // Crear curva cuadrática
-    const curve = new THREE.QuadraticBezierCurve3(
-      nodePos,
-      midPoint,
-      branchPos
+  createSatelliteNode(position, color, satelliteData) {
+    const config = TREE_CONFIG.clusters.satellite;
+    
+    // Esfera satélite
+    const geometry = new THREE.SphereGeometry(
+      config.radius, 
+      config.segments, 
+      config.segments
     );
+    
+    const material = new THREE.MeshPhongMaterial({
+      color: color,
+      transparent: true,
+      opacity: config.opacity,
+      emissive: color,
+      emissiveIntensity: config.emissiveIntensity,
+      shininess: 100
+    });
 
-    // Generar puntos a lo largo de la curva
-    const points = curve.getPoints(50);
+    const node = new THREE.Mesh(geometry, material);
+    node.position.copy(position);
+    node.userData = {
+      type: 'cluster-satellite',
+      satelliteData: satelliteData,
+      originalY: position.y
+    };
+
+    // Wireframe exterior
+    const wireGeo = new THREE.SphereGeometry(config.radius * 1.1, 12, 12);
+    const wireMat = new THREE.MeshBasicMaterial({
+      color: color,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.4
+    });
+    const wire = new THREE.Mesh(wireGeo, wireMat);
+    node.add(wire);
+
+    // Anillo decorativo
+    const ringGeo = new THREE.RingGeometry(
+      config.ring.innerRadius, 
+      config.ring.outerRadius, 
+      24
+    );
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: color,
+      transparent: true,
+      opacity: config.ring.opacity,
+      side: THREE.DoubleSide,
+      wireframe: true
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = Math.PI / 2;
+    node.add(ring);
+
+    return node;
+  }
+
+  /**
+   * Crear conexión curva entre satélite y nodo central
+   */
+  createConnection(from, to, color) {
+    const config = TREE_CONFIG.clusters.connections;
+    
+    // Punto medio elevado para curva suave
+    const mid = new THREE.Vector3().lerpVectors(from, to, 0.5);
+    mid.y += config.curveHeight;
+
+    // Curva cuadrática Bezier
+    const curve = new THREE.QuadraticBezierCurve3(from, mid, to);
+    const points = curve.getPoints(30);
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
-    const color = MaterialLibrary.getByArea(area, 'line').color;
     const material = new THREE.LineBasicMaterial({
       color: color,
       transparent: true,
-      opacity: 0.6,
-      linewidth: 2
+      opacity: config.opacity
     });
 
-    const line = new THREE.Line(geometry, material);
-    parent.add(line);
-
-    // ⭐ NUEVO: Añadir puntos brillantes a lo largo de la línea
-    for (let j = 0; j < points.length; j += 5) {
-      const dotGeo = new THREE.SphereGeometry(0.02, 8, 8);
-      const dotMat = new THREE.MeshBasicMaterial({
-        color: color,
-        transparent: true,
-        opacity: 0.8
-      });
-      const dot = new THREE.Mesh(dotGeo, dotMat);
-      dot.position.copy(points[j]);
-      parent.add(dot);
-    }
+    return new THREE.Line(geometry, material);
   }
+
+  /**
+   * Crear label flotante (texto en sprite)
+   */
+/**
+ * Crear label flotante mejorado
+ */
+createLabel(text, position, color, isCentral) {
+  const config = isCentral 
+    ? TREE_CONFIG.clusters.labels.central 
+    : TREE_CONFIG.clusters.labels.satellite;
+  
+  // Aumentar tamaño del canvas para mejor calidad
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+
+  canvas.width = config.width * 2; // Doble resolución
+  canvas.height = config.height * 2;
+
+  // Fondo transparente
+  context.fillStyle = 'rgba(0, 0, 0, 0)';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Configurar texto
+  const fontSize = isCentral ? 48 : 32;
+  context.font = `bold ${fontSize}px 'Inter', 'Segoe UI', Arial, sans-serif`;
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+
+  // FIX: Asegurar que el color sea un número hexadecimal
+  let colorHex;
+  if (typeof color === 'number') {
+    // Si es un número, convertir directamente
+    colorHex = color;
+  } else if (color.isColor) {
+    // Si es un THREE.Color, obtener el hex
+    colorHex = color.getHex();
+  } else if (typeof color === 'string') {
+    // Si es string, parsearlo
+    colorHex = parseInt(color.replace('#', ''), 16);
+  } else {
+    // Fallback a blanco
+    colorHex = 0xffffff;
+  }
+  
+  const colorStr = '#' + ('000000' + colorHex.toString(16)).slice(-6);
+  
+  // Sombra/glow más pronunciado
+  context.shadowColor = colorStr;
+  context.shadowBlur = isCentral ? 25 : 20;
+  
+  // Texto con gradiente
+  const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+  gradient.addColorStop(0, colorStr);
+  gradient.addColorStop(1, '#ffffff');
+  context.fillStyle = gradient;
+
+  // Dibujar texto
+  context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+  // Borde del texto para mejor legibilidad
+  context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+  context.lineWidth = 2;
+  context.strokeText(text, canvas.width / 2, canvas.height / 2);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  
+  const material = new THREE.SpriteMaterial({
+    map: texture,
+    transparent: true,
+    opacity: 0.95,
+    depthTest: false,
+    depthWrite: false
+  });
+
+  const sprite = new THREE.Sprite(material);
+  const scale = isCentral ? 2.5 : 1.5;
+  sprite.scale.set(scale, scale * 0.3, 1);
+  sprite.position.copy(position);
+  
+  sprite.userData.isLabel = true;
+  sprite.userData.labelText = text;
+
+  return sprite;
+}
 
   /**
    * Actualizar animaciones (llamar desde TreeManager)
    */
   update(time) {
-    this.branchGroups.forEach(group => {
-      group.traverse(object => {
-        // Animar anillos
-        if (object.userData.rotationSpeed) {
-          object.rotation.z += object.userData.rotationSpeed;
-        }
+    // Animar clusters
+    this.animatedObjects.forEach(obj => {
+      if (obj.userData.type === 'cluster-central') {
+        // Pulso del nodo central
+        const scale = 1 + Math.sin(time * 2) * 0.05;
+        obj.scale.setScalar(scale);
 
-        // Animar partículas
-        if (object.userData.progress !== undefined) {
-          const offset = object.userData.offset;
-          object.position.y = object.userData.originalPos.y +
-            Math.sin(time * 2 + offset) * 0.05;
+        // Rotar anillos
+        obj.children.forEach(child => {
+          if (child.userData.rotSpeed) {
+            child.rotation.z += child.userData.rotSpeed;
+          }
+        });
+        
+      } else if (obj.userData.type === 'cluster-satellite') {
+        // Pulso satélite
+        const scale = 1 + Math.sin(time * 2 + obj.position.x) * 0.1;
+        obj.scale.setScalar(scale);
+
+        // Float vertical
+        obj.position.y = obj.userData.originalY + Math.sin(time + obj.position.x) * 0.05;
+
+        // Rotar anillo
+        if (obj.children[1]) {
+          obj.children[1].rotation.z += 0.01;
         }
-      });
+      }
+    });
+
+    // Animar partículas y anillos de las ramas
+    this.parent.traverse(object => {
+      // Animar anillos de las ramas
+      if (object.userData.rotationSpeed) {
+        object.rotation.z += object.userData.rotationSpeed;
+      }
+
+      // Animar partículas flotantes
+      if (object.userData.originalPos) {
+        const offset = object.userData.offset;
+        object.position.y = object.userData.originalPos.y + 
+          Math.sin(time * 2 + offset) * 0.05;
+      }
     });
   }
 
@@ -410,9 +650,9 @@ export class BranchBuilder {
    * Limpiar recursos
    */
   dispose() {
-    this.branchGroups.forEach(group => {
-      this.parent.remove(group);
-      group.traverse(object => {
+    this.clusters.forEach(cluster => {
+      this.parent.remove(cluster);
+      cluster.traverse(object => {
         if (object.geometry) object.geometry.dispose();
         if (object.material) {
           if (Array.isArray(object.material)) {

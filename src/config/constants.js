@@ -2,29 +2,38 @@
 // COLORES DEL PROYECTO
 // ============================================
 export const COLORS = {
-  // Color de fondo de la escena
-  background: 0x0a0a15,  // Azul oscuro casi negro
+  background: 0x0a0a15,
   
-  // Color del grid del suelo
   grid: {
-    primary: 0x00ffff,   // Cian brillante
-    secondary: 0x1b3848  // Azul oscuro
+    primary: 0x00ffff,
+    secondary: 0x1b3848
   },
   
-
-  // Colores por área del conocimiento
-  // Cada área tiene su color único para identificación visual
   areas: {
-    fundamentos: 0x00ffff,  // Cian - Base del conocimiento
-    web: 0x00BFFF,          // Azul cielo - Desarrollo web
-    ia: 0x9D00FF,           // Morado - Inteligencia artificial
-    redes: 0x00FF88,        // Verde - Redes y conectividad
-    sistemas: 0xFF3366,     // Rojo - Sistemas y hardware
-    datos: 0xFFB800,        // Naranja - Bases de datos
-    gamedev: 0xFF00FF       // Rosa - Desarrollo de videojuegos
+  fundamentos: 0x00ffff,
+  web: 0x00BFFF,
+  ia: 0x9D00FF,
+  redes: 0x00FF88,
+  sistemas: 0xFF3366,
+  datos: 0xFFB800,
+  gamedev: 0xFF00FF,
+  mobile: 0x00D9FF,
+  devops: 0xFF6B35,
+  datascience: 0x4ECDC4,
+  blockchain: 0xFFD93D,
+  iot: 0xFF1744,
+  design: 0xE91E63,
+  testing: 0x76FF03,
+  architecture: 0x7B68EE,    // Púrpura medio
+  backend: 0x20B2AA,         // Turquesa claro
+  os: 0xFF8C00,              // Naranja oscuro
+  performance: 0x32CD32,     // Verde lima
+  apis: 0x1E90FF,            // Azul Dodger
+  quantum: 0xDA70D6,         // Orquídea
+  robotics: 0xFF4500,        // Rojo-naranja
+  arvr: 0x00CED1             // Turquesa oscuro
   },
   
-  // Colores para efectos especiales
   effects: {
     glow: 0x00ffff,
     highlight: 0xffffff,
@@ -36,7 +45,6 @@ export const COLORS = {
 // CONFIGURACIÓN DEL ÁRBOL
 // ============================================
 export const TREE_CONFIG = {
-  // RAÍCES - Base del árbol (fundamentos de la carrera)
   roots: {
     count: 4,
     radius: 5,
@@ -48,7 +56,6 @@ export const TREE_CONFIG = {
     yPosition: 0
   },
   
-  // TRONCO - Núcleo central del árbol
   trunk: {
     height: 7,
     segments: 10,
@@ -65,43 +72,86 @@ export const TREE_CONFIG = {
     }
   },
   
-  // RAMAS - Especialidades que salen del tronco
+  // ⭐ NUEVO: Configuración de CLUSTERS
+  clusters: {
+  central: {
+    radius: 0.5,
+    segments: 32,
+    opacity: 0.7,
+    emissiveIntensity: 1.2,
+    rings: [
+      { radius: 1.4, opacity: 0.4 },
+      { radius: 1.7, opacity: 0.3 },
+      { radius: 2.0, opacity: 0.2 }
+    ]
+  },
+  satellite: {
+    radius: 0.2,
+    segments: 16,
+    opacity: 0.6,
+    emissiveIntensity: 0.8,
+    ring: {
+      innerRadius: 0.25,
+      outerRadius: 0.35,
+      opacity: 0.5
+    }
+  },
+  orbit: {
+    radius: 2.5, // Aumentado para más espacio
+    floatSpeed: 0.5,
+    floatAmount: 0.1
+  },
+  connections: {
+    opacity: 0.3,
+    curveHeight: 0.3
+  },
+  labels: {
+    central: {
+      yOffset: 0.8,
+      width: 512,
+      height: 128,
+      fontSize: 48,
+      scale: 2.5
+    },
+    satellite: {
+      yOffset: 0.4,
+      width: 256,
+      height: 64,
+      fontSize: 32,
+      scale: 1.5
+    }
+  }
+},
+  
+  // Configuración antigua de branches (por si acaso)
   branches: {
     count: 5,
+    startRadius: 0.15,
+    endRadius: 0.03,
+    segments: 100,
+    radialSegments: 16,
+    length: 5,
+    startY: 7,
+    spread: 0.9,
+    tension: 0.5,
+    controlPoints: 5,
     
-    // ⭐ NUEVOS parámetros para ramas holográficas
-    startRadius: 0.15,      // Radio en la base (más grueso)
-    endRadius: 0.03,        // Radio en la punta (más delgado)
-    segments: 100,          // Más segmentos = curva más suave
-    radialSegments: 16,     // Segmentos radiales del tubo
-    
-    // Longitud y distribución
-    length: 5,              // Longitud base
-    startY: 7,              // Altura inicial
-    spread: 0.9,            // Variación de altura entre ramas
-    
-    // Curva y forma
-    tension: 0.5,           // Tensión de CatmullRom (0.5 = suave)
-    controlPoints: 5,       // Puntos de control para la curva
-    
-    // Decoraciones
     rings: {
-      count: 15,            // Anillos por rama
-      spacing: 2,           // Cada cuántos mostrar
-      baseRadius: 0.25,     // Radio en la base
-      tipRadius: 0.1,       // Radio en la punta
-      thickness: 0.015,     // Grosor del torus
-      opacity: 0.3          // Opacidad base
+      count: 15,
+      spacing: 2,
+      baseRadius: 0.25,
+      tipRadius: 0.1,
+      thickness: 0.015,
+      opacity: 0.3
     },
     
     particles: {
-      count: 30,            // Partículas por rama
-      size: 0.025,          // Tamaño
-      opacity: 0.7          // Opacidad
+      count: 30,
+      size: 0.025,
+      opacity: 0.7
     }
   },
   
-  // NODOS - Esferas que representan materias
   nodes: {
     radius: 0.25,
     segments: 24,
@@ -119,7 +169,6 @@ export const TREE_CONFIG = {
     }
   },
   
-  // DISTRIBUCIÓN de nodos en el tronco
   trunkNodes: {
     radius: 1.2,
     startY: 1,
@@ -127,52 +176,42 @@ export const TREE_CONFIG = {
   }
 };
 
-// Exportar solo lo que cambiamos
-export const UPDATED_BRANCH_CONFIG = TREE_CONFIG.branches;
-
 // ============================================
 // CONFIGURACIÓN DE CÁMARA
 // ============================================
 export const CAMERA_CONFIG = {
-  // Parámetros de perspectiva
-  fov: 90,                 // Field of view (ángulo de visión)
-  near: 0.1,               // Plano cercano de recorte
-  far: 3500,               // Plano lejano de recorte
+  fov: 90,
+  near: 0.1,
+  far: 3500,
   
-  // Posición inicial de la cámara
   position: {
     x: 5,
-    y: 4,
-    z: 10
+    y: 8,
+    z: 12
   },
   
-  // Objetivo al que mira la cámara
   target: {
     x: 0,
     y: 10,
     z: 0
   },
   
-  // Límites de zoom (con OrbitControls)
-  minDistance: 1,          // No acercarse más de 5 unidades
-  maxDistance: 25,         // No alejarse más de 25 unidades
+  minDistance: 1,
+  maxDistance: 25,
   
-  // Límites de rotación vertical
-  minPolarAngle: Math.PI*0.2 ,
-  maxPolarAngle: Math.PI*0.9 
+  minPolarAngle: Math.PI * 0.2,
+  maxPolarAngle: Math.PI * 0.9
 };
 
 // ============================================
 // CONFIGURACIÓN DE LUCES
 // ============================================
 export const LIGHTS_CONFIG = {
-  // Luz ambiental - ilumina todo suavemente
   ambient: {
     color: 0xffffff,
     intensity: 0.3
   },
   
-  // Luz direccional - simula el sol
   directional: {
     color: 0xffffff,
     intensity: 0.5,
@@ -184,7 +223,6 @@ export const LIGHTS_CONFIG = {
     }
   },
   
-  // Luces de punto - acentos de color
   point: [
     {
       color: 0x00ffff,
@@ -200,7 +238,6 @@ export const LIGHTS_CONFIG = {
     }
   ],
   
-  // Luz hemisférica - simula cielo y suelo
   hemisphere: {
     skyColor: 0x0066ff,
     groundColor: 0x002244,
@@ -212,43 +249,40 @@ export const LIGHTS_CONFIG = {
 // CONFIGURACIÓN DE PARTÍCULAS
 // ============================================
 export const PARTICLES_CONFIG = {
-  // Partículas ambientales - distribuidas por toda la escena
   ambient: {
-    count: 500,            // Número de partículas
-    size: 0.1,             // Tamaño de cada partícula
-    opacity: 0.5,          // Transparencia
-    spread: {              // Área de distribución
+    count: 500,
+    size: 0.1,
+    opacity: 0.5,
+    spread: {
       radius: { min: 3, max: 50 },
       height: { min: -3, max: 12 }
     },
-    velocity: {            // Velocidad de movimiento
+    velocity: {
       x: 0.002,
       y: 0.005,
       z: 0.002
     }
   },
   
-  // Partículas que fluyen - suben desde las raíces
   flowing: {
-    count: 20,
-    size: 0.05,
-    opacity: 0.8,
-    speed: 0.0009,          // Velocidad de ascenso
-    startY: 3,            // Altura inicial
-    endY: 20,               // Altura final
-    radius: 1.2            // Radio de distribución
+    count: 2000,
+    size: 0.025,
+    opacity: 0.5,
+    speed: 0.001,
+    startY: 3,
+    endY: 20,
+    radius: 8
   },
   
-  // Partículas flotantes - cerca del árbol
   floating: {
-    count: 300,
+    count: 3000,
     size: 0.08,
     opacity: 1,
     spread: {
       radius: { min: 1, max: 1.3 },
       height: { min: 0, max: 2 }
     },
-    rotationSpeed: 0.0005  // Velocidad de rotación del grupo
+    rotationSpeed: 0.0005
   }
 };
 
@@ -257,26 +291,26 @@ export const PARTICLES_CONFIG = {
 // ============================================
 export const MATERIALS_CONFIG = {
   hologram: {
-    wireframe: false,  // Cambiado a false
+    wireframe: false,
     transparent: true,
-    opacity: 0.5,  // Antes: 0.7 → Ahora: 0.5
-    shininess: 100,  // NUEVO
+    opacity: 0.5,
+    shininess: 100,
     emissiveIntensity: 0.6
   },
   
   node: {
     wireframe: false,
     transparent: true,
-    opacity: 0.7,  // Antes: 0.9 → Ahora: 0.7
-    shininess: 100,  // NUEVO
+    opacity: 0.7,
+    shininess: 100,
     emissiveIntensity: 0.8
   },
   
   tube: {
     wireframe: false,
     transparent: true,
-    opacity: 0.4,  // Antes: 0.8 → Ahora: 0.4
-    shininess: 100,  // NUEVO
+    opacity: 0.4,
+    shininess: 100,
     emissiveIntensity: 0.5
   }
 };
@@ -285,19 +319,17 @@ export const MATERIALS_CONFIG = {
 // CONFIGURACIÓN DE EFECTOS VISUALES
 // ============================================
 export const EFFECTS_CONFIG = {
-  // Configuración de Bloom (efecto de brillo)
   bloom: {
-    threshold: 0.7,        // Objetos más brillantes que esto brillarán
-    strength: 1.5,         // Intensidad del brillo
-    radius: 0.8,           // Radio del efecto
-    exposure: 1            // Exposición general
+    threshold: 0.7,
+    strength: 1.5,
+    radius: 0.8,
+    exposure: 1
   },
   
-  // Niebla atmosférica
   fog: {
-    color: 0x131313,       // Mismo color que el fondo
-    near: 15,              // Distancia donde empieza
-    far: 150                // Distancia donde es opaca
+    color: 0x131313,
+    near: 15,
+    far: 150
   }
 };
 
@@ -305,89 +337,33 @@ export const EFFECTS_CONFIG = {
 // CONFIGURACIÓN DE ANIMACIONES
 // ============================================
 export const ANIMATION_CONFIG = {
-  // Velocidades de animación
   node: {
-    pulseSpeed: 2,         // Velocidad del pulso (escala)
-    pulseAmount: 0.1,      // Cantidad de cambio de escala
-    floatSpeed: 1,         // Velocidad de flotación
-    floatAmount: 0.05      // Cantidad de movimiento vertical
+    pulseSpeed: 2,
+    pulseAmount: 0.1,
+    floatSpeed: 1,
+    floatAmount: 0.05
   },
   
   lights: {
-    pulseSpeed: 0.5,       // Velocidad del pulso de luces
-    pulseAmount: 0.3       // Cantidad de cambio de intensidad
+    pulseSpeed: 0.5,
+    pulseAmount: 0.3
   },
   
   baseRing: {
-    pulseSpeed: 2,         // Velocidad del pulso del anillo base
-    scaleAmount: 0.02,     // Cantidad de cambio de escala
-    opacityBase: 0.4,      // Opacidad base
-    opacityAmount: 0.2     // Variación de opacidad
-  }
-};
-
-// ============================================
-// CONFIGURACIÓN DE RENDIMIENTO
-// ============================================
-export const PERFORMANCE_CONFIG = {
-  // FPS objetivo
-  targetFPS: 60,
-  
-  // Límite bajo de FPS para reducir calidad
-  minFPS: 30,
-  
-  // Calidad reducida (cuando FPS < 30)
-  lowQuality: {
-    particleCount: 300,    // Reducir partículas
-    shadowMapSize: 1024,   // Reducir calidad de sombras
-    antialiasing: false    // Desactivar antialiasing
-  },
-  
-  // Calidad normal
-  normalQuality: {
-    particleCount: 1000,
-    shadowMapSize: 2048,
-    antialiasing: true
-  }
-};
-
-// ============================================
-// CONFIGURACIÓN DE UI
-// ============================================
-export const UI_CONFIG = {
-  // Transiciones
-  transitions: {
-    panelDuration: 300,    // ms para abrir/cerrar paneles
-    fadeInDuration: 200,   // ms para fade in
-    fadeOutDuration: 150   // ms para fade out
-  },
-  
-  // Tamaños
-  sizes: {
-    infoPanelWidth: 400,   // px
-    controlPanelWidth: 200,
-    miniMapSize: 150
+    pulseSpeed: 2,
+    scaleAmount: 0.02,
+    opacityBase: 0.4,
+    opacityAmount: 0.2
   }
 };
 
 // ============================================
 // EXPORTS ÚTILES
 // ============================================
-
-/**
- * Obtener color por área
- * @param {string} area - Nombre del área
- * @returns {number} Color en hexadecimal
- */
 export function getColorByArea(area) {
   return COLORS.areas[area] || COLORS.areas.fundamentos;
 }
 
-/**
- * Convertir hex a RGB normalizado (para shaders)
- * @param {number} hex - Color en hexadecimal
- * @returns {object} {r, g, b} normalizado 0-1
- */
 export function hexToRGB(hex) {
   return {
     r: ((hex >> 16) & 255) / 255,

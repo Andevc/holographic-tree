@@ -1,28 +1,15 @@
 /**
- * SUBJECTS.JS - Base de Datos de Materias UMSA
- * ============================================
+ * SUBJECTS.JS - Base de Datos con Sistema de Clusters
+ * ====================================================
  * 
- * PROPÓSITO:
- * - Almacenar información real de la carrera de Informática UMSA
- * - Estructura jerárquica (raíces → tronco → ramas)
- * - Cada materia tiene código, descripción, requisitos, etc.
- * 
- * ESTRUCTURA DE DATOS:
- * {
- *   id: "INF-XXX",           // Código único de materia
- *   name: "Nombre",          // Nombre de la materia
- *   area: "fundamentos",     // Área del conocimiento
- *   semester: 1,             // Semestre recomendado
- *   credits: 4,              // Créditos académicos
- *   hours: 6,                // Horas por semana
- *   prerequisites: [],       // Materias que se necesitan antes
- *   description: "...",      // Descripción corta
- *   topics: []               // Temas que se ven
- * }
+ * NUEVO: Estructura reorganizada para soportar clusters
+ * Cada rama ahora es un CLUSTER con:
+ * - Nodo central (área principal)
+ * - Satélites (tecnologías/materias específicas)
  */
 
 // ============================================
-// METADATA DE LA CARRERA
+// METADATA DE LA CARRERA (sin cambios)
 // ============================================
 export const CAREER_INFO = {
   name: "Carrera de Informática",
@@ -33,8 +20,7 @@ export const CAREER_INFO = {
   totalSubjects: 35,
   totalCredits: 240,
   degree: "Licenciado/a en Informática",
-  
-  // Áreas de especialización disponibles
+
   specializations: [
     "Desarrollo de Software",
     "Inteligencia Artificial",
@@ -42,8 +28,7 @@ export const CAREER_INFO = {
     "Ciencia de Datos",
     "Sistemas Embebidos"
   ],
-  
-  // Perfil del egresado
+
   profile: [
     "Desarrollador de aplicaciones web y móviles",
     "Especialista en inteligencia artificial y machine learning",
@@ -54,13 +39,13 @@ export const CAREER_INFO = {
 };
 
 // ============================================
-// DEFINICIÓN DE ÁREAS DEL CONOCIMIENTO
+// DEFINICIÓN DE ÁREAS (sin cambios)
 // ============================================
 export const KNOWLEDGE_AREAS = {
   fundamentos: {
     name: "Fundamentos",
     color: "cyan",
-    description: "Bases matemáticas, lógicas y de programación que sostienen toda la carrera",
+    description: "Bases matemáticas, lógicas y de programación",
     icon: "📚"
   },
   web: {
@@ -84,7 +69,7 @@ export const KNOWLEDGE_AREAS = {
   sistemas: {
     name: "Sistemas y Hardware",
     color: "red",
-    description: "Arquitectura de computadoras, sistemas operativos y embebidos",
+    description: "Arquitectura de computadoras, sistemas operativos",
     icon: "⚙️"
   },
   datos: {
@@ -96,19 +81,14 @@ export const KNOWLEDGE_AREAS = {
   gamedev: {
     name: "Game Dev & XR",
     color: "pink",
-    description: "Desarrollo de videojuegos, realidad virtual y aumentada",
+    description: "Desarrollo de videojuegos, realidad virtual",
     icon: "🎮"
   }
 };
 
 // ============================================
-// MATERIAS DE LA CARRERA
+// RAÍCES - Sin cambios (fundamentos)
 // ============================================
-
-/**
- * RAÍCES - Fundamentos (Semestres 1-2)
- * Materias base que todo estudiante debe dominar
- */
 export const ROOTS = [
   {
     id: "INF-111",
@@ -118,107 +98,16 @@ export const ROOTS = [
     credits: 4,
     hours: 6,
     prerequisites: [],
-    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos y combinatoria.",
+    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos.",
     topics: [
       "Lógica proposicional y predicados",
       "Teoría de conjuntos",
       "Relaciones y funciones",
       "Grafos y árboles",
-      "Combinatoria y probabilidad"
+      "Combinatoria"
     ],
     professor: "Ing. María López"
   },
-  {
-    id: "INF-111",
-    name: "Matemática Discreta",
-    area: "fundamentos",
-    semester: 1,
-    credits: 4,
-    hours: 6,
-    prerequisites: [],
-    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos y combinatoria.",
-    topics: [
-      "Lógica proposicional y predicados",
-      "Teoría de conjuntos",
-      "Relaciones y funciones",
-      "Grafos y árboles",
-      "Combinatoria y probabilidad"
-    ],
-    professor: "Ing. María López"
-  },
-  {
-    id: "INF-111",
-    name: "Matemática Discreta",
-    area: "fundamentos",
-    semester: 1,
-    credits: 4,
-    hours: 6,
-    prerequisites: [],
-    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos y combinatoria.",
-    topics: [
-      "Lógica proposicional y predicados",
-      "Teoría de conjuntos",
-      "Relaciones y funciones",
-      "Grafos y árboles",
-      "Combinatoria y probabilidad"
-    ],
-    professor: "Ing. María López"
-  },
-  {
-    id: "INF-111",
-    name: "Matemática Discreta",
-    area: "fundamentos",
-    semester: 1,
-    credits: 4,
-    hours: 6,
-    prerequisites: [],
-    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos y combinatoria.",
-    topics: [
-      "Lógica proposicional y predicados",
-      "Teoría de conjuntos",
-      "Relaciones y funciones",
-      "Grafos y árboles",
-      "Combinatoria y probabilidad"
-    ],
-    professor: "Ing. María López"
-  },
-  {
-    id: "INF-111",
-    name: "Matemática Discreta",
-    area: "fundamentos",
-    semester: 1,
-    credits: 4,
-    hours: 6,
-    prerequisites: [],
-    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos y combinatoria.",
-    topics: [
-      "Lógica proposicional y predicados",
-      "Teoría de conjuntos",
-      "Relaciones y funciones",
-      "Grafos y árboles",
-      "Combinatoria y probabilidad"
-    ],
-    professor: "Ing. María López"
-  },
-  {
-    id: "INF-111",
-    name: "Matemática Discreta",
-    area: "fundamentos",
-    semester: 1,
-    credits: 4,
-    hours: 6,
-    prerequisites: [],
-    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos y combinatoria.",
-    topics: [
-      "Lógica proposicional y predicados",
-      "Teoría de conjuntos",
-      "Relaciones y funciones",
-      "Grafos y árboles",
-      "Combinatoria y probabilidad"
-    ],
-    professor: "Ing. María López"
-  },
-  
   {
     id: "INF-110",
     name: "Programación I",
@@ -227,13 +116,13 @@ export const ROOTS = [
     credits: 4,
     hours: 8,
     prerequisites: [],
-    description: "Introducción a la programación. Algoritmos básicos, estructuras de control y tipos de datos fundamentales.",
+    description: "Introducción a la programación. Algoritmos básicos.",
     topics: [
-      "Conceptos de algoritmos",
+      "Algoritmos",
       "Variables y tipos de datos",
-      "Estructuras de control (if, while, for)",
-      "Funciones y procedimientos",
-      "Arreglos básicos"
+      "Estructuras de control",
+      "Funciones",
+      "Arreglos"
     ],
     professor: "Ing. Carlos Mendoza"
   },
@@ -245,22 +134,37 @@ export const ROOTS = [
     credits: 3,
     hours: 4,
     prerequisites: ["INF-111"],
-    description: "Fundamentos lógicos de la computación. Proposiciones, predicados y métodos de demostración.",
+    description: "Fundamentos lógicos de la computación.",
     topics: [
       "Cálculo proposicional",
       "Cálculo de predicados",
       "Métodos de demostración",
-      "Lógica de primer orden",
-      "Inducción matemática"
+      "Lógica de primer orden"
     ],
     professor: "Dr. Roberto Paz"
   },
+  {
+    id: "INF-113",
+    name: "Álgebra Lineal",
+    area: "fundamentos",
+    semester: 2,
+    credits: 4,
+    hours: 6,
+    prerequisites: [],
+    description: "Vectores, matrices y transformaciones lineales.",
+    topics: [
+      "Vectores y espacios vectoriales",
+      "Matrices",
+      "Determinantes",
+      "Sistemas de ecuaciones"
+    ],
+    professor: "Lic. Ana Mamani"
+  }
 ];
 
-/**
- * TRONCO - Núcleo Obligatorio (Semestres 3-5)
- * Materias centrales que todos deben cursar
- */
+// ============================================
+// TRONCO - Sin cambios (núcleo obligatorio)
+// ============================================
 export const TRUNK = [
   {
     id: "INF-210",
@@ -270,12 +174,12 @@ export const TRUNK = [
     credits: 4,
     hours: 8,
     prerequisites: ["INF-110"],
-    description: "Estructuras de datos fundamentales: listas, pilas, colas, árboles, grafos y tablas hash.",
+    description: "Estructuras fundamentales: listas, árboles, grafos.",
     topics: [
       "Listas enlazadas",
       "Pilas y colas",
-      "Árboles binarios y AVL",
-      "Grafos y recorridos",
+      "Árboles binarios",
+      "Grafos",
       "Tablas hash"
     ],
     professor: "Ing. Ana Torres"
@@ -288,13 +192,12 @@ export const TRUNK = [
     credits: 4,
     hours: 6,
     prerequisites: ["INF-110"],
-    description: "Fundamentos de bases de datos relacionales. Modelo ER, SQL y normalización.",
+    description: "Fundamentos de bases de datos relacionales.",
     topics: [
-      "Modelo Entidad-Relación",
+      "Modelo ER",
       "Álgebra relacional",
-      "SQL avanzado",
-      "Normalización (1NF-3NF)",
-      "Transacciones y ACID"
+      "SQL",
+      "Normalización"
     ],
     professor: "Ing. Pedro Vargas"
   },
@@ -306,13 +209,12 @@ export const TRUNK = [
     credits: 4,
     hours: 6,
     prerequisites: ["INF-210"],
-    description: "Conceptos de sistemas operativos: procesos, memoria, archivos y concurrencia.",
+    description: "Conceptos de sistemas operativos.",
     topics: [
-      "Gestión de procesos",
-      "Gestión de memoria",
-      "Sistemas de archivos",
-      "Concurrencia y sincronización",
-      "Planificación de CPU"
+      "Procesos",
+      "Memoria",
+      "Archivos",
+      "Concurrencia"
     ],
     professor: "Dr. Luis Mamani"
   },
@@ -324,13 +226,12 @@ export const TRUNK = [
     credits: 4,
     hours: 6,
     prerequisites: ["INF-110"],
-    description: "Fundamentos de redes. Modelo OSI, TCP/IP y protocolos de red.",
+    description: "Fundamentos de redes.",
     topics: [
-      "Modelo OSI y TCP/IP",
-      "Direccionamiento IP",
-      "Routing y switching",
-      "Protocolos (HTTP, DNS, FTP)",
-      "Seguridad en redes"
+      "Modelo OSI",
+      "TCP/IP",
+      "Routing",
+      "Protocolos"
     ],
     professor: "Ing. Carmen Quispe"
   },
@@ -342,283 +243,633 @@ export const TRUNK = [
     credits: 4,
     hours: 6,
     prerequisites: ["INF-210"],
-    description: "Metodologías de desarrollo de software. Análisis, diseño y gestión de proyectos.",
+    description: "Metodologías de desarrollo.",
     topics: [
-      "Ciclo de vida del software",
-      "Metodologías ágiles (Scrum)",
-      "UML y diagramas",
-      "Patrones de diseño",
-      "Gestión de proyectos"
+      "Ciclo de vida",
+      "Metodologías ágiles",
+      "UML",
+      "Patrones de diseño"
     ],
     professor: "Ing. Jorge Huanca"
   }
 ];
 
-/**
- * RAMAS - Especialidades (Semestres 5-9)
- * Materias de áreas específicas que el estudiante puede elegir
- */
+// ============================================
+// ⭐ BRANCHES - NUEVO SISTEMA DE CLUSTERS
+// ============================================
 export const BRANCHES = {
-  // Rama de Desarrollo Web/Móvil
-  web: [
-    {
-      id: "INF-410",
-      name: "Desarrollo Web",
-      area: "web",
-      semester: 5,
-      credits: 4,
-      hours: 8,
-      prerequisites: ["INF-220"],
-      description: "Desarrollo de aplicaciones web modernas con HTML, CSS, JavaScript y frameworks.",
-      topics: [
-        "HTML5 y CSS3 avanzado",
-        "JavaScript ES6+",
-        "React o Vue.js",
-        "Responsive design",
-        "API REST"
-      ],
-      professor: "Ing. Sandra Flores"
-    },
-    {
-      id: "INF-411",
-      name: "Backend Avanzado",
-      area: "web",
-      semester: 6,
-      credits: 4,
-      hours: 6,
-      prerequisites: ["INF-410"],
-      description: "Desarrollo de APIs REST, autenticación, autorización y despliegue en cloud.",
-      topics: [
-        "Node.js y Express",
-        "Autenticación JWT",
-        "WebSockets",
-        "Docker y contenedores",
-        "Despliegue en AWS/Azure"
-      ],
-      professor: "Ing. Diego Rojas"
-    },
-    {
-      id: "INF-412",
-      name: "Desarrollo Móvil",
-      area: "web",
-      semester: 7,
-      credits: 3,
-      hours: 6,
-      prerequisites: ["INF-410"],
-      description: "Desarrollo de aplicaciones móviles con Flutter o React Native.",
-      topics: [
-        "Flutter/React Native",
-        "UI/UX móvil",
-        "Almacenamiento local",
-        "Push notifications",
-        "Publicación en stores"
-      ],
-      professor: "Ing. Lucía Poma"
-    }
-  ],
+  // CLUSTER 1: Desarrollo Web (Oeste)
+  web: {
+    name: 'Desarrollo Web',
+    area: 'web',
+    position: { x: -8, y: 11, z: 0 },
+    satellites: [
+      { name: 'React', description: 'Biblioteca UI para interfaces modernas', id: 'SAT-WEB-001', area: 'web' },
+      { name: 'Node.js', description: 'Backend JavaScript y APIs', id: 'SAT-WEB-002', area: 'web' },
+      { name: 'HTML/CSS', description: 'Estructura y diseño web', id: 'SAT-WEB-003', area: 'web' },
+      { name: 'TypeScript', description: 'JavaScript tipado y robusto', id: 'SAT-WEB-004', area: 'web' },
+      { name: 'REST APIs', description: 'Servicios web RESTful', id: 'SAT-WEB-005', area: 'web' },
+      { name: 'GraphQL', description: 'Query language para APIs', id: 'SAT-WEB-006', area: 'web' },
+      { name: 'Next.js', description: 'Framework React fullstack', id: 'SAT-WEB-007', area: 'web' },
+      { name: 'Tailwind', description: 'Framework CSS utility-first', id: 'SAT-WEB-008', area: 'web' }
+    ]
+  },
 
-  // Rama de Inteligencia Artificial
-  ia: [
-    {
-      id: "INF-510",
-      name: "Inteligencia Artificial",
-      area: "ia",
-      semester: 6,
-      credits: 4,
-      hours: 6,
-      prerequisites: ["INF-210", "INF-111"],
-      description: "Fundamentos de IA: búsqueda, algoritmos genéticos y sistemas expertos.",
-      topics: [
-        "Búsqueda en espacios de estados",
-        "Algoritmos genéticos",
-        "Sistemas expertos",
-        "Lógica difusa",
-        "Agentes inteligentes"
-      ],
-      professor: "Dr. Pablo Condori"
-    },
-    {
-      id: "INF-511",
-      name: "Machine Learning",
-      area: "ia",
-      semester: 7,
-      credits: 4,
-      hours: 6,
-      prerequisites: ["INF-510"],
-      description: "Aprendizaje automático: regresión, clasificación, clustering y árboles de decisión.",
-      topics: [
-        "Regresión lineal y logística",
-        "Árboles de decisión",
-        "SVM y KNN",
-        "K-means clustering",
-        "Evaluación de modelos"
-      ],
-      professor: "Dr. Fernando Choque"
-    },
-    {
-      id: "INF-512",
-      name: "Deep Learning",
-      area: "ia",
-      semester: 8,
-      credits: 4,
-      hours: 6,
-      prerequisites: ["INF-511"],
-      description: "Redes neuronales profundas: CNN, RNN, transformers y aplicaciones modernas.",
-      topics: [
-        "Redes neuronales densas",
-        "CNN para visión computacional",
-        "RNN y LSTM",
-        "Transformers y atención",
-        "Transfer learning"
-      ],
-      professor: "Dr. Ricardo Nina"
-    }
-  ],
+  // CLUSTER 2: Inteligencia Artificial (Este)
+  ia: {
+    name: 'Inteligencia Artificial',
+    area: 'ia',
+    position: { x: 8, y: 11, z: 0 },
+    satellites: [
+      { name: 'Machine Learning', description: 'Aprendizaje automático y modelos', id: 'SAT-IA-001', area: 'ia' },
+      { name: 'Deep Learning', description: 'Redes neuronales profundas', id: 'SAT-IA-002', area: 'ia' },
+      { name: 'NLP', description: 'Procesamiento lenguaje natural', id: 'SAT-IA-003', area: 'ia' },
+      { name: 'Computer Vision', description: 'Visión artificial y reconocimiento', id: 'SAT-IA-004', area: 'ia' },
+      { name: 'TensorFlow', description: 'Framework ML de Google', id: 'SAT-IA-005', area: 'ia' },
+      { name: 'PyTorch', description: 'Framework ML dinámico', id: 'SAT-IA-006', area: 'ia' }
+    ]
+  },
 
-  // Rama de Redes y Seguridad
-  redes: [
-    {
-      id: "INF-610",
-      name: "Administración de Redes",
-      area: "redes",
-      semester: 5,
-      credits: 4,
-      hours: 6,
-      prerequisites: ["INF-320"],
-      description: "Configuración y administración de infraestructura de red empresarial.",
-      topics: [
-        "Configuración de routers Cisco",
-        "VLANs y subnetting",
-        "Routing avanzado (OSPF, BGP)",
-        "QoS y gestión de tráfico",
-        "Monitoreo de red"
-      ],
-      professor: "Ing. Víctor Apaza"
-    },
-    {
-      id: "INF-611",
-      name: "Seguridad Informática",
-      area: "redes",
-      semester: 6,
-      credits: 4,
-      hours: 6,
-      prerequisites: ["INF-320"],
-      description: "Ciberseguridad: criptografía, ethical hacking y seguridad de sistemas.",
-      topics: [
-        "Criptografía simétrica y asimétrica",
-        "Ethical hacking",
-        "Pentesting",
-        "Firewalls e IDS/IPS",
-        "Análisis de vulnerabilidades"
-      ],
-      professor: "Ing. Mónica Callisaya"
-    },
-    {
-      id: "INF-612",
-      name: "Cloud Computing",
-      area: "redes",
-      semester: 7,
-      credits: 3,
-      hours: 4,
-      prerequisites: ["INF-610"],
-      description: "Computación en la nube: AWS, Azure, contenedores y orquestación.",
-      topics: [
-        "Servicios de AWS/Azure",
-        "Docker y contenedores",
-        "Kubernetes",
-        "Serverless computing",
-        "DevOps y CI/CD"
-      ],
-      professor: "Ing. Alberto Pari"
-    }
-  ],
+  // CLUSTER 3: Redes y Seguridad (Norte)
+  redes: {
+    name: 'Redes y Seguridad',
+    area: 'redes',
+    position: { x: 0, y: 11, z: -8 },
+    satellites: [
+      { name: 'Criptografía', description: 'Cifrado y protección de datos', id: 'SAT-RED-001', area: 'redes' },
+      { name: 'Firewalls', description: 'Seguridad perimetral de red', id: 'SAT-RED-002', area: 'redes' },
+      { name: 'VPN', description: 'Redes privadas virtuales', id: 'SAT-RED-003', area: 'redes' },
+      { name: 'TCP/IP', description: 'Protocolos de red fundamentales', id: 'SAT-RED-004', area: 'redes' },
+      { name: 'DNS', description: 'Sistema de nombres de dominio', id: 'SAT-RED-005', area: 'redes' },
+      { name: 'SSL/TLS', description: 'Seguridad en transporte', id: 'SAT-RED-006', area: 'redes' },
+      { name: 'Pentesting', description: 'Pruebas de penetración ética', id: 'SAT-RED-007', area: 'redes' }
+    ]
+  },
 
-  // Rama de Sistemas y Hardware
-  sistemas: [
-    {
-      id: "INF-710",
-      name: "Arquitectura de Computadoras",
-      area: "sistemas",
-      semester: 5,
-      credits: 4,
-      hours: 6,
-      prerequisites: ["INF-310"],
-      description: "Diseño de CPUs, memoria, pipeline y arquitecturas modernas.",
-      topics: [
-        "Arquitectura von Neumann",
-        "Pipeline y paralelismo",
-        "Jerarquía de memoria",
-        "Cache y memoria virtual",
-        "Arquitecturas RISC vs CISC"
-      ],
-      professor: "Dr. Jaime Ticona"
-    },
-    {
-      id: "INF-711",
-      name: "Sistemas Embebidos",
-      area: "sistemas",
-      semester: 7,
-      credits: 3,
-      hours: 6,
-      prerequisites: ["INF-710"],
-      description: "Programación de microcontroladores y desarrollo de sistemas IoT.",
-      topics: [
-        "Arduino y microcontroladores",
-        "Raspberry Pi",
-        "Sensores y actuadores",
-        "Comunicación serial",
-        "Proyectos IoT"
-      ],
-      professor: "Ing. Raúl Colque"
-    }
-  ],
+  // CLUSTER 4: Bases de Datos (Sur)
+  datos: {
+    name: 'Bases de Datos',
+    area: 'datos',
+    position: { x: 0, y: 11, z: 8 },
+    satellites: [
+      { name: 'SQL', description: 'Lenguaje consultas relacionales', id: 'SAT-DAT-001', area: 'datos' },
+      { name: 'NoSQL', description: 'Bases de datos no relacionales', id: 'SAT-DAT-002', area: 'datos' },
+      { name: 'MongoDB', description: 'Base de datos documental', id: 'SAT-DAT-003', area: 'datos' },
+      { name: 'PostgreSQL', description: 'RDBMS open source avanzado', id: 'SAT-DAT-004', area: 'datos' },
+      { name: 'Redis', description: 'Cache y base datos en memoria', id: 'SAT-DAT-005', area: 'datos' },
+      { name: 'Data Mining', description: 'Minería y análisis de datos', id: 'SAT-DAT-006', area: 'datos' }
+    ]
+  },
 
-  // Rama de Bases de Datos Avanzadas
-  datos: [
-    {
-      id: "INF-810",
-      name: "Bases de Datos Avanzadas",
-      area: "datos",
-      semester: 6,
-      credits: 3,
-      hours: 4,
-      prerequisites: ["INF-220"],
-      description: "NoSQL, Big Data, data warehousing y optimización de consultas.",
-      topics: [
-        "Bases de datos NoSQL (MongoDB)",
-        "Data warehousing",
-        "Big Data con Hadoop",
-        "Optimización de queries",
-        "Bases de datos distribuidas"
-      ],
-      professor: "Ing. Elena Mamani"
+  // CLUSTER 5: Cloud Computing (Suroeste)
+  sistemas: {
+    name: 'Cloud Computing',
+    area: 'sistemas',
+    position: { x: -5.7, y: 12, z: 5.7 },
+    satellites: [
+      { name: 'AWS', description: 'Amazon Web Services', id: 'SAT-SIS-001', area: 'sistemas' },
+      { name: 'Docker', description: 'Contenedorización de apps', id: 'SAT-SIS-002', area: 'sistemas' },
+      { name: 'Kubernetes', description: 'Orquestación de contenedores', id: 'SAT-SIS-003', area: 'sistemas' },
+      { name: 'CI/CD', description: 'Integración y despliegue continuo', id: 'SAT-SIS-004', area: 'sistemas' },
+      { name: 'Terraform', description: 'Infraestructura como código', id: 'SAT-SIS-005', area: 'sistemas' },
+      { name: 'Serverless', description: 'Computación sin servidores', id: 'SAT-SIS-006', area: 'sistemas' }
+    ]
+  },
+
+  // CLUSTER 6: Game Development (Noreste)
+  gamedev: {
+    name: 'Game Development',
+    area: 'gamedev',
+    position: { x: 5.7, y: 12, z: -5.7 },
+    satellites: [
+      { name: 'Unity', description: 'Motor de juegos multiplataforma', id: 'SAT-GAME-001', area: 'gamedev' },
+      { name: 'Unreal Engine', description: 'Motor gráficos AAA', id: 'SAT-GAME-002', area: 'gamedev' },
+      { name: 'C#', description: 'Lenguaje principal Unity', id: 'SAT-GAME-003', area: 'gamedev' },
+      { name: 'C++', description: 'Programación alto rendimiento', id: 'SAT-GAME-004', area: 'gamedev' },
+      { name: 'Game Design', description: 'Diseño mecánicas y jugabilidad', id: 'SAT-GAME-005', area: 'gamedev' },
+      { name: '3D Modeling', description: 'Modelado assets 3D', id: 'SAT-GAME-006', area: 'gamedev' },
+      { name: 'Physics', description: 'Sistemas físicas y colisiones', id: 'SAT-GAME-007', area: 'gamedev' },
+      { name: 'Shaders', description: 'Programación gráfica GPU', id: 'SAT-GAME-008', area: 'gamedev' },
+      { name: 'Godot', description: 'Motor open source ligero', id: 'SAT-GAME-009', area: 'gamedev' },
+      { name: 'AI Behavior', description: 'IA para NPCs y enemigos', id: 'SAT-GAME-010', area: 'gamedev' }
+    ]
+  },
+
+  // CLUSTER 7: Mobile Development (Noroeste)
+  mobile: {
+    name: 'Desarrollo Móvil',
+    area: 'mobile',
+    position: { x: -5.7, y: 12, z: -5.7 },
+    satellites: [
+      { name: 'React Native', description: 'Apps móviles con React', id: 'SAT-MOB-001', area: 'mobile' },
+      { name: 'Flutter', description: 'Framework UI multiplataforma', id: 'SAT-MOB-002', area: 'mobile' },
+      { name: 'Swift', description: 'Desarrollo iOS nativo', id: 'SAT-MOB-003', area: 'mobile' },
+      { name: 'Kotlin', description: 'Desarrollo Android moderno', id: 'SAT-MOB-004', area: 'mobile' },
+      { name: 'PWA', description: 'Progressive Web Apps', id: 'SAT-MOB-005', area: 'mobile' },
+      { name: 'Firebase', description: 'Backend móvil de Google', id: 'SAT-MOB-006', area: 'mobile' }
+    ]
+  },
+
+  // CLUSTER 8: DevOps (Sureste)
+  devops: {
+    name: 'DevOps',
+    area: 'devops',
+    position: { x: 5.7, y: 12, z: 5.7 },
+    satellites: [
+      { name: 'Git', description: 'Control de versiones distribuido', id: 'SAT-DEV-001', area: 'devops' },
+      { name: 'Jenkins', description: 'Automatización CI/CD', id: 'SAT-DEV-002', area: 'devops' },
+      { name: 'Ansible', description: 'Automatización IT', id: 'SAT-DEV-003', area: 'devops' },
+      { name: 'Monitoring', description: 'Observabilidad y métricas', id: 'SAT-DEV-004', area: 'devops' },
+      { name: 'GitOps', description: 'Operaciones declarativas con Git', id: 'SAT-DEV-005', area: 'devops' },
+      { name: 'Nginx', description: 'Servidor web y proxy', id: 'SAT-DEV-006', area: 'devops' }
+    ]
+  },
+
+  // CLUSTER 9: Data Science (Este-Norte intermedio)
+  datascience: {
+    name: 'Data Science',
+    area: 'datascience',
+    position: { x: 6.9, y: 13, z: -2.8 },
+    satellites: [
+      { name: 'Python', description: 'Lenguaje análisis de datos', id: 'SAT-DS-001', area: 'datascience' },
+      { name: 'Pandas', description: 'Manipulación de datos', id: 'SAT-DS-002', area: 'datascience' },
+      { name: 'Jupyter', description: 'Notebooks interactivos', id: 'SAT-DS-003', area: 'datascience' },
+      { name: 'Data Viz', description: 'Visualización de datos', id: 'SAT-DS-004', area: 'datascience' },
+      { name: 'Estadística', description: 'Análisis estadístico avanzado', id: 'SAT-DS-005', area: 'datascience' },
+      { name: 'Big Data', description: 'Procesamiento datos masivos', id: 'SAT-DS-006', area: 'datascience' },
+      { name: 'Spark', description: 'Motor procesamiento distribuido', id: 'SAT-DS-007', area: 'datascience' }
+    ]
+  },
+
+  // CLUSTER 10: Blockchain (Oeste-Norte intermedio)
+  blockchain: {
+    name: 'Blockchain & Web3',
+    area: 'blockchain',
+    position: { x: -6.9, y: 13, z: -2.8 },
+    satellites: [
+      { name: 'Solidity', description: 'Smart contracts Ethereum', id: 'SAT-BLK-001', area: 'blockchain' },
+      { name: 'Web3.js', description: 'Interacción con blockchain', id: 'SAT-BLK-002', area: 'blockchain' },
+      { name: 'DeFi', description: 'Finanzas descentralizadas', id: 'SAT-BLK-003', area: 'blockchain' },
+      { name: 'NFTs', description: 'Tokens no fungibles', id: 'SAT-BLK-004', area: 'blockchain' },
+      { name: 'Consensus', description: 'Algoritmos de consenso', id: 'SAT-BLK-005', area: 'blockchain' },
+      { name: 'IPFS', description: 'Almacenamiento distribuido', id: 'SAT-BLK-006', area: 'blockchain' }
+    ]
+  },
+
+  // CLUSTER 11: IoT (Oeste-Sur intermedio)
+  iot: {
+    name: 'Internet of Things',
+    area: 'iot',
+    position: { x: -6.9, y: 13, z: 2.8 },
+    satellites: [
+      { name: 'Arduino', description: 'Microcontroladores open source', id: 'SAT-IOT-001', area: 'iot' },
+      { name: 'Raspberry Pi', description: 'Computadora miniatura', id: 'SAT-IOT-002', area: 'iot' },
+      { name: 'MQTT', description: 'Protocolo IoT ligero', id: 'SAT-IOT-003', area: 'iot' },
+      { name: 'Sensores', description: 'Hardware de captura datos', id: 'SAT-IOT-004', area: 'iot' },
+      { name: 'Edge Computing', description: 'Procesamiento en el borde', id: 'SAT-IOT-005', area: 'iot' },
+      { name: 'LoRaWAN', description: 'Red área amplia baja potencia', id: 'SAT-IOT-006', area: 'iot' }
+    ]
+  },
+
+  // CLUSTER 12: UX/UI Design (Norte-Este intermedio)
+  design: {
+    name: 'UX/UI Design',
+    area: 'design',
+    position: { x: 2.8, y: 13, z: -6.9 },
+    satellites: [
+      { name: 'Figma', description: 'Diseño colaborativo UI', id: 'SAT-DES-001', area: 'design' },
+      { name: 'Design Systems', description: 'Sistemas de diseño escalables', id: 'SAT-DES-002', area: 'design' },
+      { name: 'Prototyping', description: 'Prototipos interactivos', id: 'SAT-DES-003', area: 'design' },
+      { name: 'User Research', description: 'Investigación de usuarios', id: 'SAT-DES-004', area: 'design' },
+      { name: 'Accessibility', description: 'Diseño accesible inclusivo', id: 'SAT-DES-005', area: 'design' },
+      { name: 'Animation', description: 'Microinteracciones y motion', id: 'SAT-DES-006', area: 'design' }
+    ]
+  },
+
+  // CLUSTER 13: Testing & QA (Sur-Este intermedio)
+  testing: {
+    name: 'Testing & QA',
+    area: 'testing',
+    position: { x: 2.8, y: 13, z: 6.9 },
+    satellites: [
+      { name: 'Jest', description: 'Testing framework JavaScript', id: 'SAT-TST-001', area: 'testing' },
+      { name: 'Selenium', description: 'Automatización tests web', id: 'SAT-TST-002', area: 'testing' },
+      { name: 'Unit Testing', description: 'Pruebas unitarias', id: 'SAT-TST-003', area: 'testing' },
+      { name: 'E2E Testing', description: 'Pruebas end-to-end', id: 'SAT-TST-004', area: 'testing' },
+      { name: 'TDD', description: 'Desarrollo guiado por tests', id: 'SAT-TST-005', area: 'testing' },
+      { name: 'Performance', description: 'Testing de rendimiento', id: 'SAT-TST-006', area: 'testing' }
+    ]
+  },
+  // CLUSTER 14: Arquitectura de Software
+architecture: {
+  name: 'Arquitectura de Software',
+  area: 'architecture',
+  position: { x: -2.8, y: 10, z: 6.9 },
+  satellites: [
+    { 
+      name: 'Microservicios', 
+      description: 'Arquitectura distribuida modular',
+      id: 'SAT-ARCH-001',
+      area: 'architecture'
+    },
+    { 
+      name: 'Design Patterns', 
+      description: 'Patrones de diseño clásicos',
+      id: 'SAT-ARCH-002',
+      area: 'architecture'
+    },
+    { 
+      name: 'DDD', 
+      description: 'Domain-Driven Design',
+      id: 'SAT-ARCH-003',
+      area: 'architecture'
+    },
+    { 
+      name: 'Clean Code', 
+      description: 'Principios código limpio',
+      id: 'SAT-ARCH-004',
+      area: 'architecture'
+    },
+    { 
+      name: 'SOLID', 
+      description: 'Principios orientación objetos',
+      id: 'SAT-ARCH-005',
+      area: 'architecture'
+    },
+    { 
+      name: 'Event-Driven', 
+      description: 'Arquitectura basada en eventos',
+      id: 'SAT-ARCH-006',
+      area: 'architecture'
+    },
+    { 
+      name: 'Hexagonal', 
+      description: 'Arquitectura de puertos y adaptadores',
+      id: 'SAT-ARCH-007',
+      area: 'architecture'
     }
   ]
-};
+},
 
+// CLUSTER 15: Backend Development
+backend: {
+  name: 'Backend Development',
+  area: 'backend',
+  position: { x: -2.8, y: 10, z: -6.9 },
+  satellites: [
+    { 
+      name: 'Java', 
+      description: 'Lenguaje enterprise robusto',
+      id: 'SAT-BACK-001',
+      area: 'backend'
+    },
+    { 
+      name: 'Python', 
+      description: 'Lenguaje versátil y poderoso',
+      id: 'SAT-BACK-002',
+      area: 'backend'
+    },
+    { 
+      name: 'Go', 
+      description: 'Lenguaje concurrente eficiente',
+      id: 'SAT-BACK-003',
+      area: 'backend'
+    },
+    { 
+      name: 'Spring Boot', 
+      description: 'Framework Java empresarial',
+      id: 'SAT-BACK-004',
+      area: 'backend'
+    },
+    { 
+      name: 'Django', 
+      description: 'Framework Python fullstack',
+      id: 'SAT-BACK-005',
+      area: 'backend'
+    },
+    { 
+      name: 'FastAPI', 
+      description: 'APIs Python modernas y rápidas',
+      id: 'SAT-BACK-006',
+      area: 'backend'
+    },
+    { 
+      name: 'Express', 
+      description: 'Framework Node.js minimalista',
+      id: 'SAT-BACK-007',
+      area: 'backend'
+    }
+  ]
+},
+
+// CLUSTER 16: Sistemas Operativos
+os: {
+  name: 'Sistemas Operativos',
+  area: 'os',
+  position: { x: 2.8, y: 10, z: -6.9 },
+  satellites: [
+    { 
+      name: 'Linux', 
+      description: 'Sistema operativo open source',
+      id: 'SAT-OS-001',
+      area: 'os'
+    },
+    { 
+      name: 'Bash/Shell', 
+      description: 'Scripting y automatización',
+      id: 'SAT-OS-002',
+      area: 'os'
+    },
+    { 
+      name: 'Procesos', 
+      description: 'Gestión de procesos y threads',
+      id: 'SAT-OS-003',
+      area: 'os'
+    },
+    { 
+      name: 'Memoria', 
+      description: 'Gestión de memoria virtual',
+      id: 'SAT-OS-004',
+      area: 'os'
+    },
+    { 
+      name: 'File Systems', 
+      description: 'Sistemas de archivos',
+      id: 'SAT-OS-005',
+      area: 'os'
+    },
+    { 
+      name: 'Scheduling', 
+      description: 'Algoritmos de planificación',
+      id: 'SAT-OS-006',
+      area: 'os'
+    }
+  ]
+},
+
+// CLUSTER 17: Performance & Optimization
+performance: {
+  name: 'Performance & Optimization',
+  area: 'performance',
+  position: { x: 2.8, y: 10, z: 6.9 },
+  satellites: [
+    { 
+      name: 'Caching', 
+      description: 'Estrategias de caché',
+      id: 'SAT-PERF-001',
+      area: 'performance'
+    },
+    { 
+      name: 'Load Balancing', 
+      description: 'Balanceo de carga',
+      id: 'SAT-PERF-002',
+      area: 'performance'
+    },
+    { 
+      name: 'CDN', 
+      description: 'Content Delivery Networks',
+      id: 'SAT-PERF-003',
+      area: 'performance'
+    },
+    { 
+      name: 'Compression', 
+      description: 'Compresión de datos',
+      id: 'SAT-PERF-004',
+      area: 'performance'
+    },
+    { 
+      name: 'Profiling', 
+      description: 'Análisis de rendimiento',
+      id: 'SAT-PERF-005',
+      area: 'performance'
+    },
+    { 
+      name: 'Lazy Loading', 
+      description: 'Carga diferida de recursos',
+      id: 'SAT-PERF-006',
+      area: 'performance'
+    },
+    { 
+      name: 'Indexing', 
+      description: 'Optimización de índices',
+      id: 'SAT-PERF-007',
+      area: 'performance'
+    }
+  ]
+},
+
+// CLUSTER 18: APIs & Integraciones
+apis: {
+  name: 'APIs & Integraciones',
+  area: 'apis',
+  position: { x: -7.5, y: 14, z: 0 },
+  satellites: [
+    { 
+      name: 'REST', 
+      description: 'APIs RESTful estándar',
+      id: 'SAT-API-001',
+      area: 'apis'
+    },
+    { 
+      name: 'GraphQL', 
+      description: 'Query language flexible',
+      id: 'SAT-API-002',
+      area: 'apis'
+    },
+    { 
+      name: 'gRPC', 
+      description: 'RPC de alto rendimiento',
+      id: 'SAT-API-003',
+      area: 'apis'
+    },
+    { 
+      name: 'WebSockets', 
+      description: 'Comunicación bidireccional',
+      id: 'SAT-API-004',
+      area: 'apis'
+    },
+    { 
+      name: 'OAuth', 
+      description: 'Autenticación y autorización',
+      id: 'SAT-API-005',
+      area: 'apis'
+    },
+    { 
+      name: 'Webhooks', 
+      description: 'Callbacks HTTP automatizados',
+      id: 'SAT-API-006',
+      area: 'apis'
+    },
+    { 
+      name: 'API Gateway', 
+      description: 'Gateway de microservicios',
+      id: 'SAT-API-007',
+      area: 'apis'
+    }
+  ]
+},
+
+// CLUSTER 19: Computación Cuántica
+quantum: {
+  name: 'Computación Cuántica',
+  area: 'quantum',
+  position: { x: 7.5, y: 14, z: 0 },
+  satellites: [
+    { 
+      name: 'Qubits', 
+      description: 'Bits cuánticos fundamentales',
+      id: 'SAT-QUAN-001',
+      area: 'quantum'
+    },
+    { 
+      name: 'Superposición', 
+      description: 'Estados cuánticos superpuestos',
+      id: 'SAT-QUAN-002',
+      area: 'quantum'
+    },
+    { 
+      name: 'Entrelazamiento', 
+      description: 'Correlación cuántica',
+      id: 'SAT-QUAN-003',
+      area: 'quantum'
+    },
+    { 
+      name: 'Qiskit', 
+      description: 'Framework IBM para quantum',
+      id: 'SAT-QUAN-004',
+      area: 'quantum'
+    },
+    { 
+      name: 'Algoritmos Q', 
+      description: 'Algoritmos cuánticos',
+      id: 'SAT-QUAN-005',
+      area: 'quantum'
+    },
+    { 
+      name: 'Criptografía Q', 
+      description: 'Seguridad cuántica',
+      id: 'SAT-QUAN-006',
+      area: 'quantum'
+    }
+  ]
+},
+
+// CLUSTER 20: Robótica
+robotics: {
+  name: 'Robótica',
+  area: 'robotics',
+  position: { x: 0, y: 14, z: -7.5 },
+  satellites: [
+    { 
+      name: 'ROS', 
+      description: 'Robot Operating System',
+      id: 'SAT-ROB-001',
+      area: 'robotics'
+    },
+    { 
+      name: 'Cinemática', 
+      description: 'Movimiento y control',
+      id: 'SAT-ROB-002',
+      area: 'robotics'
+    },
+    { 
+      name: 'SLAM', 
+      description: 'Localización y mapeo simultáneo',
+      id: 'SAT-ROB-003',
+      area: 'robotics'
+    },
+    { 
+      name: 'Control', 
+      description: 'Sistemas de control robótico',
+      id: 'SAT-ROB-004',
+      area: 'robotics'
+    },
+    { 
+      name: 'Actuadores', 
+      description: 'Motores y servos',
+      id: 'SAT-ROB-005',
+      area: 'robotics'
+    },
+    { 
+      name: 'Path Planning', 
+      description: 'Planificación de rutas',
+      id: 'SAT-ROB-006',
+      area: 'robotics'
+    }
+  ]
+},
+
+// CLUSTER 21: AR/VR
+arvr: {
+  name: 'Realidad Aumentada/Virtual',
+  area: 'arvr',
+  position: { x: 0, y: 14, z: 7.5 },
+  satellites: [
+    { 
+      name: 'Unity XR', 
+      description: 'Desarrollo XR en Unity',
+      id: 'SAT-XR-001',
+      area: 'arvr'
+    },
+    { 
+      name: 'WebXR', 
+      description: 'XR en navegadores web',
+      id: 'SAT-XR-002',
+      area: 'arvr'
+    },
+    { 
+      name: 'ARKit', 
+      description: 'AR para iOS',
+      id: 'SAT-XR-003',
+      area: 'arvr'
+    },
+    { 
+      name: 'ARCore', 
+      description: 'AR para Android',
+      id: 'SAT-XR-004',
+      area: 'arvr'
+    },
+    { 
+      name: 'Spatial Audio', 
+      description: 'Audio espacial 3D',
+      id: 'SAT-XR-005',
+      area: 'arvr'
+    },
+    { 
+      name: 'Hand Tracking', 
+      description: 'Seguimiento de manos',
+      id: 'SAT-XR-006',
+      area: 'arvr'
+    },
+    { 
+      name: 'Occlusion', 
+      description: 'Oclusión realista',
+      id: 'SAT-XR-007',
+      area: 'arvr'
+    }
+  ]
+}
+};
 // ============================================
-// FUNCIONES HELPER
+// FUNCIONES HELPER (actualizadas)
 // ============================================
 
 /**
  * Obtener todas las materias en un array plano
- * @returns {Array} Array con todas las materias
  */
 export function getAllSubjects() {
   const all = [...ROOTS, ...TRUNK];
-  
-  // Agregar todas las ramas
-  Object.values(BRANCHES).forEach(branch => {
-    all.push(...branch);
+
+  // Agregar satélites de clusters
+  Object.values(BRANCHES).forEach(cluster => {
+    all.push(...cluster.satellites);
   });
-  
+
   return all;
 }
 
 /**
  * Obtener materia por ID
- * @param {string} id - Código de la materia (ej: "INF-111")
- * @returns {Object|null} Objeto de materia o null
  */
 export function getSubjectById(id) {
   return getAllSubjects().find(subject => subject.id === id);
@@ -626,48 +877,38 @@ export function getSubjectById(id) {
 
 /**
  * Obtener materias por área
- * @param {string} area - Nombre del área
- * @returns {Array} Array de materias del área
  */
 export function getSubjectsByArea(area) {
   return getAllSubjects().filter(subject => subject.area === area);
 }
 
 /**
- * Obtener materias por semestre
- * @param {number} semester - Número de semestre
- * @returns {Array} Array de materias del semestre
+ * Obtener cluster por área
  */
-export function getSubjectsBySemester(semester) {
-  return getAllSubjects().filter(subject => subject.semester === semester);
+export function getClusterByArea(area) {
+  return BRANCHES[area] || null;
 }
 
 /**
- * Verificar si una materia tiene todos los prerequisitos
- * @param {string} subjectId - ID de la materia
- * @param {Array} completedIds - IDs de materias completadas
- * @returns {boolean} true si puede cursarla
+ * Obtener todos los clusters
  */
-export function canTakeSubject(subjectId, completedIds = []) {
-  const subject = getSubjectById(subjectId);
-  if (!subject) return false;
-  
-  return subject.prerequisites.every(prereq => 
-    completedIds.includes(prereq)
-  );
+export function getAllClusters() {
+  return Object.values(BRANCHES);
 }
 
 /**
- * Obtener estadísticas de la carrera
- * @returns {Object} Estadísticas
+ * Obtener estadísticas
  */
 export function getCareerStats() {
   const allSubjects = getAllSubjects();
-  
+
   return {
     totalSubjects: allSubjects.length,
-    totalCredits: allSubjects.reduce((sum, s) => sum + s.credits, 0),
-    totalHours: allSubjects.reduce((sum, s) => sum + s.hours, 0),
+    totalClusters: Object.keys(BRANCHES).length,
+    totalSatellites: Object.values(BRANCHES).reduce(
+      (sum, cluster) => sum + cluster.satellites.length,
+      0
+    ),
     byArea: Object.keys(KNOWLEDGE_AREAS).reduce((acc, area) => {
       acc[area] = getSubjectsByArea(area).length;
       return acc;
@@ -675,9 +916,6 @@ export function getCareerStats() {
   };
 }
 
-// ============================================
-// EXPORT DEFAULT
-// ============================================
 export default {
   CAREER_INFO,
   KNOWLEDGE_AREAS,
@@ -687,7 +925,7 @@ export default {
   getAllSubjects,
   getSubjectById,
   getSubjectsByArea,
-  getSubjectsBySemester,
-  canTakeSubject,
+  getClusterByArea,
+  getAllClusters,
   getCareerStats
 };

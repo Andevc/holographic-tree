@@ -1,25 +1,8 @@
 /**
- * TREEMANAGER.JS - Coordinador del Árbol
- * =======================================
+ * TREEMANAGER.JS - Coordinador del Árbol con Clusters
+ * ====================================================
  * 
- * PROPÓSITO:
- * - Orquestar la construcción completa del árbol
- * - Coordinar RootsBuilder, TrunkBuilder, BranchBuilder, NodeBuilder
- * - Mantener referencias a todos los objetos 3D
- * - Manejar animaciones del árbol
- * 
- * ARQUITECTURA:
- * TreeManager (este archivo)
- *   ├─ RootsBuilder → Construye raíces
- *   ├─ TrunkBuilder → Construye tronco
- *   ├─ BranchBuilder → Construye ramas
- *   └─ NodeBuilder → Construye nodos
- * 
- * PARA LA DEFENSA:
- * "TreeManager implementa el patrón Facade, simplificando
- * la construcción del árbol al coordinar múltiples builders.
- * Cada builder es responsable de una parte específica,
- * siguiendo el principio de responsabilidad única."
+ * ACTUALIZADO: Ahora coordina el sistema de clusters
  */
 
 import * as THREE from 'three';
@@ -34,165 +17,145 @@ export class TreeManager {
   constructor(scene) {
     this.scene = scene;
     
-    // Grupo principal que contiene todo el árbol
     this.treeGroup = new THREE.Group();
     this.treeGroup.name = 'KnowledgeTree';
     
-    // Referencias a los builders
     this.rootsBuilder = null;
     this.trunkBuilder = null;
     this.branchBuilder = null;
     this.nodeBuilder = null;
     
-    // Arrays para mantener referencias
-    this.allNodes = [];      // Todos los nodos (para interacción)
-    this.allBranches = [];   // Todas las ramas
-    this.allRoots = [];      // Todas las raíces
+    this.allNodes = [];
+    this.allBranches = [];
+    this.allRoots = [];
     
-    // Estado
     this.isBuilt = false;
     
     this.build();
   }
 
-  /**
-   * Construir el árbol completo
-   */
   build() {
-    console.log('🌳 Iniciando construcción del árbol...');
+    console.log('🌳 Iniciando construcción del árbol con CLUSTERS...');
     
-    // 1. Construir raíces (fundamentos)
+    // 1. Construir raíces
     this.buildRoots();
     
-    // 2. Construir tronco (núcleo)
+    // 2. Construir tronco
     this.buildTrunk();
     
-    // 3. Construir ramas (especialidades)
-    this.buildBranches();
+    // 3. Construir clusters (antes "ramas")
+    this.buildClusters();
     
-    // 4. Agregar grupo completo a la escena
+    // 4. Agregar a la escena
     this.scene.add(this.treeGroup);
     
     this.isBuilt = true;
     
     console.log(`✅ Árbol construido con ${this.allNodes.length} nodos`);
+    console.log(`   - Raíces: ${this.allRoots.length}`);
+    console.log(`   - Clusters: ${this.allBranches.length}`);
     
-    // Emitir evento de que el árbol está listo
     EventBus.emit(EVENTS.TREE_BUILT, {
       nodeCount: this.allNodes.length,
-      branchCount: this.allBranches.length
+      clusterCount: this.allBranches.length
     });
   }
 
-  /**
-   * Construir raíces
-   */
   buildRoots() {
     this.rootsBuilder = new RootsBuilder(this.treeGroup, ROOTS);
     const rootNodes = this.rootsBuilder.build();
     
-    // Guardar referencias
     this.allRoots = rootNodes;
     this.allNodes.push(...rootNodes);
     
+    console.log(`  ├─ Raíces: ${rootNodes.length} nodos`);
   }
 
-  /**
-   * Construir tronco
-   */
   buildTrunk() {
     this.trunkBuilder = new TrunkBuilder(this.treeGroup, TRUNK);
     const trunkNodes = this.trunkBuilder.build();
     
-    // Guardar referencias
     this.allNodes.push(...trunkNodes);
     
-    console.log(`  ├─ Tronco: ${trunkNodes.length} nodos agregados`);
+    console.log(`  ├─ Tronco: ${trunkNodes.length} nodos`);
   }
 
   /**
-   * Construir ramas
+   * ⭐ NUEVO: Construir clusters en lugar de ramas lineales
    */
-  buildBranches() {
+  buildClusters() {
     this.branchBuilder = new BranchBuilder(this.treeGroup, BRANCHES);
     const { nodes, branches } = this.branchBuilder.build();
     
-    // Guardar referencias
     this.allNodes.push(...nodes);
     this.allBranches = branches;
     
-    console.log(`  └─ Ramas: ${branches.length} ramas, ${nodes.length} nodos`);
+    console.log(`  └─ Clusters: ${branches.length} clusters, ${nodes.length} nodos`);
   }
 
   /**
-   * Animar el árbol (llamar en el loop)
-   * @param {number} time - Tiempo transcurrido
+   * Actualizar animaciones
    */
- update(time, delta) {
-  if (!this.isBuilt) return;
-  
-  // ✨ NUEVO: Animar tronco
-  if (this.trunkBuilder) {
-    this.trunkBuilder.update(time);
-  }
-  
-  // Animar nodos individuales
-  this.allNodes.forEach((node, index) => {
-    // Pulso de escala
-    const scale = 1 + Math.sin(time * 2 + index * 0.5) * 0.1;
-    node.scale.setScalar(scale);
+  update(time, delta) {
+    if (!this.isBuilt) return;
     
-    // Float vertical sutil
-    if (node.userData.originalY === undefined) {
-      node.userData.originalY = node.position.y;
+    // Animar tronco
+    if (this.trunkBuilder) {
+      this.trunkBuilder.update(time);
     }
-    node.position.y = node.userData.originalY + Math.sin(time + index) * 0.05;
     
-    // Rotar anillos decorativos si existen
-    if (node.children.length > 0) {
-      node.children.forEach(child => {
-        if (child.type === 'Mesh' && child.geometry.type === 'RingGeometry') {
-          child.rotation.z += 0.01;
+    // ⭐ NUEVO: Animar clusters
+    if (this.branchBuilder) {
+      this.branchBuilder.update(time);
+    }
+    
+    // Animaciones adicionales de nodos individuales
+    this.allNodes.forEach((node, index) => {
+      // Solo animar si no es parte de un cluster (que ya tiene animación)
+      if (!node.userData.type || 
+          (!node.userData.type.includes('cluster') && 
+           node.userData.type !== 'root')) {
+        
+        // Pulso de escala
+        const scale = 1 + Math.sin(time * 2 + index * 0.5) * 0.1;
+        node.scale.setScalar(scale);
+        
+        // Float vertical
+        if (node.userData.originalY === undefined) {
+          node.userData.originalY = node.position.y;
         }
-      });
-    }
-  });
-  
- 
-}
+        node.position.y = node.userData.originalY + Math.sin(time + index) * 0.05;
+        
+        // Rotar anillos
+        if (node.children.length > 0) {
+          node.children.forEach(child => {
+            if (child.type === 'Mesh' && child.geometry.type === 'RingGeometry') {
+              child.rotation.z += 0.01;
+            }
+          });
+        }
+      }
+    });
+  }
 
-  /**
-   * Obtener todos los nodos interactivos
-   * @returns {Array} Array de THREE.Mesh
-   */
   getNodes() {
     return this.allNodes;
   }
 
-  /**
-   * Obtener nodo por ID de materia
-   * @param {string} subjectId - ID de materia (ej: "INF-111")
-   * @returns {THREE.Mesh|null}
-   */
   getNodeBySubjectId(subjectId) {
     return this.allNodes.find(node => 
-      node.userData.subjectData?.id === subjectId
+      node.userData.subjectData?.id === subjectId ||
+      node.userData.satelliteData?.id === subjectId
     );
   }
 
-  /**
-   * Resaltar un nodo
-   * @param {THREE.Mesh} node - Nodo a resaltar
-   */
   highlightNode(node) {
     if (!node) return;
     
-    // Aumentar intensidad emissive
     if (node.material && node.material.emissive) {
       node.material.emissiveIntensity = 1.5;
     }
     
-    // Aumentar opacidad de anillos
     node.children.forEach(child => {
       if (child.material && child.material.opacity !== undefined) {
         child.material.opacity = 0.8;
@@ -200,19 +163,13 @@ export class TreeManager {
     });
   }
 
-  /**
-   * Quitar resaltado de un nodo
-   * @param {THREE.Mesh} node - Nodo a des-resaltar
-   */
   unhighlightNode(node) {
     if (!node) return;
     
-    // Restaurar intensidad normal
     if (node.material && node.material.emissive) {
       node.material.emissiveIntensity = 1.0;
     }
     
-    // Restaurar opacidad de anillos
     node.children.forEach(child => {
       if (child.material && child.material.opacity !== undefined) {
         child.material.opacity = 0.4;
@@ -220,13 +177,12 @@ export class TreeManager {
     });
   }
 
-  /**
-   * Filtrar nodos por área
-   * @param {string} area - Nombre del área
-   */
   filterByArea(area) {
     this.allNodes.forEach(node => {
-      const nodeArea = node.userData.subjectData?.area;
+      const nodeArea = node.userData.subjectData?.area || 
+                       node.userData.satelliteData?.area ||
+                       node.userData.area;
+      
       if (area === 'all' || nodeArea === area) {
         node.visible = true;
       } else {
@@ -235,35 +191,28 @@ export class TreeManager {
     });
   }
 
-  /**
-   * Mostrar todos los nodos
-   */
   showAll() {
     this.allNodes.forEach(node => {
       node.visible = true;
     });
   }
 
-  /**
-   * Obtener estadísticas del árbol
-   * @returns {Object}
-   */
   getStats() {
     return {
       totalNodes: this.allNodes.length,
       roots: this.allRoots.length,
-      branches: this.allBranches.length,
-      areas: [...new Set(this.allNodes.map(n => n.userData.subjectData?.area))]
+      clusters: this.allBranches.length,
+      areas: [...new Set(this.allNodes.map(n => 
+        n.userData.subjectData?.area || 
+        n.userData.satelliteData?.area ||
+        n.userData.area
+      ))]
     };
   }
 
-  /**
-   * Limpiar recursos
-   */
   dispose() {
     this.scene.remove(this.treeGroup);
     
-    // Limpiar geometrías y materiales
     this.treeGroup.traverse((object) => {
       if (object.geometry) object.geometry.dispose();
       if (object.material) {
