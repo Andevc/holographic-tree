@@ -46,14 +46,14 @@ export const COLORS = {
 // ============================================
 export const TREE_CONFIG = {
   roots: {
-    count: 6,
+    count: 8,
     radius: 5,
     radiusTop: 0.5,
     radiusBottom: 0,
     size: 1,
     height: 1.5,
     segments: 16,
-    yPosition: 0
+    yPosition: 1
   },
 
   trunk: {

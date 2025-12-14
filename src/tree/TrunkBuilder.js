@@ -81,7 +81,7 @@ export class TrunkBuilder {
     const tubeMaterial = new THREE.MeshPhongMaterial({
       color: COLORS.areas.fundamentos,
       transparent: true,
-      opacity: 0.4,
+      opacity: 0.6,
       emissive: COLORS.areas.fundamentos,
       emissiveIntensity: 0.6,
       shininess: 150

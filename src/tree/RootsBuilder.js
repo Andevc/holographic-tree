@@ -1,122 +1,60 @@
 import * as THREE from 'three';
 import { MaterialLibrary } from '../materials/MaterialLibrary.js';
-import { TREE_CONFIG } from '../config/constants.js';
+import { TREE_CONFIG, COLORS } from '../config/constants.js';
 
 export class RootsBuilder {
-  constructor(parent, rootsData) {
+  constructor(parent) {
     this.parent = parent;
-    this.rootsData = rootsData;
-    this.nodes = [];
+    this.connections = [];
   }
 
   build() {
     const config = TREE_CONFIG.roots;
-    const numRoots = config.count;
+    const numRoots = config.count; // Usar directamente el número de raíces del config
 
-    this.rootsData.forEach((data, i) => {
-      // Posición en círculo
+    // Crear las conexiones sin nodos físicos
+    for (let i = 0; i < numRoots; i++) {
+      // Posición en círculo (punto de inicio de cada raíz)
       const angle = (i / numRoots) * Math.PI * 2;
       const x = Math.cos(angle) * config.radius;
       const z = Math.sin(angle) * config.radius;
 
-      // ⭐ Reemplazo del cono por cilindro
-      const geometry = new THREE.CylinderGeometry(
-        config.radiusTop,      // radiusTop
-        config.radiusBottom,      // radiusBottom (igual → cilindro)
-        config.height,    // height
-        config.segments,  // radialSegments
-        1,                // heightSegments
-        false             // openEnded
-      );
+      // Punto de inicio en el suelo
+      const startPoint = new THREE.Vector3(x, config.yPosition, z);
 
-      const material = MaterialLibrary.createHologram(
-        MaterialLibrary.getByArea(data.area, 'hologram').color,
-        { wireframe: false, opacity: 1 }
-      );
-
-      const root = new THREE.Mesh(geometry, material);
-      root.position.set(x, config.yPosition, z);
-
-      // Guardar datos
-      root.userData = {
-        type: 'root',
-        subjectData: data
-      };
-      MaterialLibrary.applyHolographicEffect(root, {
-        wireframeScale: 1.05,
-        edgesOpacity: 0.7
-      });
-
-      // Agregar halo adicional (opcional)
-      const haloGeometry = new THREE.EdgesGeometry(geometry);
-      const haloMaterial = new THREE.LineBasicMaterial({
-        color: 0x00ffff,
-        transparent: true,
-        opacity: 0.3,
-        blending: THREE.AdditiveBlending  // ← CLAVE
-      });
-      const haloLine = new THREE.LineSegments(haloGeometry, haloMaterial);
-      haloLine.scale.multiplyScalar(1.1);
-      root.add(haloLine);
-      // Edges brillantes
-      const edges = new THREE.EdgesGeometry(geometry);
-      const edgesMat = new THREE.LineBasicMaterial({
-        color: 0x00ffff,       // color neón
-        transparent: false,
-        opacity: 1,
-        blending: THREE.AdditiveBlending
-      });
-
-      const edgesLine = new THREE.LineSegments(edges, edgesMat);
-      root.add(edgesLine);
-
-      const haloMat = new THREE.LineBasicMaterial({
-        color: 0x00ffff,
-        transparent: false,
-        opacity: 0.3,
-        blending: THREE.AdditiveBlending
-      });
-
-
-
-      this.parent.add(root);
-      this.nodes.push(root);
-
-      // Conexión al centro
-      // Conexión al centro (raíces hacia el tronco)
-      // más cerca del tronco para un efecto de convergencia
+      // 8 conexiones por raíz (como antes)
       const angles = [
-        0,
-        2 * Math.PI / 8,
-        4 * Math.PI / 8,
-        6 * Math.PI / 8,
-        8 * Math.PI / 8,
-        10 * Math.PI / 8,
-        12 * Math.PI / 8,
-        14 * Math.PI / 8
+        0,                    // 0°
+        2 * Math.PI / 5,      // 72°
+        4 * Math.PI / 5,      // 144°
+        6 * Math.PI / 5,      // 216°
+        8 * Math.PI / 5       // 288°
       ];
-      const thicknesses = [0.05, 0.07, 0.1, 0.04, 0.06, 0.01, 0.02, 0.03];
-      angles.forEach((a, i) => {
 
-        // Pequeñas variaciones para raíces más naturales
+      const thicknesses = [0.08, 0.07, 0.09, 0.06, 0.09];
+
+      angles.forEach((a, idx) => {
+        // Variaciones para raíces más naturales
         const h = 3.5 + Math.random() * 3.5;  // altura variable
         const d = 0.5 + Math.random() * 0.5;  // desviación lateral
         const r = 1;
 
-        this.createConnection(
-          new THREE.Vector3(x, 0.5, z),     // inicio nodo
-          new THREE.Vector3(0, 3.6, 0),   // tronco
-          material.color,
-          thicknesses[i],
+        const connection = this.createConnection(
+          startPoint,
+          new THREE.Vector3(0, 4, 0),   
+          COLORS.areas.fundamentos,       
+          thicknesses[idx],
           h,
           d,
           r,
           a
         );
-      });
-    });
 
-    return this.nodes;
+        this.connections.push(connection);
+      });
+    }
+
+    return []; 
   }
 
   createConnection(start, end, color, thickness, curveHeight, curveDepth, radius, angle) {
@@ -129,15 +67,14 @@ export class RootsBuilder {
 
     // Puntos de control para la curva tipo "S" vertical
     const control1 = new THREE.Vector3(
-      (start.x + finalEnd.x) * 0.9,      // 30% hacia el tronco
-      start.y + curveHeight * 0.5,             // subida
-      (start.z + finalEnd.z) * 0.7       // 30% hacia adentro
+      (start.x + finalEnd.x) * 0.9,
+      start.y + curveHeight * 0.3,
+      (start.z + finalEnd.z) * 0.7
     );
 
-    // Segundo control: ya muy cerca del tronco
     const control2 = new THREE.Vector3(
-      (start.x + finalEnd.x) * 0.6,      // 70% hacia el tronco
-      finalEnd.y - curveHeight * 0.7,    // ligera bajada
+      (start.x + finalEnd.x) * 0.6,
+      finalEnd.y - curveHeight * 0.7,
       (start.z + finalEnd.z) * 0.6
     );
 
@@ -145,19 +82,52 @@ export class RootsBuilder {
     const curveS = new THREE.CubicBezierCurve3(start, control1, control2, finalEnd);
 
     // Generar geometría tubular
-    const tubularSegments = 60;
-    const geometry = new THREE.TubeGeometry(curveS, tubularSegments, thickness, 64, false);
+    const tubularSegments = 32;
+    const geometry = new THREE.TubeGeometry(curveS, tubularSegments, thickness, 16, false);
 
-    // Material tipo neón
-    const material = MaterialLibrary.createLine(color, { opacity: 0.5, blending: THREE.AdditiveBlending });
+    const material = new THREE.MeshPhongMaterial({
+      color: color,
+      transparent: true,
+      opacity: 0.2,
+      emissive: color,
+      emissiveIntensity: 0.6,
+      shininess: 100,
+      wireframe: true,
+      side: THREE.DoubleSide
+    });
 
     const tube = new THREE.Mesh(geometry, material);
+    const edgesGeometry = new THREE.EdgesGeometry(geometry);
+    const edgesMaterial = new THREE.LineBasicMaterial({
+      color: color,
+      transparent: true,
+      opacity: 0.2,
+    });
+    const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
+    tube.add(edges);
 
-    // Añadir a la escena
     this.parent.add(tube);
 
     return tube;
   }
 
+  update(time) {
+    // Animar las conexiones si es necesario (pulso de emisión)
+    this.connections.forEach((connection, index) => {
+      if (connection.material && connection.material.emissive) {
+        const baseIntensity = 0.6;
+        connection.material.emissiveIntensity =
+          baseIntensity + Math.sin(time * 0.5 + index * 0.5) * 0.2;
+      }
+    });
+  }
 
+  dispose() {
+    this.connections.forEach(connection => {
+      this.parent.remove(connection);
+      if (connection.geometry) connection.geometry.dispose();
+      if (connection.material) connection.material.dispose();
+    });
+    this.connections = [];
+  }
 }
