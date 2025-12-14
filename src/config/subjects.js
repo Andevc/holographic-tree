@@ -166,103 +166,21 @@ export const ROOTS = [
 // TRONCO - Sin cambios (núcleo obligatorio)
 // ============================================
 export const TRUNK = [
-  {
-    id: "INF-210",
-    name: "Estructuras de Datos",
-    area: "fundamentos",
-    semester: 3,
-    credits: 4,
-    hours: 8,
-    prerequisites: ["INF-110"],
-    description: "Estructuras fundamentales: listas, árboles, grafos.",
-    topics: [
-      "Listas enlazadas",
-      "Pilas y colas",
-      "Árboles binarios",
-      "Grafos",
-      "Tablas hash"
-    ],
-    professor: "Ing. Ana Torres"
-  },
-  {
-    id: "INF-220",
-    name: "Bases de Datos I",
-    area: "datos",
-    semester: 3,
-    credits: 4,
-    hours: 6,
-    prerequisites: ["INF-110"],
-    description: "Fundamentos de bases de datos relacionales.",
-    topics: [
-      "Modelo ER",
-      "Álgebra relacional",
-      "SQL",
-      "Normalización"
-    ],
-    professor: "Ing. Pedro Vargas"
-  },
-  {
-    id: "INF-310",
-    name: "Sistemas Operativos",
-    area: "sistemas",
-    semester: 4,
-    credits: 4,
-    hours: 6,
-    prerequisites: ["INF-210"],
-    description: "Conceptos de sistemas operativos.",
-    topics: [
-      "Procesos",
-      "Memoria",
-      "Archivos",
-      "Concurrencia"
-    ],
-    professor: "Dr. Luis Mamani"
-  },
-  {
-    id: "INF-320",
-    name: "Redes de Computadoras",
-    area: "redes",
-    semester: 4,
-    credits: 4,
-    hours: 6,
-    prerequisites: ["INF-110"],
-    description: "Fundamentos de redes.",
-    topics: [
-      "Modelo OSI",
-      "TCP/IP",
-      "Routing",
-      "Protocolos"
-    ],
-    professor: "Ing. Carmen Quispe"
-  },
-  {
-    id: "INF-330",
-    name: "Ingeniería de Software I",
-    area: "fundamentos",
-    semester: 5,
-    credits: 4,
-    hours: 6,
-    prerequisites: ["INF-210"],
-    description: "Metodologías de desarrollo.",
-    topics: [
-      "Ciclo de vida",
-      "Metodologías ágiles",
-      "UML",
-      "Patrones de diseño"
-    ],
-    professor: "Ing. Jorge Huanca"
-  }
+
 ];
 
 // ============================================
 // ⭐ BRANCHES - NUEVO SISTEMA DE CLUSTERS
 // ============================================
 export const BRANCHES = {
-  // CLUSTER 1: Desarrollo Web (Oeste)
+  // ========== NIVEL 1: Y=10 (positionBranch), Y=13.5 (position), Z=7 ==========
+  
+  // CLUSTER 1: Desarrollo Web (Posición 0° - Norte)
   web: {
     name: 'Desarrollo Web',
     area: 'web',
-    position: { x: -8, y: 11, z: 0 },
+    position: { x: 0, y: 13.5, z: -7 },
+    positionBranch: { x: 0, y: 10, z: 0 },
     satellites: [
       { name: 'React', description: 'Biblioteca UI para interfaces modernas', id: 'SAT-WEB-001', area: 'web' },
       { name: 'Node.js', description: 'Backend JavaScript y APIs', id: 'SAT-WEB-002', area: 'web' },
@@ -275,11 +193,12 @@ export const BRANCHES = {
     ]
   },
 
-  // CLUSTER 2: Inteligencia Artificial (Este)
+  // CLUSTER 2: Inteligencia Artificial (Posición 72° - Noreste)
   ia: {
     name: 'Inteligencia Artificial',
     area: 'ia',
-    position: { x: 8, y: 11, z: 0 },
+    position: { x: 6.65, y: 13.5, z: -2.17 },
+    positionBranch: { x: 0, y: 10, z: 0 },
     satellites: [
       { name: 'Machine Learning', description: 'Aprendizaje automático y modelos', id: 'SAT-IA-001', area: 'ia' },
       { name: 'Deep Learning', description: 'Redes neuronales profundas', id: 'SAT-IA-002', area: 'ia' },
@@ -290,11 +209,12 @@ export const BRANCHES = {
     ]
   },
 
-  // CLUSTER 3: Redes y Seguridad (Norte)
+  // CLUSTER 3: Redes y Seguridad (Posición 144° - Sureste)
   redes: {
     name: 'Redes y Seguridad',
     area: 'redes',
-    position: { x: 0, y: 11, z: -8 },
+    position: { x: 4.11, y: 13.5, z: 5.67 },
+    positionBranch: { x: 0, y: 10, z: 0 },
     satellites: [
       { name: 'Criptografía', description: 'Cifrado y protección de datos', id: 'SAT-RED-001', area: 'redes' },
       { name: 'Firewalls', description: 'Seguridad perimetral de red', id: 'SAT-RED-002', area: 'redes' },
@@ -306,11 +226,12 @@ export const BRANCHES = {
     ]
   },
 
-  // CLUSTER 4: Bases de Datos (Sur)
+  // CLUSTER 4: Bases de Datos (Posición 216° - Suroeste)
   datos: {
     name: 'Bases de Datos',
     area: 'datos',
-    position: { x: 0, y: 11, z: 8 },
+    position: { x: -4.11, y: 13.5, z: 5.67 },
+    positionBranch: { x: 0, y: 10, z: 0 },
     satellites: [
       { name: 'SQL', description: 'Lenguaje consultas relacionales', id: 'SAT-DAT-001', area: 'datos' },
       { name: 'NoSQL', description: 'Bases de datos no relacionales', id: 'SAT-DAT-002', area: 'datos' },
@@ -321,11 +242,12 @@ export const BRANCHES = {
     ]
   },
 
-  // CLUSTER 5: Cloud Computing (Suroeste)
+  // CLUSTER 5: Cloud Computing (Posición 288° - Noroeste)
   sistemas: {
     name: 'Cloud Computing',
     area: 'sistemas',
-    position: { x: -5.7, y: 12, z: 5.7 },
+    position: { x: -6.65, y: 13.5, z: -2.17 },
+    positionBranch: { x: 0, y: 10, z: 0 },
     satellites: [
       { name: 'AWS', description: 'Amazon Web Services', id: 'SAT-SIS-001', area: 'sistemas' },
       { name: 'Docker', description: 'Contenedorización de apps', id: 'SAT-SIS-002', area: 'sistemas' },
@@ -336,11 +258,14 @@ export const BRANCHES = {
     ]
   },
 
-  // CLUSTER 6: Game Development (Noreste)
+  // ========== NIVEL 2: Y=12.5 (positionBranch), Y=16 (position), Z=6.5 ==========
+  
+  // CLUSTER 6: Game Development (Posición 36° - Rotado respecto nivel anterior)
   gamedev: {
     name: 'Game Development',
     area: 'gamedev',
-    position: { x: 5.7, y: 12, z: -5.7 },
+    position: { x: 4.7, y: 16, z: -4.7 },
+    positionBranch: { x: 0, y: 12.5, z: 0 },
     satellites: [
       { name: 'Unity', description: 'Motor de juegos multiplataforma', id: 'SAT-GAME-001', area: 'gamedev' },
       { name: 'Unreal Engine', description: 'Motor gráficos AAA', id: 'SAT-GAME-002', area: 'gamedev' },
@@ -355,11 +280,12 @@ export const BRANCHES = {
     ]
   },
 
-  // CLUSTER 7: Mobile Development (Noroeste)
+  // CLUSTER 7: Mobile Development
   mobile: {
     name: 'Desarrollo Móvil',
     area: 'mobile',
-    position: { x: -5.7, y: 12, z: -5.7 },
+    position: { x: 6.5, y: 16, z: 2 },
+    positionBranch: { x: 0, y: 12.5, z: 0 },
     satellites: [
       { name: 'React Native', description: 'Apps móviles con React', id: 'SAT-MOB-001', area: 'mobile' },
       { name: 'Flutter', description: 'Framework UI multiplataforma', id: 'SAT-MOB-002', area: 'mobile' },
@@ -370,11 +296,12 @@ export const BRANCHES = {
     ]
   },
 
-  // CLUSTER 8: DevOps (Sureste)
+  // CLUSTER 8: DevOps
   devops: {
     name: 'DevOps',
     area: 'devops',
-    position: { x: 5.7, y: 12, z: 5.7 },
+    position: { x: 0, y: 16, z: 6.5 },
+    positionBranch: { x: 0, y: 12.5, z: 0 },
     satellites: [
       { name: 'Git', description: 'Control de versiones distribuido', id: 'SAT-DEV-001', area: 'devops' },
       { name: 'Jenkins', description: 'Automatización CI/CD', id: 'SAT-DEV-002', area: 'devops' },
@@ -385,11 +312,12 @@ export const BRANCHES = {
     ]
   },
 
-  // CLUSTER 9: Data Science (Este-Norte intermedio)
+  // CLUSTER 9: Data Science
   datascience: {
     name: 'Data Science',
     area: 'datascience',
-    position: { x: 6.9, y: 13, z: -2.8 },
+    position: { x: -6.5, y: 16, z: 2 },
+    positionBranch: { x: 0, y: 12.5, z: 0 },
     satellites: [
       { name: 'Python', description: 'Lenguaje análisis de datos', id: 'SAT-DS-001', area: 'datascience' },
       { name: 'Pandas', description: 'Manipulación de datos', id: 'SAT-DS-002', area: 'datascience' },
@@ -401,11 +329,12 @@ export const BRANCHES = {
     ]
   },
 
-  // CLUSTER 10: Blockchain (Oeste-Norte intermedio)
+  // CLUSTER 10: Blockchain
   blockchain: {
     name: 'Blockchain & Web3',
     area: 'blockchain',
-    position: { x: -6.9, y: 13, z: -2.8 },
+    position: { x: -4.7, y: 16, z: -4.7 },
+    positionBranch: { x: 0, y: 12.5, z: 0 },
     satellites: [
       { name: 'Solidity', description: 'Smart contracts Ethereum', id: 'SAT-BLK-001', area: 'blockchain' },
       { name: 'Web3.js', description: 'Interacción con blockchain', id: 'SAT-BLK-002', area: 'blockchain' },
@@ -416,11 +345,14 @@ export const BRANCHES = {
     ]
   },
 
-  // CLUSTER 11: IoT (Oeste-Sur intermedio)
+  // ========== NIVEL 3: Y=15 (positionBranch), Y=18.5 (position), Z=6 ==========
+  
+  // CLUSTER 11: IoT
   iot: {
     name: 'Internet of Things',
     area: 'iot',
-    position: { x: -6.9, y: 13, z: 2.8 },
+    position: { x: 0, y: 18.5, z: -6 },
+    positionBranch: { x: 0, y: 15, z: 0 },
     satellites: [
       { name: 'Arduino', description: 'Microcontroladores open source', id: 'SAT-IOT-001', area: 'iot' },
       { name: 'Raspberry Pi', description: 'Computadora miniatura', id: 'SAT-IOT-002', area: 'iot' },
@@ -431,11 +363,12 @@ export const BRANCHES = {
     ]
   },
 
-  // CLUSTER 12: UX/UI Design (Norte-Este intermedio)
+  // CLUSTER 12: UX/UI Design
   design: {
     name: 'UX/UI Design',
     area: 'design',
-    position: { x: 2.8, y: 13, z: -6.9 },
+    position: { x: 5.71, y: 18.5, z: -1.86 },
+    positionBranch: { x: 0, y: 15, z: 0 },
     satellites: [
       { name: 'Figma', description: 'Diseño colaborativo UI', id: 'SAT-DES-001', area: 'design' },
       { name: 'Design Systems', description: 'Sistemas de diseño escalables', id: 'SAT-DES-002', area: 'design' },
@@ -446,11 +379,12 @@ export const BRANCHES = {
     ]
   },
 
-  // CLUSTER 13: Testing & QA (Sur-Este intermedio)
+  // CLUSTER 13: Testing & QA
   testing: {
     name: 'Testing & QA',
     area: 'testing',
-    position: { x: 2.8, y: 13, z: 6.9 },
+    position: { x: 3.53, y: 18.5, z: 4.86 },
+    positionBranch: { x: 0, y: 15, z: 0 },
     satellites: [
       { name: 'Jest', description: 'Testing framework JavaScript', id: 'SAT-TST-001', area: 'testing' },
       { name: 'Selenium', description: 'Automatización tests web', id: 'SAT-TST-002', area: 'testing' },
@@ -460,395 +394,143 @@ export const BRANCHES = {
       { name: 'Performance', description: 'Testing de rendimiento', id: 'SAT-TST-006', area: 'testing' }
     ]
   },
+
   // CLUSTER 14: Arquitectura de Software
-architecture: {
-  name: 'Arquitectura de Software',
-  area: 'architecture',
-  position: { x: -2.8, y: 10, z: 6.9 },
-  satellites: [
-    { 
-      name: 'Microservicios', 
-      description: 'Arquitectura distribuida modular',
-      id: 'SAT-ARCH-001',
-      area: 'architecture'
-    },
-    { 
-      name: 'Design Patterns', 
-      description: 'Patrones de diseño clásicos',
-      id: 'SAT-ARCH-002',
-      area: 'architecture'
-    },
-    { 
-      name: 'DDD', 
-      description: 'Domain-Driven Design',
-      id: 'SAT-ARCH-003',
-      area: 'architecture'
-    },
-    { 
-      name: 'Clean Code', 
-      description: 'Principios código limpio',
-      id: 'SAT-ARCH-004',
-      area: 'architecture'
-    },
-    { 
-      name: 'SOLID', 
-      description: 'Principios orientación objetos',
-      id: 'SAT-ARCH-005',
-      area: 'architecture'
-    },
-    { 
-      name: 'Event-Driven', 
-      description: 'Arquitectura basada en eventos',
-      id: 'SAT-ARCH-006',
-      area: 'architecture'
-    },
-    { 
-      name: 'Hexagonal', 
-      description: 'Arquitectura de puertos y adaptadores',
-      id: 'SAT-ARCH-007',
-      area: 'architecture'
-    }
-  ]
-},
+  architecture: {
+    name: 'Arquitectura de Software',
+    area: 'architecture',
+    position: { x: -3.53, y: 18.5, z: 4.86 },
+    positionBranch: { x: 0, y: 15, z: 0 },
+    satellites: [
+      { name: 'Microservicios', description: 'Arquitectura distribuida modular', id: 'SAT-ARCH-001', area: 'architecture' },
+      { name: 'Design Patterns', description: 'Patrones de diseño clásicos', id: 'SAT-ARCH-002', area: 'architecture' },
+      { name: 'DDD', description: 'Domain-Driven Design', id: 'SAT-ARCH-003', area: 'architecture' },
+      { name: 'Clean Code', description: 'Principios código limpio', id: 'SAT-ARCH-004', area: 'architecture' },
+      { name: 'SOLID', description: 'Principios orientación objetos', id: 'SAT-ARCH-005', area: 'architecture' },
+      { name: 'Event-Driven', description: 'Arquitectura basada en eventos', id: 'SAT-ARCH-006', area: 'architecture' },
+      { name: 'Hexagonal', description: 'Arquitectura de puertos y adaptadores', id: 'SAT-ARCH-007', area: 'architecture' }
+    ]
+  },
 
-// CLUSTER 15: Backend Development
-backend: {
-  name: 'Backend Development',
-  area: 'backend',
-  position: { x: -2.8, y: 10, z: -6.9 },
-  satellites: [
-    { 
-      name: 'Java', 
-      description: 'Lenguaje enterprise robusto',
-      id: 'SAT-BACK-001',
-      area: 'backend'
-    },
-    { 
-      name: 'Python', 
-      description: 'Lenguaje versátil y poderoso',
-      id: 'SAT-BACK-002',
-      area: 'backend'
-    },
-    { 
-      name: 'Go', 
-      description: 'Lenguaje concurrente eficiente',
-      id: 'SAT-BACK-003',
-      area: 'backend'
-    },
-    { 
-      name: 'Spring Boot', 
-      description: 'Framework Java empresarial',
-      id: 'SAT-BACK-004',
-      area: 'backend'
-    },
-    { 
-      name: 'Django', 
-      description: 'Framework Python fullstack',
-      id: 'SAT-BACK-005',
-      area: 'backend'
-    },
-    { 
-      name: 'FastAPI', 
-      description: 'APIs Python modernas y rápidas',
-      id: 'SAT-BACK-006',
-      area: 'backend'
-    },
-    { 
-      name: 'Express', 
-      description: 'Framework Node.js minimalista',
-      id: 'SAT-BACK-007',
-      area: 'backend'
-    }
-  ]
-},
+  // CLUSTER 15: Backend Development
+  backend: {
+    name: 'Backend Development',
+    area: 'backend',
+    position: { x: -5.71, y: 18.5, z: -1.86 },
+    positionBranch: { x: 0, y: 15, z: 0 },
+    satellites: [
+      { name: 'Java', description: 'Lenguaje enterprise robusto', id: 'SAT-BACK-001', area: 'backend' },
+      { name: 'Python', description: 'Lenguaje versátil y poderoso', id: 'SAT-BACK-002', area: 'backend' },
+      { name: 'Go', description: 'Lenguaje concurrente eficiente', id: 'SAT-BACK-003', area: 'backend' },
+      { name: 'Spring Boot', description: 'Framework Java empresarial', id: 'SAT-BACK-004', area: 'backend' },
+      { name: 'Django', description: 'Framework Python fullstack', id: 'SAT-BACK-005', area: 'backend' },
+      { name: 'FastAPI', description: 'APIs Python modernas y rápidas', id: 'SAT-BACK-006', area: 'backend' },
+      { name: 'Express', description: 'Framework Node.js minimalista', id: 'SAT-BACK-007', area: 'backend' }
+    ]
+  },
 
-// CLUSTER 16: Sistemas Operativos
-os: {
-  name: 'Sistemas Operativos',
-  area: 'os',
-  position: { x: 2.8, y: 10, z: -6.9 },
-  satellites: [
-    { 
-      name: 'Linux', 
-      description: 'Sistema operativo open source',
-      id: 'SAT-OS-001',
-      area: 'os'
-    },
-    { 
-      name: 'Bash/Shell', 
-      description: 'Scripting y automatización',
-      id: 'SAT-OS-002',
-      area: 'os'
-    },
-    { 
-      name: 'Procesos', 
-      description: 'Gestión de procesos y threads',
-      id: 'SAT-OS-003',
-      area: 'os'
-    },
-    { 
-      name: 'Memoria', 
-      description: 'Gestión de memoria virtual',
-      id: 'SAT-OS-004',
-      area: 'os'
-    },
-    { 
-      name: 'File Systems', 
-      description: 'Sistemas de archivos',
-      id: 'SAT-OS-005',
-      area: 'os'
-    },
-    { 
-      name: 'Scheduling', 
-      description: 'Algoritmos de planificación',
-      id: 'SAT-OS-006',
-      area: 'os'
-    }
-  ]
-},
+  // ========== NIVEL 4: Y=17.5 (positionBranch), Y=21 (position), Z=5.5 ==========
+  
+  // CLUSTER 16: Sistemas Operativos
+  os: {
+    name: 'Sistemas Operativos',
+    area: 'os',
+    position: { x: 3.9, y: 21, z: -3.9 },
+    positionBranch: { x: 0, y: 17.5, z: 0 },
+    satellites: [
+      { name: 'Linux', description: 'Sistema operativo open source', id: 'SAT-OS-001', area: 'os' },
+      { name: 'Bash/Shell', description: 'Scripting y automatización', id: 'SAT-OS-002', area: 'os' },
+      { name: 'Procesos', description: 'Gestión de procesos y threads', id: 'SAT-OS-003', area: 'os' },
+      { name: 'Memoria', description: 'Gestión de memoria virtual', id: 'SAT-OS-004', area: 'os' },
+      { name: 'File Systems', description: 'Sistemas de archivos', id: 'SAT-OS-005', area: 'os' },
+      { name: 'Scheduling', description: 'Algoritmos de planificación', id: 'SAT-OS-006', area: 'os' }
+    ]
+  },
 
-// CLUSTER 17: Performance & Optimization
-performance: {
-  name: 'Performance & Optimization',
-  area: 'performance',
-  position: { x: 2.8, y: 10, z: 6.9 },
-  satellites: [
-    { 
-      name: 'Caching', 
-      description: 'Estrategias de caché',
-      id: 'SAT-PERF-001',
-      area: 'performance'
-    },
-    { 
-      name: 'Load Balancing', 
-      description: 'Balanceo de carga',
-      id: 'SAT-PERF-002',
-      area: 'performance'
-    },
-    { 
-      name: 'CDN', 
-      description: 'Content Delivery Networks',
-      id: 'SAT-PERF-003',
-      area: 'performance'
-    },
-    { 
-      name: 'Compression', 
-      description: 'Compresión de datos',
-      id: 'SAT-PERF-004',
-      area: 'performance'
-    },
-    { 
-      name: 'Profiling', 
-      description: 'Análisis de rendimiento',
-      id: 'SAT-PERF-005',
-      area: 'performance'
-    },
-    { 
-      name: 'Lazy Loading', 
-      description: 'Carga diferida de recursos',
-      id: 'SAT-PERF-006',
-      area: 'performance'
-    },
-    { 
-      name: 'Indexing', 
-      description: 'Optimización de índices',
-      id: 'SAT-PERF-007',
-      area: 'performance'
-    }
-  ]
-},
+  // CLUSTER 17: Performance & Optimization
+  performance: {
+    name: 'Performance & Optimization',
+    area: 'performance',
+    position: { x: 5.5, y: 21, z: 1.7 },
+    positionBranch: { x: 0, y: 17.5, z: 0 },
+    satellites: [
+      { name: 'Caching', description: 'Estrategias de caché', id: 'SAT-PERF-001', area: 'performance' },
+      { name: 'Load Balancing', description: 'Balanceo de carga', id: 'SAT-PERF-002', area: 'performance' },
+      { name: 'CDN', description: 'Content Delivery Networks', id: 'SAT-PERF-003', area: 'performance' },
+      { name: 'Compression', description: 'Compresión de datos', id: 'SAT-PERF-004', area: 'performance' },
+      { name: 'Profiling', description: 'Análisis de rendimiento', id: 'SAT-PERF-005', area: 'performance' },
+      { name: 'Lazy Loading', description: 'Carga diferida de recursos', id: 'SAT-PERF-006', area: 'performance' },
+      { name: 'Indexing', description: 'Optimización de índices', id: 'SAT-PERF-007', area: 'performance' }
+    ]
+  },
 
-// CLUSTER 18: APIs & Integraciones
-apis: {
-  name: 'APIs & Integraciones',
-  area: 'apis',
-  position: { x: -7.5, y: 14, z: 0 },
-  satellites: [
-    { 
-      name: 'REST', 
-      description: 'APIs RESTful estándar',
-      id: 'SAT-API-001',
-      area: 'apis'
-    },
-    { 
-      name: 'GraphQL', 
-      description: 'Query language flexible',
-      id: 'SAT-API-002',
-      area: 'apis'
-    },
-    { 
-      name: 'gRPC', 
-      description: 'RPC de alto rendimiento',
-      id: 'SAT-API-003',
-      area: 'apis'
-    },
-    { 
-      name: 'WebSockets', 
-      description: 'Comunicación bidireccional',
-      id: 'SAT-API-004',
-      area: 'apis'
-    },
-    { 
-      name: 'OAuth', 
-      description: 'Autenticación y autorización',
-      id: 'SAT-API-005',
-      area: 'apis'
-    },
-    { 
-      name: 'Webhooks', 
-      description: 'Callbacks HTTP automatizados',
-      id: 'SAT-API-006',
-      area: 'apis'
-    },
-    { 
-      name: 'API Gateway', 
-      description: 'Gateway de microservicios',
-      id: 'SAT-API-007',
-      area: 'apis'
-    }
-  ]
-},
+  // CLUSTER 18: APIs & Integraciones
+  apis: {
+    name: 'APIs & Integraciones',
+    area: 'apis',
+    position: { x: 0, y: 21, z: 5.5 },
+    positionBranch: { x: 0, y: 17.5, z: 0 },
+    satellites: [
+      { name: 'REST', description: 'APIs RESTful estándar', id: 'SAT-API-001', area: 'apis' },
+      { name: 'GraphQL', description: 'Query language flexible', id: 'SAT-API-002', area: 'apis' },
+      { name: 'gRPC', description: 'RPC de alto rendimiento', id: 'SAT-API-003', area: 'apis' },
+      { name: 'WebSockets', description: 'Comunicación bidireccional', id: 'SAT-API-004', area: 'apis' },
+      { name: 'OAuth', description: 'Autenticación y autorización', id: 'SAT-API-005', area: 'apis' },
+      { name: 'Webhooks', description: 'Callbacks HTTP automatizados', id: 'SAT-API-006', area: 'apis' },
+      { name: 'API Gateway', description: 'Gateway de microservicios', id: 'SAT-API-007', area: 'apis' }
+    ]
+  },
 
-// CLUSTER 19: Computación Cuántica
-quantum: {
-  name: 'Computación Cuántica',
-  area: 'quantum',
-  position: { x: 7.5, y: 14, z: 0 },
-  satellites: [
-    { 
-      name: 'Qubits', 
-      description: 'Bits cuánticos fundamentales',
-      id: 'SAT-QUAN-001',
-      area: 'quantum'
-    },
-    { 
-      name: 'Superposición', 
-      description: 'Estados cuánticos superpuestos',
-      id: 'SAT-QUAN-002',
-      area: 'quantum'
-    },
-    { 
-      name: 'Entrelazamiento', 
-      description: 'Correlación cuántica',
-      id: 'SAT-QUAN-003',
-      area: 'quantum'
-    },
-    { 
-      name: 'Qiskit', 
-      description: 'Framework IBM para quantum',
-      id: 'SAT-QUAN-004',
-      area: 'quantum'
-    },
-    { 
-      name: 'Algoritmos Q', 
-      description: 'Algoritmos cuánticos',
-      id: 'SAT-QUAN-005',
-      area: 'quantum'
-    },
-    { 
-      name: 'Criptografía Q', 
-      description: 'Seguridad cuántica',
-      id: 'SAT-QUAN-006',
-      area: 'quantum'
-    }
-  ]
-},
+  // CLUSTER 19: Computación Cuántica
+  quantum: {
+    name: 'Computación Cuántica',
+    area: 'quantum',
+    position: { x: -5.5, y: 21, z: 1.7 },
+    positionBranch: { x: 0, y: 17.5, z: 0 },
+    satellites: [
+      { name: 'Qubits', description: 'Bits cuánticos fundamentales', id: 'SAT-QUAN-001', area: 'quantum' },
+      { name: 'Superposición', description: 'Estados cuánticos superpuestos', id: 'SAT-QUAN-002', area: 'quantum' },
+      { name: 'Entrelazamiento', description: 'Correlación cuántica', id: 'SAT-QUAN-003', area: 'quantum' },
+      { name: 'Qiskit', description: 'Framework IBM para quantum', id: 'SAT-QUAN-004', area: 'quantum' },
+      { name: 'Algoritmos Q', description: 'Algoritmos cuánticos', id: 'SAT-QUAN-005', area: 'quantum' },
+      { name: 'Criptografía Q', description: 'Seguridad cuántica', id: 'SAT-QUAN-006', area: 'quantum' }
+    ]
+  },
 
-// CLUSTER 20: Robótica
-robotics: {
-  name: 'Robótica',
-  area: 'robotics',
-  position: { x: 0, y: 14, z: -7.5 },
-  satellites: [
-    { 
-      name: 'ROS', 
-      description: 'Robot Operating System',
-      id: 'SAT-ROB-001',
-      area: 'robotics'
-    },
-    { 
-      name: 'Cinemática', 
-      description: 'Movimiento y control',
-      id: 'SAT-ROB-002',
-      area: 'robotics'
-    },
-    { 
-      name: 'SLAM', 
-      description: 'Localización y mapeo simultáneo',
-      id: 'SAT-ROB-003',
-      area: 'robotics'
-    },
-    { 
-      name: 'Control', 
-      description: 'Sistemas de control robótico',
-      id: 'SAT-ROB-004',
-      area: 'robotics'
-    },
-    { 
-      name: 'Actuadores', 
-      description: 'Motores y servos',
-      id: 'SAT-ROB-005',
-      area: 'robotics'
-    },
-    { 
-      name: 'Path Planning', 
-      description: 'Planificación de rutas',
-      id: 'SAT-ROB-006',
-      area: 'robotics'
-    }
-  ]
-},
+  // CLUSTER 20: Robótica
+  robotics: {
+    name: 'Robótica',
+    area: 'robotics',
+    position: { x: -3.9, y: 21, z: -3.9 },
+    positionBranch: { x: 0, y: 17.5, z: 0 },
+    satellites: [
+      { name: 'ROS', description: 'Robot Operating System', id: 'SAT-ROB-001', area: 'robotics' },
+      { name: 'Cinemática', description: 'Movimiento y control', id: 'SAT-ROB-002', area: 'robotics' },
+      { name: 'SLAM', description: 'Localización y mapeo simultáneo', id: 'SAT-ROB-003', area: 'robotics' },
+      { name: 'Control', description: 'Sistemas de control robótico', id: 'SAT-ROB-004', area: 'robotics' },
+      { name: 'Actuadores', description: 'Motores y servos', id: 'SAT-ROB-005', area: 'robotics' },
+      { name: 'Path Planning', description: 'Planificación de rutas', id: 'SAT-ROB-006', area: 'robotics' }
+    ]
+  },
 
-// CLUSTER 21: AR/VR
-arvr: {
-  name: 'Realidad Aumentada/Virtual',
-  area: 'arvr',
-  position: { x: 0, y: 14, z: 7.5 },
-  satellites: [
-    { 
-      name: 'Unity XR', 
-      description: 'Desarrollo XR en Unity',
-      id: 'SAT-XR-001',
-      area: 'arvr'
-    },
-    { 
-      name: 'WebXR', 
-      description: 'XR en navegadores web',
-      id: 'SAT-XR-002',
-      area: 'arvr'
-    },
-    { 
-      name: 'ARKit', 
-      description: 'AR para iOS',
-      id: 'SAT-XR-003',
-      area: 'arvr'
-    },
-    { 
-      name: 'ARCore', 
-      description: 'AR para Android',
-      id: 'SAT-XR-004',
-      area: 'arvr'
-    },
-    { 
-      name: 'Spatial Audio', 
-      description: 'Audio espacial 3D',
-      id: 'SAT-XR-005',
-      area: 'arvr'
-    },
-    { 
-      name: 'Hand Tracking', 
-      description: 'Seguimiento de manos',
-      id: 'SAT-XR-006',
-      area: 'arvr'
-    },
-    { 
-      name: 'Occlusion', 
-      description: 'Oclusión realista',
-      id: 'SAT-XR-007',
-      area: 'arvr'
-    }
-  ]
-}
+  // ========== NIVEL 5: Y=20 (positionBranch), Y=23.5 (position), Z=5 ==========
+  
+  // CLUSTER 21: AR/VR
+  /* arvr: {
+    name: 'Realidad Aumentada/Virtual',
+    area: 'arvr',
+    position: { x: 0, y: 23.5, z: -5 },
+    positionBranch: { x: 0, y: 20, z: 0 },
+    satellites: [
+      { name: 'Unity XR', description: 'Desarrollo XR en Unity', id: 'SAT-XR-001', area: 'arvr' },
+      { name: 'WebXR', description: 'XR en navegadores web', id: 'SAT-XR-002', area: 'arvr' },
+      { name: 'ARKit', description: 'AR para iOS', id: 'SAT-XR-003', area: 'arvr' },
+      { name: 'ARCore', description: 'AR para Android', id: 'SAT-XR-004', area: 'arvr' },
+      { name: 'Spatial Audio', description: 'Audio espacial 3D', id: 'SAT-XR-005', area: 'arvr' },
+      { name: 'Hand Tracking', description: 'Seguimiento de manos', id: 'SAT-XR-006', area: 'arvr' },
+      { name: 'Occlusion', description: 'Oclusión realista', id: 'SAT-XR-007', area: 'arvr' }
+    ]
+  } */
 };
 // ============================================
 // FUNCIONES HELPER (actualizadas)

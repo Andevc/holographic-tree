@@ -3,37 +3,37 @@
 // ============================================
 export const COLORS = {
   background: 0x0a0a15,
-  
+
   grid: {
     primary: 0x00ffff,
     secondary: 0x1b3848
   },
-  
+
   areas: {
-  fundamentos: 0x00ffff,
-  web: 0x00BFFF,
-  ia: 0x9D00FF,
-  redes: 0x00FF88,
-  sistemas: 0xFF3366,
-  datos: 0xFFB800,
-  gamedev: 0xFF00FF,
-  mobile: 0x00D9FF,
-  devops: 0xFF6B35,
-  datascience: 0x4ECDC4,
-  blockchain: 0xFFD93D,
-  iot: 0xFF1744,
-  design: 0xE91E63,
-  testing: 0x76FF03,
-  architecture: 0x7B68EE,    // Púrpura medio
-  backend: 0x20B2AA,         // Turquesa claro
-  os: 0xFF8C00,              // Naranja oscuro
-  performance: 0x32CD32,     // Verde lima
-  apis: 0x1E90FF,            // Azul Dodger
-  quantum: 0xDA70D6,         // Orquídea
-  robotics: 0xFF4500,        // Rojo-naranja
-  arvr: 0x00CED1             // Turquesa oscuro
+    fundamentos: 0x00ffff,
+    web: 0x00BFFF,
+    ia: 0x9D00FF,
+    redes: 0x00FF88,
+    sistemas: 0xFF3366,
+    datos: 0xFFB800,
+    gamedev: 0xFF00FF,
+    mobile: 0x00D9FF,
+    devops: 0xFF6B35,
+    datascience: 0x4ECDC4,
+    blockchain: 0xFFD93D,
+    iot: 0xFF1744,
+    design: 0xE91E63,
+    testing: 0x76FF03,
+    architecture: 0x7B68EE,    // Púrpura medio
+    backend: 0x20B2AA,         // Turquesa claro
+    os: 0xFF8C00,              // Naranja oscuro
+    performance: 0x32CD32,     // Verde lima
+    apis: 0x1E90FF,            // Azul Dodger
+    quantum: 0xDA70D6,         // Orquídea
+    robotics: 0xFF4500,        // Rojo-naranja
+    arvr: 0x00CED1             // Turquesa oscuro
   },
-  
+
   effects: {
     glow: 0x00ffff,
     highlight: 0xffffff,
@@ -46,7 +46,7 @@ export const COLORS = {
 // ============================================
 export const TREE_CONFIG = {
   roots: {
-    count: 4,
+    count: 6,
     radius: 5,
     radiusTop: 0.5,
     radiusBottom: 0,
@@ -55,87 +55,86 @@ export const TREE_CONFIG = {
     segments: 16,
     yPosition: 0
   },
-  
+
   trunk: {
-    height: 7,
-    segments: 10,
-    heightSegments: 5,
-    yPosition: 7,
-    tubeRadius: 1,
-    startY: 2,
-    curveIntensity: 0.3,
-    rings: {
-      count: 12,
-      spacing: 1.5,
-      thickness: 0.025,
-      startY: 7
-    }
-  },
+
+    height: 21,
+    yPosition: 8,
+    startY: 4,
+    radiusTop: 0.01,
+    radiusBottom: 1,
   
-  // ⭐ NUEVO: Configuración de CLUSTERS
+    particles: {
+      count: 100,
+      size: 0.005,
+      opacity: 0.6
+    },
+  },
+
   clusters: {
-  central: {
-    radius: 0.5,
-    segments: 32,
-    opacity: 0.7,
-    emissiveIntensity: 1.2,
-    rings: [
-      { radius: 1.4, opacity: 0.4 },
-      { radius: 1.7, opacity: 0.3 },
-      { radius: 2.0, opacity: 0.2 }
-    ]
-  },
-  satellite: {
-    radius: 0.2,
-    segments: 16,
-    opacity: 0.6,
-    emissiveIntensity: 0.8,
-    ring: {
-      innerRadius: 0.25,
-      outerRadius: 0.35,
-      opacity: 0.5
-    }
-  },
-  orbit: {
-    radius: 2.5, // Aumentado para más espacio
-    floatSpeed: 0.5,
-    floatAmount: 0.1
-  },
-  connections: {
-    opacity: 0.3,
-    curveHeight: 0.3
-  },
-  labels: {
     central: {
-      yOffset: 0.8,
-      width: 512,
-      height: 128,
-      fontSize: 48,
-      scale: 2.5
+      radius: 0.4,
+      segments: 32,
+      opacity: 0.7,
+      emissiveIntensity: 1.2,
+      rings: [
+        { radius: 1.4, opacity: 0.4 },
+        { radius: 1.7, opacity: 0.3 },
+        { radius: 2.0, opacity: 0.2 },
+        { radius: 2.3, opacity: 0.1 }
+      ]
     },
     satellite: {
-      yOffset: 0.4,
-      width: 256,
-      height: 64,
-      fontSize: 32,
-      scale: 1.5
+      radius: 0.2,
+      segments: 16,
+      opacity: 0.6,
+      emissiveIntensity: 0.8,
+      ring: {
+        innerRadius: 0.25,
+        outerRadius: 0.35,
+        opacity: 0.5
+      }
+    },
+    orbit: {
+      radius: 2, 
+      floatSpeed: 0.5,
+      floatAmount: 0.1
+    },
+    connections: {
+      opacity: 0.5,
+      curveHeight: 0.5
+    },
+    labels: {
+      central: {
+        yOffset: 0.8,
+        width: 512,
+        height: 128,
+        fontSize: 48,
+        scale: 2.5
+      },
+      satellite: {
+        yOffset: 0.4,
+        width: 256,
+        height: 64,
+        fontSize: 32,
+        scale: 1.5
+      }
     }
-  }
-},
-  
+  },
+
   // Configuración antigua de branches (por si acaso)
   branches: {
     count: 5,
-    startRadius: 0.15,
-    endRadius: 0.03,
-    segments: 100,
+    startRadius: 0.2,
+    endRadius: 0.0001,
+    segments: 90,
     radialSegments: 16,
     length: 5,
     startY: 7,
     spread: 0.9,
     tension: 0.5,
     controlPoints: 5,
-    
+
     rings: {
       count: 15,
       spacing: 2,
@@ -144,14 +143,14 @@ export const TREE_CONFIG = {
       thickness: 0.015,
       opacity: 0.3
     },
-    
+
     particles: {
-      count: 30,
+      count: 100,
       size: 0.025,
       opacity: 0.7
     }
   },
-  
+
   nodes: {
     radius: 0.25,
     segments: 24,
@@ -168,7 +167,7 @@ export const TREE_CONFIG = {
       }
     }
   },
-  
+
   trunkNodes: {
     radius: 1.2,
     startY: 1,
@@ -183,22 +182,22 @@ export const CAMERA_CONFIG = {
   fov: 90,
   near: 0.1,
   far: 3500,
-  
+
   position: {
     x: 5,
     y: 8,
     z: 12
   },
-  
+
   target: {
     x: 0,
     y: 10,
     z: 0
   },
-  
+
   minDistance: 1,
   maxDistance: 25,
-  
+
   minPolarAngle: Math.PI * 0.2,
   maxPolarAngle: Math.PI * 0.9
 };
@@ -211,7 +210,7 @@ export const LIGHTS_CONFIG = {
     color: 0xffffff,
     intensity: 0.3
   },
-  
+
   directional: {
     color: 0xffffff,
     intensity: 0.5,
@@ -222,7 +221,7 @@ export const LIGHTS_CONFIG = {
       mapSize: 2048
     }
   },
-  
+
   point: [
     {
       color: 0x00ffff,
@@ -237,7 +236,7 @@ export const LIGHTS_CONFIG = {
       position: { x: 5, y: 5, z: -5 }
     }
   ],
-  
+
   hemisphere: {
     skyColor: 0x0066ff,
     groundColor: 0x002244,
@@ -263,19 +262,19 @@ export const PARTICLES_CONFIG = {
       z: 0.002
     }
   },
-  
+
   flowing: {
-    count: 2000,
-    size: 0.025,
-    opacity: 0.5,
+    count: 200,
+    size: 0.05,
+    opacity: 1,
     speed: 0.001,
     startY: 3,
-    endY: 20,
+    endY: 23,
     radius: 8
   },
-  
+
   floating: {
-    count: 3000,
+    count: 1500,
     size: 0.08,
     opacity: 1,
     spread: {
@@ -295,9 +294,9 @@ export const MATERIALS_CONFIG = {
     transparent: true,
     opacity: 0.5,
     shininess: 100,
-    emissiveIntensity: 0.6
+    emissiveIntensity: 2
   },
-  
+
   node: {
     wireframe: false,
     transparent: true,
@@ -305,7 +304,7 @@ export const MATERIALS_CONFIG = {
     shininess: 100,
     emissiveIntensity: 0.8
   },
-  
+
   tube: {
     wireframe: false,
     transparent: true,
@@ -325,7 +324,7 @@ export const EFFECTS_CONFIG = {
     radius: 0.8,
     exposure: 1
   },
-  
+
   fog: {
     color: 0x131313,
     near: 15,
@@ -343,12 +342,12 @@ export const ANIMATION_CONFIG = {
     floatSpeed: 1,
     floatAmount: 0.05
   },
-  
+
   lights: {
     pulseSpeed: 0.5,
     pulseAmount: 0.3
   },
-  
+
   baseRing: {
     pulseSpeed: 2,
     scaleAmount: 0.02,

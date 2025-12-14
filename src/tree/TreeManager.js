@@ -1,15 +1,7 @@
-/**
- * TREEMANAGER.JS - Coordinador del Árbol con Clusters
- * ====================================================
- * 
- * ACTUALIZADO: Ahora coordina el sistema de clusters
- */
-
 import * as THREE from 'three';
 import { RootsBuilder } from './RootsBuilder.js';
 import { TrunkBuilder } from './TrunkBuilder.js';
-import { BranchBuilder } from './BranchBuilder.js';
-import { NodeBuilder } from './NodeBuilder.js';
+import { BranchBuilder } from './BranchBuilder.js'; 
 import { ROOTS, TRUNK, BRANCHES } from '../config/subjects.js';
 import EventBus, { EVENTS } from '../core/EventBus.js';
 
@@ -35,7 +27,6 @@ export class TreeManager {
   }
 
   build() {
-    console.log('🌳 Iniciando construcción del árbol con CLUSTERS...');
     
     // 1. Construir raíces
     this.buildRoots();
@@ -49,12 +40,7 @@ export class TreeManager {
     // 4. Agregar a la escena
     this.scene.add(this.treeGroup);
     
-    this.isBuilt = true;
-    
-    console.log(`✅ Árbol construido con ${this.allNodes.length} nodos`);
-    console.log(`   - Raíces: ${this.allRoots.length}`);
-    console.log(`   - Clusters: ${this.allBranches.length}`);
-    
+    this.isBuilt = true;     
     EventBus.emit(EVENTS.TREE_BUILT, {
       nodeCount: this.allNodes.length,
       clusterCount: this.allBranches.length
@@ -63,34 +49,24 @@ export class TreeManager {
 
   buildRoots() {
     this.rootsBuilder = new RootsBuilder(this.treeGroup, ROOTS);
-    const rootNodes = this.rootsBuilder.build();
-    
+    const rootNodes = this.rootsBuilder.build();    
     this.allRoots = rootNodes;
     this.allNodes.push(...rootNodes);
-    
-    console.log(`  ├─ Raíces: ${rootNodes.length} nodos`);
   }
 
   buildTrunk() {
     this.trunkBuilder = new TrunkBuilder(this.treeGroup, TRUNK);
-    const trunkNodes = this.trunkBuilder.build();
-    
+    const trunkNodes = this.trunkBuilder.build();    
     this.allNodes.push(...trunkNodes);
     
-    console.log(`  ├─ Tronco: ${trunkNodes.length} nodos`);
   }
 
-  /**
-   * ⭐ NUEVO: Construir clusters en lugar de ramas lineales
-   */
   buildClusters() {
-    this.branchBuilder = new BranchBuilder(this.treeGroup, BRANCHES);
+    this.branchBuilder = new BranchBuilder(this.treeGroup, BRANCHES, this.trunkBuilder);
     const { nodes, branches } = this.branchBuilder.build();
     
     this.allNodes.push(...nodes);
     this.allBranches = branches;
-    
-    console.log(`  └─ Clusters: ${branches.length} clusters, ${nodes.length} nodos`);
   }
 
   /**
@@ -104,7 +80,6 @@ export class TreeManager {
       this.trunkBuilder.update(time);
     }
     
-    // ⭐ NUEVO: Animar clusters
     if (this.branchBuilder) {
       this.branchBuilder.update(time);
     }
@@ -116,9 +91,7 @@ export class TreeManager {
           (!node.userData.type.includes('cluster') && 
            node.userData.type !== 'root')) {
         
-        // Pulso de escala
-        const scale = 1 + Math.sin(time * 2 + index * 0.5) * 0.1;
-        node.scale.setScalar(scale);
+        
         
         // Float vertical
         if (node.userData.originalY === undefined) {
@@ -126,14 +99,7 @@ export class TreeManager {
         }
         node.position.y = node.userData.originalY + Math.sin(time + index) * 0.05;
         
-        // Rotar anillos
-        if (node.children.length > 0) {
-          node.children.forEach(child => {
-            if (child.type === 'Mesh' && child.geometry.type === 'RingGeometry') {
-              child.rotation.z += 0.01;
-            }
-          });
-        }
+        
       }
     });
   }

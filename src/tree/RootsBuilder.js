@@ -1,8 +1,3 @@
-/**
- * ROOTSBUILDER.JS - Constructor de Raíces
- * Crea los conos invertidos que representan los fundamentos
- */
-
 import * as THREE from 'three';
 import { MaterialLibrary } from '../materials/MaterialLibrary.js';
 import { TREE_CONFIG } from '../config/constants.js';
@@ -16,7 +11,7 @@ export class RootsBuilder {
 
   build() {
     const config = TREE_CONFIG.roots;
-    const numRoots = this.rootsData.length;
+    const numRoots = config.count;
 
     this.rootsData.forEach((data, i) => {
       // Posición en círculo
