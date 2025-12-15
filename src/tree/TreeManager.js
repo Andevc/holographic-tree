@@ -1,46 +1,46 @@
 import * as THREE from 'three';
 import { RootsBuilder } from './RootsBuilder.js';
 import { TrunkBuilder } from './TrunkBuilder.js';
-import { BranchBuilder } from './BranchBuilder.js'; 
-import { ROOTS, TRUNK, BRANCHES } from '../config/subjects.js';
+import { BranchBuilder } from './BranchBuilder.js';
+import { BRANCHES } from '../config/subjects.js';
 import EventBus, { EVENTS } from '../core/EventBus.js';
 
 export class TreeManager {
   constructor(scene) {
     this.scene = scene;
-    
+
     this.treeGroup = new THREE.Group();
     this.treeGroup.name = 'KnowledgeTree';
-    
+
     this.rootsBuilder = null;
     this.trunkBuilder = null;
     this.branchBuilder = null;
     this.nodeBuilder = null;
-    
+
     this.allNodes = [];
     this.allBranches = [];
     this.allRoots = [];
-    
+
     this.isBuilt = false;
-    
+
     this.build();
   }
 
   build() {
-    
+
     // 1. Construir raíces
     this.buildRoots();
-    
+
     // 2. Construir tronco
     this.buildTrunk();
-    
+
     // 3. Construir clusters (antes "ramas")
     this.buildClusters();
-    
+
     // 4. Agregar a la escena
     this.scene.add(this.treeGroup);
-    
-    this.isBuilt = true;     
+
+    this.isBuilt = true;
     EventBus.emit(EVENTS.TREE_BUILT, {
       nodeCount: this.allNodes.length,
       clusterCount: this.allBranches.length
@@ -48,23 +48,23 @@ export class TreeManager {
   }
 
   buildRoots() {
-    this.rootsBuilder = new RootsBuilder(this.treeGroup, ROOTS);
-    const rootNodes = this.rootsBuilder.build();    
+    this.rootsBuilder = new RootsBuilder(this.treeGroup);
+    const rootNodes = this.rootsBuilder.build();
     this.allRoots = rootNodes;
     this.allNodes.push(...rootNodes);
   }
 
   buildTrunk() {
-    this.trunkBuilder = new TrunkBuilder(this.treeGroup, TRUNK);
-    const trunkNodes = this.trunkBuilder.build();    
+    this.trunkBuilder = new TrunkBuilder(this.treeGroup);
+    const trunkNodes = this.trunkBuilder.build();
     this.allNodes.push(...trunkNodes);
-    
+
   }
 
   buildClusters() {
     this.branchBuilder = new BranchBuilder(this.treeGroup, BRANCHES, this.trunkBuilder);
     const { nodes, branches } = this.branchBuilder.build();
-    
+
     this.allNodes.push(...nodes);
     this.allBranches = branches;
   }
@@ -74,32 +74,32 @@ export class TreeManager {
    */
   update(time, delta) {
     if (!this.isBuilt) return;
-    
+
     // Animar tronco
     if (this.trunkBuilder) {
       this.trunkBuilder.update(time);
     }
-    
+
     if (this.branchBuilder) {
       this.branchBuilder.update(time);
     }
-    
+
     // Animaciones adicionales de nodos individuales
     this.allNodes.forEach((node, index) => {
       // Solo animar si no es parte de un cluster (que ya tiene animación)
-      if (!node.userData.type || 
-          (!node.userData.type.includes('cluster') && 
-           node.userData.type !== 'root')) {
-        
-        
-        
+      if (!node.userData.type ||
+        (!node.userData.type.includes('cluster') &&
+          node.userData.type !== 'root')) {
+
+
+
         // Float vertical
         if (node.userData.originalY === undefined) {
           node.userData.originalY = node.position.y;
         }
         node.position.y = node.userData.originalY + Math.sin(time + index) * 0.05;
-        
-        
+
+
       }
     });
   }
@@ -109,7 +109,7 @@ export class TreeManager {
   }
 
   getNodeBySubjectId(subjectId) {
-    return this.allNodes.find(node => 
+    return this.allNodes.find(node =>
       node.userData.subjectData?.id === subjectId ||
       node.userData.satelliteData?.id === subjectId
     );
@@ -117,25 +117,34 @@ export class TreeManager {
 
   highlightNode(node) {
     if (!node) return;
-    
     if (node.material && node.material.emissive) {
-      node.material.emissiveIntensity = 1.5;
+      node.material.emissiveIntensity = 3.0; 
     }
-    
+    if (node.material && node.material.opacity !== undefined) {
+      node.material.opacity = 1.0; 
+    }
+
+    node.scale.setScalar(1.3); 
+
     node.children.forEach(child => {
       if (child.material && child.material.opacity !== undefined) {
-        child.material.opacity = 0.8;
+        child.material.opacity = 1.0; 
       }
     });
   }
-
   unhighlightNode(node) {
     if (!node) return;
-    
+
     if (node.material && node.material.emissive) {
-      node.material.emissiveIntensity = 1.0;
+      node.material.emissiveIntensity = 0.8;
     }
-    
+
+    if (node.material && node.material.opacity !== undefined) {
+      node.material.opacity = 0.7;
+    }
+
+    node.scale.setScalar(1.0);
+
     node.children.forEach(child => {
       if (child.material && child.material.opacity !== undefined) {
         child.material.opacity = 0.4;
@@ -145,10 +154,10 @@ export class TreeManager {
 
   filterByArea(area) {
     this.allNodes.forEach(node => {
-      const nodeArea = node.userData.subjectData?.area || 
-                       node.userData.satelliteData?.area ||
-                       node.userData.area;
-      
+      const nodeArea = node.userData.subjectData?.area ||
+        node.userData.satelliteData?.area ||
+        node.userData.area;
+
       if (area === 'all' || nodeArea === area) {
         node.visible = true;
       } else {
@@ -168,8 +177,8 @@ export class TreeManager {
       totalNodes: this.allNodes.length,
       roots: this.allRoots.length,
       clusters: this.allBranches.length,
-      areas: [...new Set(this.allNodes.map(n => 
-        n.userData.subjectData?.area || 
+      areas: [...new Set(this.allNodes.map(n =>
+        n.userData.subjectData?.area ||
         n.userData.satelliteData?.area ||
         n.userData.area
       ))]
@@ -178,7 +187,7 @@ export class TreeManager {
 
   dispose() {
     this.scene.remove(this.treeGroup);
-    
+
     this.treeGroup.traverse((object) => {
       if (object.geometry) object.geometry.dispose();
       if (object.material) {

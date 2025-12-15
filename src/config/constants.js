@@ -89,6 +89,7 @@ export const TREE_CONFIG = {
       segments: 16,
       opacity: 0.6,
       emissiveIntensity: 0.8,
+      shininess: 100,
       ring: {
         innerRadius: 0.25,
         outerRadius: 0.35,

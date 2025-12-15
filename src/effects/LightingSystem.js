@@ -62,14 +62,14 @@ export class LightingSystem {
     
     // Mover spotlight hacia el nodo
     this.spotlight.target.position.copy(node.position);
-    this.spotlight.intensity = 2;
+    this.spotlight.intensity = 5;
   }
 
   /**
    * Quitar foco del spotlight
    */
   unfocus() {
-    this.spotlight.intensity = 0;
+    this.spotlight.intensity = 1;
   }
 
   dispose() {

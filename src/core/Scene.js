@@ -191,8 +191,8 @@ export class SceneManager {
   createHelpers() {
     // Grid del suelo (estilo holográfico)
     this.gridHelper = new THREE.GridHelper(
-      50,  // Tamaño
-      25,  // Divisiones
+      40,  // Tamaño
+      40,  // Divisiones
       COLORS.grid.primary,
       COLORS.grid.secondary
     );

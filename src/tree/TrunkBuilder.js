@@ -10,9 +10,8 @@ import { NodeBuilder } from './NodeBuilder.js';
 import { TREE_CONFIG, COLORS } from '../config/constants.js';
 
 export class TrunkBuilder {
-  constructor(parent, trunkData) {
+  constructor(parent) {
     this.parent = parent;
-    this.trunkData = trunkData;
     this.nodes = [];
     this.nodeBuilder = new NodeBuilder(parent);
     this.trunkGroup = new THREE.Group();

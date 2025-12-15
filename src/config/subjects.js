@@ -1,8 +1,3 @@
-export const CAREER_INFO = {};
-export const KNOWLEDGE_AREAS = {};
-export const ROOTS = [];
-export const TRUNK = [];
-
 // ============================================
 // BRANCHES - NUEVO SISTEMA DE CLUSTERS
 // ============================================
@@ -434,11 +429,7 @@ export function getCareerStats() {
   };
 }
 
-export default {
-  CAREER_INFO,
-  KNOWLEDGE_AREAS,
-  ROOTS,
-  TRUNK,
+export default {  
   BRANCHES,
   getAllSubjects,
   getSubjectById,
