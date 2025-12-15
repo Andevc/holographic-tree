@@ -10,9 +10,9 @@ export class InfoPanel {
     this.element = document.getElementById('info-panel');
     this.content = document.getElementById('panel-content');
     this.closeBtn = document.getElementById('close-panel');
-    
+
     this.currentSubject = null;
-    
+
     this.setupEvents();
   }
 
@@ -30,7 +30,7 @@ export class InfoPanel {
     EventBus.on(EVENTS.NODE_CLICKED, (data) => {
       // Detectar si es un nodo normal o un satélite de cluster
       const nodeData = data.node.userData;
-      
+
       if (nodeData.type === 'cluster-central') {
         this.showClusterCentral(nodeData);
       } else if (nodeData.type === 'cluster-satellite') {
@@ -50,7 +50,7 @@ export class InfoPanel {
    */
   showClusterCentral(nodeData) {
     if (!this.element) return;
-    
+
     const html = `
       <div class="fade-in">
         <div class="subject-header">
@@ -78,10 +78,10 @@ export class InfoPanel {
         </div>
       </div>
     `;
-    
+
     this.content.innerHTML = html;
     this.element.classList.remove('hidden');
-    
+
     EventBus.emit(EVENTS.PANEL_OPENED, { cluster: nodeData });
   }
 
@@ -90,7 +90,7 @@ export class InfoPanel {
    */
   showClusterSatellite(satelliteData) {
     if (!this.element || !satelliteData) return;
-    
+
     const html = `
       <div class="fade-in">
         <div class="subject-header">
@@ -123,11 +123,11 @@ export class InfoPanel {
         </div>
       </div>
     `;
-    
+
     this.content.innerHTML = html;
     this.element.classList.remove('hidden');
     this.currentSubject = satelliteData;
-    
+
     EventBus.emit(EVENTS.PANEL_OPENED, { satellite: satelliteData });
   }
 
@@ -136,11 +136,11 @@ export class InfoPanel {
    */
   show(subjectData) {
     if (!this.element || !subjectData) return;
-    
+
     this.currentSubject = subjectData;
     this.updateContent(subjectData);
     this.element.classList.remove('hidden');
-    
+
     EventBus.emit(EVENTS.PANEL_OPENED, { subject: subjectData });
   }
 
@@ -153,7 +153,7 @@ export class InfoPanel {
 
   updateContent(subject) {
     if (!this.content) return;
-    
+
     const html = `
       <div class="fade-in">
         <div class="subject-header">
@@ -202,7 +202,7 @@ export class InfoPanel {
         ${this.renderActionButtons(subject)}
       </div>
     `;
-    
+
     this.content.innerHTML = html;
   }
 
@@ -214,7 +214,21 @@ export class InfoPanel {
       redes: '🔒',
       sistemas: '⚙️',
       datos: '💾',
-      gamedev: '🎮'
+      gamedev: '🎮',
+      mobile: '📱',
+      devops: '🚀',
+      datascience: '📊',
+      blockchain: '📘',
+      iot: '📡',
+      design: '🎨',
+      testing: '✅',
+      architecture: '🏗️',
+      backend: '💻',
+      os: '⚙️',
+      performance: '⚡',
+      apis: '🔌', 
+      quantum: '⚛️',
+      robotics: '🤖'
     };
     return icons[area] || '📘';
   }
