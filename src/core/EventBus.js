@@ -1,51 +1,10 @@
-/**
- * EVENTBUS.JS - Sistema de Eventos Global
- * ========================================
- * 
- * PROPÓSITO:
- * - Permitir comunicación entre módulos sin dependencias directas
- * - Patrón Observer/PubSub
- * - Desacoplar componentes del sistema
- * 
- * EJEMPLO DE USO:
- * 
- * // En InputManager.js
- * EventBus.emit('node:clicked', { id: 'INF-111', name: 'Matemática' });
- * 
- * // En UIManager.js
- * EventBus.on('node:clicked', (data) => {
- *   console.log('Nodo clickeado:', data.name);
- * });
- * 
- * VENTAJAS:
- * - Los módulos no se conocen entre sí
- * - Fácil agregar/quitar listeners
- * - Testing más simple
- * 
- * PARA LA DEFENSA:
- * "Implementé un EventBus usando el patrón Observer para desacoplar
- * los componentes. Esto permite que módulos como InputManager y UIManager
- * se comuniquen sin tener referencias directas entre ellos."
- */
-
 class EventBus {
   constructor() {
-    /**
-     * Almacén de eventos
-     * Estructura: { 'eventName': [callback1, callback2, ...] }
-     */
+ 
     this.events = {};
-    
-    // Para debugging (opcional)
     this.debug = false;
   }
 
-  /**
-   * Suscribirse a un evento
-   * @param {string} event - Nombre del evento
-   * @param {Function} callback - Función a ejecutar cuando ocurra el evento
-   * @returns {Function} Función para desuscribirse
-   */
   on(event, callback) {
     // Si el evento no existe, crear array vacío
     if (!this.events[event]) {
@@ -56,18 +15,13 @@ class EventBus {
     this.events[event].push(callback);
     
     if (this.debug) {
-      console.log(`📡 EventBus: Listener agregado para "${event}"`);
     }
     
     // Retornar función para desuscribirse (útil para cleanup)
     return () => this.off(event, callback);
   }
 
-  /**
-   * Desuscribirse de un evento
-   * @param {string} event - Nombre del evento
-   * @param {Function} callback - Función a remover
-   */
+
   off(event, callback) {
     if (!this.events[event]) return;
     

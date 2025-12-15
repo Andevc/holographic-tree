@@ -93,7 +93,6 @@ export class App {
       // 10. Iniciar loop de animación
       this.start();
       
-      console.log('✅ Aplicación inicializada correctamente');
       
       // Emitir evento de que la escena está lista
       EventBus.emit(EVENTS.SCENE_READY, {
@@ -102,7 +101,6 @@ export class App {
       });
       
     } catch (error) {
-      console.error('❌ Error inicializando aplicación:', error);
       throw error;
     }
   }
@@ -112,7 +110,6 @@ export class App {
    */
   createScene() {
     this.sceneManager = new SceneManager(this.container);
-    console.log('  ✓ Escena creada');
   }
 
   /**
@@ -156,7 +153,6 @@ export class App {
     // Crear controlador avanzado
     this.cameraController = new CameraController(camera, this.controls);
     
-    console.log('  ✓ Controles creados');
   }
 
   /**
@@ -165,7 +161,6 @@ export class App {
   createTree() {
     const scene = this.sceneManager.getScene();
     this.treeManager = new TreeManager(scene);
-    console.log('  ✓ Árbol creado');
   }
 
   /**
@@ -174,7 +169,6 @@ export class App {
   createParticles() {
     const scene = this.sceneManager.getScene();
     this.particleManager = new ParticleManager(scene);
-    console.log('  ✓ Partículas creadas');
   }
 
   /**
@@ -184,7 +178,6 @@ export class App {
     const scene = this.sceneManager.getScene();
     const lights = this.sceneManager.lights;
     this.lightingSystem = new LightingSystem(scene, lights);
-    console.log('  ✓ Sistema de luces creado');
   }
 
   /**
@@ -196,7 +189,6 @@ export class App {
     const nodes = this.treeManager.getNodes();
     
     this.inputManager = new InputManager(camera, renderer.domElement, nodes);
-    console.log('  ✓ Sistema de input creado');
   }
 
   /**
@@ -206,7 +198,6 @@ export class App {
     const scene = this.sceneManager.getScene();
     const camera = this.sceneManager.getCamera();
     this.uiManager = new UIManager(scene, camera);
-    console.log('  ✓ UI Manager creado');
   }
 
   /**
@@ -222,7 +213,7 @@ export class App {
     const renderer = this.sceneManager.getRenderer();
     this.debugTools = new DebugTools(scene, camera, renderer);
     
-    console.log('  ✓ Utils creados');
+
   }
 
   /**
@@ -237,7 +228,7 @@ export class App {
     EventBus.on(EVENTS.NODE_HOVER, (data) => this.onNodeHover(data));
     EventBus.on(EVENTS.NODE_UNHOVER, () => this.onNodeUnhover());
     
-    console.log('  ✓ Eventos configurados');
+ 
   }
 
   /**
@@ -272,13 +263,11 @@ export class App {
         } else {
           this.resetCamera();
         }
-        console.log('🔄 Cámara reseteada');
         break;
         
       case 'p':
         // Toggle auto-rotación
         this.controls.autoRotate = !this.controls.autoRotate;
-        console.log(`🔄 Auto-rotación: ${this.controls.autoRotate ? 'ON' : 'OFF'}`);
         break;
         
       case 'h':
@@ -286,22 +275,10 @@ export class App {
         EventBus.emit('ui:toggle');
         break;
         
-      case 'd':
-        // Toggle debug mode
-        if (this.debugTools) {
-          this.debugTools.toggle();
-        }
-        break;
-        
       case 'f':
         // Fullscreen
         this.toggleFullscreen();
-        break;
-        
-      case 'm':
-        // Toggle minimap
-        EventBus.emit('minimap:toggle');
-        break;
+        break;              
         
       case '1':
         // Vista frontal
@@ -375,7 +352,6 @@ export class App {
   start() {
     this.isRunning = true;
     this.animate();
-    console.log('  ✓ Loop de animación iniciado');
   }
 
   /**
@@ -385,13 +361,6 @@ export class App {
     this.isRunning = false;
   }
 
-  /**
-   * LOOP DE ANIMACIÓN PRINCIPAL
-   * Se ejecuta ~60 veces por segundo
-   * 
-   * requestAnimationFrame sincroniza con el refresh rate
-   * de la pantalla para animaciones suaves
-   */
   animate() {
     if (!this.isRunning) return;
     
@@ -408,7 +377,6 @@ export class App {
     // Actualizar escena (luces, anillo base, etc)
     this.sceneManager.update(time);
     
-    // ⚡ Actualizar árbol (animaciones de nodos + efectos de energía)
     if (this.treeManager) {
       this.treeManager.update(time, delta); // Ahora pasa delta también
     }
@@ -504,6 +472,5 @@ export class App {
     
     window.removeEventListener('keydown', this.onKeyDown);
     
-    console.log('🗑️ Aplicación destruida');
   }
 }

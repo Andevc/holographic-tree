@@ -1,17 +1,3 @@
-/**
- * MATERIALLIBRARY.JS - Materiales Holográficos Mejorados
- * =======================================================
- * 
- * Basado en el efecto holográfico de index2.html
- * 
- * CLAVES DEL EFECTO:
- * 1. MeshPhongMaterial (en lugar de MeshStandardMaterial)
- * 2. Opacidad baja (0.4-0.7)
- * 3. Emissive intensity alto
- * 4. Shininess: 100
- * 5. Wireframe exterior + EdgesGeometry
- */
-
 import * as THREE from 'three';
 import { COLORS, getColorByArea } from '../config/constants.js';
 

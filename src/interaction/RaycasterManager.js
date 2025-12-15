@@ -1,16 +1,3 @@
-/**
- * RAYCASTERMANAGER.JS - Detección de Clicks
- * ==========================================
- * 
- * Usa Raycasting para detectar qué objeto 3D fue clickeado
- * Emite eventos cuando se hace click o hover sobre nodos
- * 
- * PARA LA DEFENSA:
- * "El Raycaster lanza un rayo desde la cámara a través
- * del punto del mouse y detecta intersecciones con objetos 3D.
- * Es la técnica estándar para picking en aplicaciones 3D."
- */
-
 import * as THREE from 'three';
 import EventBus, { EVENTS } from '../core/EventBus.js';
 

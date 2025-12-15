@@ -24,14 +24,14 @@ export const COLORS = {
     iot: 0xFF1744,
     design: 0xE91E63,
     testing: 0x76FF03,
-    architecture: 0x7B68EE,    // Púrpura medio
-    backend: 0x20B2AA,         // Turquesa claro
-    os: 0xFF8C00,              // Naranja oscuro
-    performance: 0x32CD32,     // Verde lima
-    apis: 0x1E90FF,            // Azul Dodger
-    quantum: 0xDA70D6,         // Orquídea
-    robotics: 0xFF4500,        // Rojo-naranja
-    arvr: 0x00CED1             // Turquesa oscuro
+    architecture: 0x7B68EE,    
+    backend: 0x20B2AA,         
+    os: 0xFF8C00,              
+    performance: 0x32CD32,     
+    apis: 0x1E90FF,            
+    quantum: 0xDA70D6,         
+    robotics: 0xFF4500,       
+    arvr: 0x00CED1             
   },
 
   effects: {
@@ -53,7 +53,7 @@ export const TREE_CONFIG = {
     size: 1,
     height: 1.5,
     segments: 16,
-    yPosition: 1
+    yPosition: 2
   },
 
   trunk: {
@@ -63,7 +63,7 @@ export const TREE_CONFIG = {
     startY: 4,
     radiusTop: 0.01,
     radiusBottom: 1,
-  
+
     particles: {
       count: 100,
       size: 0.005,
@@ -96,7 +96,7 @@ export const TREE_CONFIG = {
       }
     },
     orbit: {
-      radius: 2, 
+      radius: 2,
       floatSpeed: 0.5,
       floatAmount: 0.1
     },
@@ -122,57 +122,19 @@ export const TREE_CONFIG = {
     }
   },
 
-  // Configuración antigua de branches (por si acaso)
+ 
   branches: {
     count: 5,
     startRadius: 0.2,
-    endRadius: 0.0001,
+    endRadius: 0.001,
     segments: 90,
     radialSegments: 16,
     length: 5,
     startY: 7,
     spread: 0.9,
-    tension: 0.5,
+    tension: 0.2,
     controlPoints: 5,
-
-    rings: {
-      count: 15,
-      spacing: 2,
-      baseRadius: 0.25,
-      tipRadius: 0.1,
-      thickness: 0.015,
-      opacity: 0.3
-    },
-
-    particles: {
-      count: 100,
-      size: 0.025,
-      opacity: 0.7
-    }
   },
-
-  nodes: {
-    radius: 0.25,
-    segments: 24,
-    rings: {
-      inner: {
-        min: 0.4,
-        max: 0.5,
-        opacity: 0.4
-      },
-      outer: {
-        min: 0.52,
-        max: 0.6,
-        opacity: 0.2
-      }
-    }
-  },
-
-  trunkNodes: {
-    radius: 1.2,
-    startY: 1,
-    spacing: 1
-  }
 };
 
 // ============================================
@@ -206,41 +168,48 @@ export const CAMERA_CONFIG = {
 // CONFIGURACIÓN DE LUCES
 // ============================================
 export const LIGHTS_CONFIG = {
-  ambient: {
-    color: 0xffffff,
-    intensity: 0.3
-  },
+  // VARIACIÓN EXTREMA: Cyberpunk/Neón Apocalíptico
+    ambient: {
+      color: 0xff00ff,      // MAGENTA INTENSO - toda la escena vibra en magenta
+      intensity: 0.8        // MUY ALTO - iluminación base agresiva
+    },
 
   directional: {
-    color: 0xffffff,
-    intensity: 0.5,
-    position: { x: 5, y: 10, z: 5 },
+    color: 0x00ffff,      // CIAN ELÉCTRICO - contraste brutal con el magenta
+    intensity: 2.5,       // EXTREMADAMENTE FUERTE - sombras súper marcadas
+    position: { x: -10, y: 3, z: -10 },  // Luz lateral baja - sombras alargadas
     castShadow: true,
     shadow: {
-      camera: { near: 0.1, far: 50, size: 15 },
-      mapSize: 2048
+      camera: { near: 0.1, far: 50, size: 40 },  // Sombras enormes
+      mapSize: 4096       // Máxima calidad para sombras nítidas
     }
   },
 
   point: [
     {
-      color: 0x00ffff,
-      intensity: 1,
-      distance: 20,
-      position: { x: -5, y: 5, z: 5 }
+      color: 0xff0000,    // ROJO PURO - como alarma nuclear
+      intensity: 5,       // BRUTALMENTE INTENSO
+      distance: 50,       // Alcance máximo
+      position: { x: 0, y: 10, z: 0 }  // Desde arriba como foco
     },
     {
-      color: 0xff00ff,
-      intensity: 0.8,
-      distance: 20,
-      position: { x: 5, y: 5, z: -5 }
+      color: 0x00ff00,    // VERDE RADIOACTIVO
+      intensity: 4,       // Súper brillante
+      distance: 50,
+      position: { x: -15, y: 2, z: 15 }
+    },
+    {
+      color: 0xffff00,    // AMARILLO ELÉCTRICO
+      intensity: 3.5,
+      distance: 40,
+      position: { x: 15, y: 2, z: -15 }
     }
   ],
 
   hemisphere: {
-    skyColor: 0x0066ff,
-    groundColor: 0x002244,
-    intensity: 0.4
+    skyColor: 0xff00aa,     // ROSA NEÓN EXPLOSIVO
+    groundColor: 0x00ff88,  // VERDE MENTA RADIOACTIVO - contraste extremo
+    intensity: 1.2          // MÁXIMA INTENSIDAD - luz desde todos lados
   }
 };
 
@@ -254,7 +223,7 @@ export const PARTICLES_CONFIG = {
     opacity: 0.5,
     spread: {
       radius: { min: 3, max: 50 },
-      height: { min: -3, max: 12 }
+      height: { min: -3, max: 20 }
     },
     velocity: {
       x: 0.002,
@@ -319,15 +288,15 @@ export const MATERIALS_CONFIG = {
 // ============================================
 export const EFFECTS_CONFIG = {
   bloom: {
-    threshold: 0.7,
+    threshold: 2.7,
     strength: 1.5,
-    radius: 0.8,
+    radius: 80.,
     exposure: 1
   },
 
   fog: {
-    color: 0x131313,
-    near: 15,
+    color: 0xe1e1e1,
+    near: 100,
     far: 150
   }
 };
@@ -345,7 +314,7 @@ export const ANIMATION_CONFIG = {
 
   lights: {
     pulseSpeed: 0.5,
-    pulseAmount: 0.3
+    pulseAmount: 0.9
   },
 
   baseRing: {

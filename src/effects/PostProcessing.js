@@ -48,7 +48,6 @@ export class PostProcessing {
     
     this.composer.addPass(this.bloomPass);
     
-    console.log('✨ Post-processing activado (Bloom)');
   }
 
   /**

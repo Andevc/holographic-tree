@@ -26,7 +26,6 @@ export class DebugTools {
       this.disable();
     }
     
-    console.log(`🐛 Debug mode: ${this.enabled ? 'ON' : 'OFF'}`);
   }
 
   /**

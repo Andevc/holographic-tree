@@ -1,176 +1,10 @@
-/**
- * SUBJECTS.JS - Base de Datos con Sistema de Clusters
- * ====================================================
- * 
- * NUEVO: Estructura reorganizada para soportar clusters
- * Cada rama ahora es un CLUSTER con:
- * - Nodo central (área principal)
- * - Satélites (tecnologías/materias específicas)
- */
+export const CAREER_INFO = {};
+export const KNOWLEDGE_AREAS = {};
+export const ROOTS = [];
+export const TRUNK = [];
 
 // ============================================
-// METADATA DE LA CARRERA (sin cambios)
-// ============================================
-export const CAREER_INFO = {
-  name: "Carrera de Informática",
-  university: "Universidad Mayor de San Andrés",
-  faculty: "Facultad de Ciencias Puras y Naturales",
-  location: "La Paz, Bolivia",
-  duration: "10 semestres (5 años)",
-  totalSubjects: 35,
-  totalCredits: 240,
-  degree: "Licenciado/a en Informática",
-
-  specializations: [
-    "Desarrollo de Software",
-    "Inteligencia Artificial",
-    "Redes y Seguridad",
-    "Ciencia de Datos",
-    "Sistemas Embebidos"
-  ],
-
-  profile: [
-    "Desarrollador de aplicaciones web y móviles",
-    "Especialista en inteligencia artificial y machine learning",
-    "Administrador de redes y seguridad informática",
-    "Científico de datos y analista",
-    "Arquitecto de software"
-  ]
-};
-
-// ============================================
-// DEFINICIÓN DE ÁREAS (sin cambios)
-// ============================================
-export const KNOWLEDGE_AREAS = {
-  fundamentos: {
-    name: "Fundamentos",
-    color: "cyan",
-    description: "Bases matemáticas, lógicas y de programación",
-    icon: "📚"
-  },
-  web: {
-    name: "Desarrollo Web/Móvil",
-    color: "blue",
-    description: "Creación de aplicaciones web, móviles y APIs modernas",
-    icon: "🌐"
-  },
-  ia: {
-    name: "Inteligencia Artificial",
-    color: "purple",
-    description: "Machine Learning, Deep Learning y sistemas inteligentes",
-    icon: "🤖"
-  },
-  redes: {
-    name: "Redes y Seguridad",
-    color: "green",
-    description: "Infraestructura de red, ciberseguridad y cloud computing",
-    icon: "🔒"
-  },
-  sistemas: {
-    name: "Sistemas y Hardware",
-    color: "red",
-    description: "Arquitectura de computadoras, sistemas operativos",
-    icon: "⚙️"
-  },
-  datos: {
-    name: "Bases de Datos",
-    color: "orange",
-    description: "Modelado, administración y análisis de datos",
-    icon: "💾"
-  },
-  gamedev: {
-    name: "Game Dev & XR",
-    color: "pink",
-    description: "Desarrollo de videojuegos, realidad virtual",
-    icon: "🎮"
-  }
-};
-
-// ============================================
-// RAÍCES - Sin cambios (fundamentos)
-// ============================================
-export const ROOTS = [
-  {
-    id: "INF-111",
-    name: "Matemática Discreta",
-    area: "fundamentos",
-    semester: 1,
-    credits: 4,
-    hours: 6,
-    prerequisites: [],
-    description: "Base matemática para la computación. Teoría de conjuntos, lógica proposicional, grafos.",
-    topics: [
-      "Lógica proposicional y predicados",
-      "Teoría de conjuntos",
-      "Relaciones y funciones",
-      "Grafos y árboles",
-      "Combinatoria"
-    ],
-    professor: "Ing. María López"
-  },
-  {
-    id: "INF-110",
-    name: "Programación I",
-    area: "fundamentos",
-    semester: 1,
-    credits: 4,
-    hours: 8,
-    prerequisites: [],
-    description: "Introducción a la programación. Algoritmos básicos.",
-    topics: [
-      "Algoritmos",
-      "Variables y tipos de datos",
-      "Estructuras de control",
-      "Funciones",
-      "Arreglos"
-    ],
-    professor: "Ing. Carlos Mendoza"
-  },
-  {
-    id: "INF-112",
-    name: "Lógica Matemática",
-    area: "fundamentos",
-    semester: 2,
-    credits: 3,
-    hours: 4,
-    prerequisites: ["INF-111"],
-    description: "Fundamentos lógicos de la computación.",
-    topics: [
-      "Cálculo proposicional",
-      "Cálculo de predicados",
-      "Métodos de demostración",
-      "Lógica de primer orden"
-    ],
-    professor: "Dr. Roberto Paz"
-  },
-  {
-    id: "INF-113",
-    name: "Álgebra Lineal",
-    area: "fundamentos",
-    semester: 2,
-    credits: 4,
-    hours: 6,
-    prerequisites: [],
-    description: "Vectores, matrices y transformaciones lineales.",
-    topics: [
-      "Vectores y espacios vectoriales",
-      "Matrices",
-      "Determinantes",
-      "Sistemas de ecuaciones"
-    ],
-    professor: "Lic. Ana Mamani"
-  }
-];
-
-// ============================================
-// TRONCO - Sin cambios (núcleo obligatorio)
-// ============================================
-export const TRUNK = [
-
-];
-
-// ============================================
-// ⭐ BRANCHES - NUEVO SISTEMA DE CLUSTERS
+// BRANCHES - NUEVO SISTEMA DE CLUSTERS
 // ============================================
 export const BRANCHES = {
   // ========== NIVEL 1: Y=10 (positionBranch), Y=13.5 (position), Z=7 ==========
@@ -532,6 +366,8 @@ export const BRANCHES = {
     ]
   } */
 };
+
+
 // ============================================
 // FUNCIONES HELPER (actualizadas)
 // ============================================

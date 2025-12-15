@@ -39,8 +39,7 @@ export class InputManager {
     this.domElement.addEventListener('touchstart', (e) => this.onTouchStart(e));
     this.domElement.addEventListener('touchmove', (e) => this.onTouchMove(e));
     this.domElement.addEventListener('touchend', (e) => this.onTouchEnd(e));
-    
-    console.log('🖱️ Input manager configurado');
+
   }
 
   onMouseDown(event) {

@@ -47,7 +47,7 @@ export class LightingSystem {
     // Animar luces de punto (pulso)
     if (this.lights.points) {
       this.lights.points.forEach((light, index) => {
-        const baseIntensity = 1;
+        const baseIntensity = 2;
         light.intensity = baseIntensity + 
           Math.sin(time * config.pulseSpeed + index) * config.pulseAmount;
       });

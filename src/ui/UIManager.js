@@ -8,16 +8,14 @@
 import EventBus, { EVENTS } from '../core/EventBus.js';
 import { InfoPanel } from './InfoPanel.js';
 import { ControlPanel } from './ControlPanel.js';
-import { StatsDisplay } from './StatsDisplay.js';
-import { MiniMap } from './MiniMap.js';
+
 
 export class UIManager {
   constructor(scene, camera) {
     // Componentes de UI
     this.infoPanel = new InfoPanel();
     this.controlPanel = new ControlPanel();
-    this.statsDisplay = new StatsDisplay();
-    this.miniMap = new MiniMap(scene, camera);
+
     
     // Referencias a elementos del DOM
     this.elements = {
@@ -36,8 +34,6 @@ export class UIManager {
     // Toggle UI con tecla H
     EventBus.on('ui:toggle', () => this.toggleUI());
     
-    // Toggle minimapa con tecla M
-    EventBus.on('minimap:toggle', () => this.miniMap.toggle());
   }
 
   /**
@@ -105,6 +101,5 @@ export class UIManager {
    */
   getInfoPanel() { return this.infoPanel; }
   getControlPanel() { return this.controlPanel; }
-  getStatsDisplay() { return this.statsDisplay; }
-  getMiniMap() { return this.miniMap; }
+  
 }

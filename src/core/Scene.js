@@ -1,28 +1,3 @@
-/**
- * SCENE.JS - Configuración de Escena Three.js
- * ============================================
- * 
- * PROPÓSITO:
- * - Crear y configurar la escena 3D
- * - Configurar la cámara con perspectiva
- * - Inicializar el renderer (WebGL)
- * - Configurar el sistema de luces
- * - Manejar resize de ventana
- * 
- * COMPONENTES PRINCIPALES:
- * 1. Scene - Contenedor de todos los objetos 3D
- * 2. Camera - Define cómo vemos la escena
- * 3. Renderer - Dibuja la escena en el canvas
- * 4. Lights - Iluminación de la escena
- * 
- * PARA LA DEFENSA:
- * "Scene.js encapsula toda la configuración base de Three.js.
- * Utiliza una PerspectiveCamera para simular visión humana,
- * WebGLRenderer para renderizado acelerado por GPU, y un
- * sistema de luces mixto (ambiental, direccional, punto) para
- * crear profundidad y realismo."
- */
-
 import * as THREE from 'three';
 import {
   CAMERA_CONFIG,
@@ -217,7 +192,7 @@ export class SceneManager {
     // Grid del suelo (estilo holográfico)
     this.gridHelper = new THREE.GridHelper(
       50,  // Tamaño
-      50,  // Divisiones
+      25,  // Divisiones
       COLORS.grid.primary,
       COLORS.grid.secondary
     );
@@ -231,7 +206,7 @@ export class SceneManager {
     const baseRingMaterial = new THREE.MeshBasicMaterial({
       color: 0x00ffff,
       transparent: true,
-      opacity: 1,
+      opacity: 0.5,
       side: THREE.DoubleSide
     });
     const baseRing = new THREE.Mesh(baseRingGeometry, baseRingMaterial);
@@ -239,32 +214,17 @@ export class SceneManager {
     baseRing.position.y = 0.05; // ligeramente elevado
     this.scene.add(baseRing);
 
-    const baseCircleGeometry = new THREE.CircleGeometry(2.5, 64);
-    const baseCircleMaterial = new THREE.MeshBasicMaterial({
-      color: 0x00ffff,
-      transparent: true,
-      opacity: 0.2,
-      side: THREE.DoubleSide
-    });
-    const baseCircle = new THREE.Mesh(baseCircleGeometry, baseCircleMaterial);
-    baseCircle.rotation.x = -Math.PI / 2;
-    baseCircle.position.y = 0;
-    this.scene.add(baseCircle);
-
-    // ---------------------------
-    // Círculo/anillo principal (donde estará el árbol)
-    
-
+    // Círculo/anillo principal (donde estará el árbol)  
     const mainCircleGeometry = new THREE.CircleGeometry(7, 64); // círculo interior
     const mainCircleMaterial = new THREE.MeshBasicMaterial({
       color: 0x001122,
       transparent: true,
-      opacity: 1,
+      opacity: 0.7,
       side: THREE.DoubleSide
     });
     const mainCircle = new THREE.Mesh(mainCircleGeometry, mainCircleMaterial);
     mainCircle.rotation.x = -Math.PI / 2;
-    mainCircle.position.y = 0.75; // un poco debajo del anillo
+    mainCircle.position.y = 2; 
     this.scene.add(mainCircle);
 
   }
@@ -288,10 +248,6 @@ export class SceneManager {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-  /**
-   * Animar elementos de la escena (llamar en el loop)
-   * @param {number} time - Tiempo transcurrido
-   */
   update(time) {
 
     

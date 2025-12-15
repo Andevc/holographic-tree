@@ -75,7 +75,7 @@ export class CameraController {
    */
   setFrontView() {
     const pos = new THREE.Vector3(0, 5, 12);
-    const target = new THREE.Vector3(0, 2, 0);
+    const target = new THREE.Vector3(0, 10, 4);
     this.animateToPosition(pos, target);
   }
 
@@ -84,7 +84,7 @@ export class CameraController {
    */
   setSideView() {
     const pos = new THREE.Vector3(12, 5, 0);
-    const target = new THREE.Vector3(0, 2, 0);
+    const target = new THREE.Vector3(0, 10, 0);
     this.animateToPosition(pos, target);
   }
 
@@ -92,7 +92,7 @@ export class CameraController {
    * Vista superior
    */
   setTopView() {
-    const pos = new THREE.Vector3(0, 15, 0.1);
+    const pos = new THREE.Vector3(0, 30, 0);
     const target = new THREE.Vector3(0, 0, 0);
     this.animateToPosition(pos, target);
   }

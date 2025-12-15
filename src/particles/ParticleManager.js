@@ -1,19 +1,3 @@
-/**
- * PARTICLEMANAGER.JS - Coordinador de Partículas
- * ===============================================
- * 
- * PROPÓSITO:
- * - Coordinar todos los sistemas de partículas
- * - Administrar AmbientParticles y FlowParticles
- * - Optimizar rendimiento según FPS
- * 
- * PARA LA DEFENSA:
- * "El sistema de partículas usa BufferGeometry y PointsMaterial
- * para renderizar miles de partículas eficientemente. Implementé
- * tres tipos: ambientales (distribuidas), flotantes (cerca del árbol)
- * y de flujo (animadas ascendentemente)."
- */
-
 import { AmbientParticles } from './AmbientParticles.js';
 import { FlowParticles } from './FlowParticles.js';
 import { PARTICLES_CONFIG } from '../config/constants.js';
@@ -33,7 +17,6 @@ export class ParticleManager {
   }
 
   init() {
-    console.log('✨ Inicializando sistema de partículas...');
     
     // Crear partículas ambientales
     this.ambientParticles = new AmbientParticles(
@@ -47,8 +30,6 @@ export class ParticleManager {
       PARTICLES_CONFIG.flowing.count
     );
     
-    console.log(`  ✓ ${PARTICLES_CONFIG.ambient.count} partículas ambientales`);
-    console.log(`  ✓ ${PARTICLES_CONFIG.flowing.count} partículas de flujo`);
   }
 
   /**
@@ -71,7 +52,6 @@ export class ParticleManager {
     if (this.isLowPerformance) return;
     
     this.isLowPerformance = true;
-    console.log('⚡ Modo bajo rendimiento activado');
     
     // Reducir cantidad de partículas
     if (this.ambientParticles) {

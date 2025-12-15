@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { MaterialLibrary } from '../materials/MaterialLibrary.js';
 import { TREE_CONFIG, COLORS } from '../config/constants.js';
 
 export class RootsBuilder {
